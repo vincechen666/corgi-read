@@ -1,16 +1,23 @@
+"use client";
+
 import type { TranslationResult } from "@/features/translation/translation-schema";
+import { useSidebarStore } from "@/features/sidebar/sidebar-store";
 
 type TranslationPopoverProps = {
   result: TranslationResult;
   x: number;
   y: number;
+  sourcePage?: number;
 };
 
 export function TranslationPopover({
   result,
   x,
   y,
+  sourcePage = 12,
 }: TranslationPopoverProps) {
+  const addFavorite = useSidebarStore((state) => state.addFavorite);
+
   return (
     <div
       className="absolute z-10 w-[264px] rounded-[20px] border border-[#e7ded4] bg-white p-[18px] shadow-[0_8px_18px_rgba(0,0,0,0.08)]"
@@ -31,6 +38,15 @@ export function TranslationPopover({
       <button
         type="button"
         className="mt-4 rounded-full bg-[#fff4ec] px-4 py-2 text-sm font-semibold text-[#c25b34]"
+        onClick={() =>
+          addFavorite({
+            id: `${sourcePage}-${result.sourceText}`,
+            sourceText: result.sourceText,
+            translatedText: result.translatedText,
+            type: "sentence",
+            page: sourcePage,
+          })
+        }
       >
         收藏词句
       </button>
