@@ -6,10 +6,19 @@ export function createPdfStageState(
   error: string | null,
 ) {
   if (error) {
+    if (source) {
+      return {
+        status: "ready" as const,
+        documentName: "已选中文档",
+        source,
+        error,
+      };
+    }
+
     return {
       status: "error" as const,
-      documentName: source ? "已选中文档" : "未打开文档",
-      source,
+      documentName: "未打开文档",
+      source: null,
       error,
     };
   }

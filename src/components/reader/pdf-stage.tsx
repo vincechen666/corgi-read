@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PdfToolbar } from "@/components/reader/pdf-toolbar";
 import { TranslationPopover } from "@/components/reader/translation-popover";
@@ -24,6 +24,37 @@ const PdfViewer = dynamic(
     ),
   },
 );
+
+type PdfViewerProps = {
+  file: string;
+  pageNumber: number;
+  scale: number;
+  onLoadSuccess: (numPages: number) => void;
+};
+
+function StaticPdfViewer({
+  file,
+  onLoadSuccess,
+}: PdfViewerProps) {
+  useEffect(() => {
+    onLoadSuccess(1);
+  }, [onLoadSuccess]);
+
+  return (
+    <div className="rounded-[18px] border border-[#e7ded4] bg-[#fcfbf8] p-8 text-[#514942]">
+      <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
+        STATIC PDF PREVIEW
+      </p>
+      <p className="mt-4 text-sm leading-7">
+        Local PDF loaded for automated browser verification.
+      </p>
+      <p className="mt-2 text-xs text-[#8a8178]">{file}</p>
+    </div>
+  );
+}
+
+const ResolvedPdfViewer =
+  process.env.NEXT_PUBLIC_E2E_STATIC_PDF === "1" ? StaticPdfViewer : PdfViewer;
 
 type SelectionState = PdfTextSelection & {
   result: TranslationResult;
@@ -103,6 +134,12 @@ export function PdfStage({
       >
         <PdfToolbar currentPage={1} totalPages={totalPages} zoomLabel={zoomLabel} />
 
+        {status === "ready" && error ? (
+          <div className="mb-6 rounded-[18px] border border-[#f0d4c7] bg-[#fff8f4] px-5 py-4 text-sm text-[#7a4530]">
+            {error}
+          </div>
+        ) : null}
+
         {status === "empty" ? (
           <div className="flex min-h-[520px] flex-col items-center justify-center rounded-[20px] border border-dashed border-[#dfd2c3] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
@@ -141,8 +178,8 @@ export function PdfStage({
           </div>
         ) : (
           <div className="overflow-auto rounded-[20px] border border-[#e7ded4] bg-white px-6 py-8 shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
-            <PdfViewer
-              file={source}
+            <ResolvedPdfViewer
+              file={source ?? ""}
               onLoadSuccess={setTotalPages}
               pageNumber={1}
               scale={zoom}

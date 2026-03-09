@@ -46,11 +46,21 @@ beforeEach(() => {
   });
 });
 
+async function uploadPdf(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole("button", { name: /未打开文档/i }));
+  await user.upload(
+    screen.getByLabelText(/upload pdf input/i),
+    new File(["pdf"], "lesson-3.pdf", { type: "application/pdf" }),
+  );
+}
+
 test("shows retry transcription state and retries with the same audio", async () => {
   const user = userEvent.setup();
+  vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:lesson-3");
 
   render(<AppShell />);
 
+  await uploadPdf(user);
   await user.click(screen.getByRole("button", { name: /start retelling/i }));
   await user.click(screen.getByRole("button", { name: /stop retelling/i }));
 

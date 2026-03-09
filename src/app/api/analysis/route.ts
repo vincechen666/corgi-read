@@ -4,7 +4,14 @@ import { analysisRouteResponseSchema } from "@/features/analysis/analysis-schema
 import { analyzeRetelling } from "@/features/analysis/server/analysis-service";
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as { transcript?: string };
+  let body: { transcript?: string } = {};
+
+  try {
+    body = (await request.json()) as { transcript?: string };
+  } catch {
+    body = {};
+  }
+
   const transcript =
     body.transcript ??
     "People knew Multivac well, but its mysteries still felt beyond them.";

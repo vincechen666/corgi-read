@@ -10,3 +10,12 @@ test("returns empty state when no file is selected", () => {
     error: null,
   });
 });
+
+test("keeps the current document visible when a replacement upload fails", () => {
+  expect(createPdfStageState("blob:lesson-3", false, "Please choose a PDF file.")).toEqual({
+    status: "ready",
+    documentName: "已选中文档",
+    source: "blob:lesson-3",
+    error: "Please choose a PDF file.",
+  });
+});
