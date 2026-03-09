@@ -17,7 +17,11 @@ import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
 import { createPdfStageState } from "@/features/pdf/pdf-file-state";
-import { useSidebarStore } from "@/features/sidebar/sidebar-store";
+import {
+  hydrateSidebarStore,
+  sidebarStore,
+  useSidebarStore,
+} from "@/features/sidebar/sidebar-store";
 
 export function AppShell() {
   const addRecording = useSidebarStore((state) => state.addRecording);
@@ -49,6 +53,10 @@ export function AppShell() {
       }
     };
   }, [pdfSource]);
+
+  useEffect(() => {
+    hydrateSidebarStore(sidebarStore);
+  }, []);
 
   const pdfStageState = useMemo(
     () => createPdfStageState(pdfSource, isPdfLoading, readerError),

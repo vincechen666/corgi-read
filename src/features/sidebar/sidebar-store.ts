@@ -2,6 +2,7 @@
 
 import { createStore } from "zustand/vanilla";
 import { useStore } from "zustand";
+import type { StoreApi } from "zustand/vanilla";
 
 import type { AnalysisResult } from "@/features/analysis/analysis-schema";
 import {
@@ -83,13 +84,10 @@ export function createSidebarStore(
   initialState?: Partial<SidebarStorageShape>,
   options?: { seedDefaults?: boolean },
 ) {
-  const persisted =
-    typeof window === "undefined" ? null : loadSidebarState();
   const baseSeed = options?.seedDefaults ? defaultState : emptyState;
 
   const baseState: SidebarStorageShape = {
     ...baseSeed,
-    ...persisted,
     ...initialState,
   };
 
@@ -134,6 +132,16 @@ export function createSidebarStore(
   }));
 
   return store;
+}
+
+export function hydrateSidebarStore(store: StoreApi<SidebarState>) {
+  const persisted = loadSidebarState();
+
+  if (!persisted) {
+    return;
+  }
+
+  store.setState(persisted);
 }
 
 export const sidebarStore = createSidebarStore(undefined, {
