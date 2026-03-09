@@ -7,7 +7,7 @@ type AnalysisEnv = {
   OPENROUTER_API_KEY?: string;
   OPENROUTER_MODEL?: string;
   OPENROUTER_BASE_URL?: string;
-};
+} & Record<string, string | undefined>;
 
 function buildMockResult(transcript: string) {
   return {
