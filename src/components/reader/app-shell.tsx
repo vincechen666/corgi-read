@@ -24,7 +24,11 @@ export function AppShell() {
     recordingId: string;
     result: AnalysisResult;
   } | null>(null);
+  const [transcriptionError, setTranscriptionError] = useState<string | null>(
+    null,
+  );
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [lastAudioBlob, setLastAudioBlob] = useState<Blob | null>(null);
   const [lastTranscript, setLastTranscript] = useState<string | null>(null);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
     null,
@@ -59,9 +63,23 @@ export function AppShell() {
 
   const handleRecordingStop = useCallback(
     async (audioBlob: Blob | null) => {
-      const { transcript } = await transcribeAudio(audioBlob);
-      setLastTranscript(transcript);
+      setLastAudioBlob(audioBlob);
+      setTranscriptionError(null);
       setAnalysisError(null);
+
+      let transcript: string;
+
+      try {
+        const transcription = await transcribeAudio(audioBlob);
+        transcript = transcription.result.transcript;
+      } catch {
+        setAnalysisMeta(null);
+        setActiveAnalysis(null);
+        setTranscriptionError("转写失败，可重试");
+        throw new Error("transcription failed");
+      }
+
+      setLastTranscript(transcript);
 
       try {
         await completeAnalysis(transcript);
@@ -119,6 +137,33 @@ export function AppShell() {
     }
   }, [completeAnalysis, lastTranscript]);
 
+  const handleRetryTranscription = useCallback(async () => {
+    setTranscriptionError(null);
+    setAnalysisError(null);
+
+    let transcript: string;
+
+    try {
+      const transcription = await transcribeAudio(lastAudioBlob);
+      transcript = transcription.result.transcript;
+    } catch {
+      setAnalysisMeta(null);
+      setActiveAnalysis(null);
+      setTranscriptionError("转写失败，可重试");
+      return;
+    }
+
+    setLastTranscript(transcript);
+
+    try {
+      await completeAnalysis(transcript);
+    } catch {
+      setAnalysisMeta(null);
+      setActiveAnalysis(null);
+      setAnalysisError("分析失败，可重试");
+    }
+  }, [completeAnalysis, lastAudioBlob]);
+
   return (
     <main className="min-h-screen bg-[#f7f3ee] px-6 py-6 text-[#1a1a1a]">
       <div className="mx-auto max-w-[1500px]">
@@ -130,6 +175,21 @@ export function AppShell() {
           <LearningSidebar onOpenRecording={handleOpenRecording} />
           <RecordingButton onStop={handleRecordingStop} />
         </div>
+
+        {transcriptionError ? (
+          <div className="mt-5 flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530]">
+            <p>{transcriptionError}</p>
+            <button
+              className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
+              onClick={() => {
+                void handleRetryTranscription();
+              }}
+              type="button"
+            >
+              重新转写
+            </button>
+          </div>
+        ) : null}
 
         {analysisError ? (
           <div className="mt-5 flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530]">

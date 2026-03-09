@@ -1,6 +1,6 @@
 import {
   analysisRouteResponseSchema,
-  transcriptionResultSchema,
+  transcriptionRouteResponseSchema,
 } from "@/features/analysis/analysis-schema";
 
 async function postJson<TBody>(
@@ -24,13 +24,32 @@ async function postJson<TBody>(
   return response.json();
 }
 
-export async function transcribeAudio(audioBlob: Blob | null) {
-  const payload = {
-    hasAudio: Boolean(audioBlob),
-  };
+async function postFormData(url: string, body: FormData) {
+  const response = await fetch(url, {
+    method: "POST",
+    body,
+  });
 
-  const json = await postJson("/api/transcribe", payload);
-  return transcriptionResultSchema.parse(json);
+  if (!response.ok) {
+    throw new Error(`Request failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function transcribeAudio(audioBlob: Blob | null) {
+  const formData = new FormData();
+  const audioFile = new File(
+    [audioBlob ?? new Blob()],
+    "retelling.webm",
+    {
+      type: audioBlob?.type || "audio/webm",
+    },
+  );
+  formData.append("audio", audioFile);
+
+  const json = await postFormData("/api/transcribe", formData);
+  return transcriptionRouteResponseSchema.parse(json);
 }
 
 export async function analyzeTranscript(transcript: string) {

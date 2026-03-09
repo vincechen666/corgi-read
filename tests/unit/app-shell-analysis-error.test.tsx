@@ -4,7 +4,14 @@ import { beforeEach, expect, test, vi } from "vitest";
 
 vi.mock("@/features/analysis/analysis-client", () => ({
   transcribeAudio: vi.fn().mockResolvedValue({
-    transcript: "People knew Multivac well...",
+    result: {
+      transcript: "People knew Multivac well...",
+    },
+    meta: {
+      mode: "mock",
+      provider: "mock",
+      model: "mock",
+    },
   }),
   analyzeTranscript: vi.fn().mockRejectedValue(new Error("analysis failed")),
 }));
