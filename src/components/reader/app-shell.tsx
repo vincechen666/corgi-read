@@ -72,10 +72,14 @@ export function AppShell() {
       try {
         const transcription = await transcribeAudio(audioBlob);
         transcript = transcription.result.transcript;
-      } catch {
+      } catch (error) {
         setAnalysisMeta(null);
         setActiveAnalysis(null);
-        setTranscriptionError("转写失败，可重试");
+        const detail =
+          error instanceof Error && error.message
+            ? `转写失败：${error.message}`
+            : "转写失败，可重试";
+        setTranscriptionError(detail);
         throw new Error("transcription failed");
       }
 
@@ -146,10 +150,14 @@ export function AppShell() {
     try {
       const transcription = await transcribeAudio(lastAudioBlob);
       transcript = transcription.result.transcript;
-    } catch {
+    } catch (error) {
       setAnalysisMeta(null);
       setActiveAnalysis(null);
-      setTranscriptionError("转写失败，可重试");
+      const detail =
+        error instanceof Error && error.message
+          ? `转写失败：${error.message}`
+          : "转写失败，可重试";
+      setTranscriptionError(detail);
       return;
     }
 

@@ -19,7 +19,9 @@ beforeEach(() => {
   analysisClientMocks.transcribeAudio.mockReset();
   analysisClientMocks.analyzeTranscript.mockReset();
   analysisClientMocks.transcribeAudio
-    .mockRejectedValueOnce(new Error("transcription failed"))
+    .mockRejectedValueOnce(
+      new Error("Baidu transcription failed: 3302 No permission to access data"),
+    )
     .mockResolvedValueOnce({
       result: {
         transcript: "People knew Multivac well.",
@@ -54,7 +56,9 @@ test("shows retry transcription state and retries with the same audio", async ()
   await user.click(screen.getByRole("button", { name: /start retelling/i }));
   await user.click(screen.getByRole("button", { name: /stop retelling/i }));
 
-  expect(await screen.findByText(/转写失败，可重试/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/转写失败：Baidu transcription failed: 3302/i),
+  ).toBeInTheDocument();
 
   await user.click(screen.getByRole("button", { name: /重新转写/i }));
 

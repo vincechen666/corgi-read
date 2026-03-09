@@ -48,4 +48,32 @@ describe("POST /api/transcribe", () => {
       }),
     );
   });
+
+  test("returns debug detail in development when transcription fails", async () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
+
+    transcriptionServiceMocks.transcribeRetelling.mockRejectedValue(
+      new Error("Baidu transcription failed: 3302 No permission to access data"),
+    );
+
+    const formData = new FormData();
+    formData.append(
+      "audio",
+      new File(["audio"], "recording.webm", { type: "audio/webm" }),
+    );
+
+    const response = await POST(
+      new Request("http://localhost/api/transcribe", {
+        method: "POST",
+        body: formData,
+      }),
+    );
+    const json = await response.json();
+
+    expect(response.status).toBe(502);
+    expect(json.detail).toMatch(/3302/);
+
+    process.env.NODE_ENV = originalNodeEnv;
+  });
 });

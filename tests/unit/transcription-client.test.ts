@@ -36,3 +36,21 @@ test("posts real audio payload and parses transcription metadata", async () => {
     }),
   );
 });
+
+test("surfaces route detail when transcription fails", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn().mockResolvedValue({
+      ok: false,
+      status: 502,
+      json: async () => ({
+        error: "Transcription failed, please retry.",
+        detail: "Baidu transcription failed: 3302 No permission to access data",
+      }),
+    }),
+  );
+
+  await expect(
+    transcribeAudio(new Blob(["audio"], { type: "audio/webm" })),
+  ).rejects.toThrow(/3302/);
+});

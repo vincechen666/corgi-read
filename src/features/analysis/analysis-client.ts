@@ -18,7 +18,17 @@ async function postJson<TBody>(
   });
 
   if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`);
+    const errorBody = await response
+      .json()
+      .catch(() => ({ error: `Request failed: ${response.status}` }));
+    const message =
+      typeof errorBody.detail === "string"
+        ? errorBody.detail
+        : typeof errorBody.error === "string"
+          ? errorBody.error
+          : `Request failed: ${response.status}`;
+
+    throw new Error(message);
   }
 
   return response.json();
@@ -31,7 +41,17 @@ async function postFormData(url: string, body: FormData) {
   });
 
   if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`);
+    const errorBody = await response
+      .json()
+      .catch(() => ({ error: `Request failed: ${response.status}` }));
+    const message =
+      typeof errorBody.detail === "string"
+        ? errorBody.detail
+        : typeof errorBody.error === "string"
+          ? errorBody.error
+          : `Request failed: ${response.status}`;
+
+    throw new Error(message);
   }
 
   return response.json();

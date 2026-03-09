@@ -34,9 +34,17 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(transcriptionRouteResponseSchema.parse(response));
-  } catch {
+  } catch (error) {
+    const detail =
+      process.env.NODE_ENV !== "production" && error instanceof Error
+        ? error.message
+        : undefined;
+
     return NextResponse.json(
-      { error: "Transcription failed, please retry." },
+      {
+        error: "Transcription failed, please retry.",
+        ...(detail ? { detail } : {}),
+      },
       { status: 502 },
     );
   }
