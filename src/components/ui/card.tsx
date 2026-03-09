@@ -1,17 +1,26 @@
-import type { ComponentPropsWithoutRef } from "react";
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type ElementRef,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
 type CardProps = ComponentPropsWithoutRef<"section">;
 
-export function Card({ className, ...props }: CardProps) {
-  return (
-    <section
-      className={cn(
-        "rounded-[24px] border border-[#e7ded4] bg-[#fffdf9]",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
+export const Card = forwardRef<ElementRef<"section">, CardProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <section
+        ref={ref}
+        className={cn(
+          "rounded-[24px] border border-[#e7ded4] bg-[#fffdf9]",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
+
+Card.displayName = "Card";
