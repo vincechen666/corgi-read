@@ -1,3 +1,5 @@
+import type { AnalysisResult } from "@/features/analysis/analysis-schema";
+
 export const SIDEBAR_STORAGE_KEY = "corgi-read-sidebar";
 
 export type SidebarStorageShape = {
@@ -14,6 +16,7 @@ export type SidebarStorageShape = {
     page: number;
     summary: string;
     feedback: string;
+    analysis?: AnalysisResult;
   }>;
   expressions: Array<{
     id: string;

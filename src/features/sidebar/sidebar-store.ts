@@ -3,6 +3,7 @@
 import { createStore } from "zustand/vanilla";
 import { useStore } from "zustand";
 
+import type { AnalysisResult } from "@/features/analysis/analysis-schema";
 import {
   loadSidebarState,
   saveSidebarState,
@@ -32,6 +33,17 @@ const defaultState: SidebarStorageShape = {
         "The author shows that people felt close to Multivac, but never fully understood it.",
       feedback:
         "AI 点评：理解准确，表达自然度中等，句子连接词可以更像母语者。",
+      analysis: {
+        transcript:
+          "People knew Multivac well, but its mysteries still felt beyond them.",
+        corrected:
+          "People felt close to Multivac, yet its mysteries still seemed beyond them.",
+        grammar:
+          "Use felt close to and yet to create a more natural contrast than knew well but.",
+        nativeExpression: "its mysteries still seemed beyond them",
+        coachFeedback:
+          "Your retelling is accurate. Push contrast words harder to sound more native.",
+      } satisfies AnalysisResult,
     },
   ],
   favorites: [
@@ -102,17 +114,21 @@ export function createSidebarStore(
           ...selectPersistedState(state),
           recordings,
         });
-        return { recordings };
+        return { recordings, activeTab: "录音" as const };
       });
     },
     addExpression: (item) => {
       set((state) => {
-        const expressions = [item, ...state.expressions];
+        const expressions = state.expressions.some(
+          (expression) => expression.id === item.id,
+        )
+          ? state.expressions
+          : [item, ...state.expressions];
         saveSidebarState({
           ...selectPersistedState(state),
           expressions,
         });
-        return { expressions };
+        return { expressions, activeTab: "表达库" as const };
       });
     },
   }));

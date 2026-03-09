@@ -1,11 +1,18 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { useSidebarStore } from "@/features/sidebar/sidebar-store";
+import {
+  useSidebarStore,
+  type RecordingItem,
+} from "@/features/sidebar/sidebar-store";
 
 const tabs = ["录音", "收藏", "表达库"] as const;
 
-export function LearningSidebar() {
+type LearningSidebarProps = {
+  onOpenRecording?: (recording: RecordingItem) => void;
+};
+
+export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
   const activeTab = useSidebarStore((state) => state.activeTab);
   const setActiveTab = useSidebarStore((state) => state.setActiveTab);
   const recordings = useSidebarStore((state) => state.recordings);
@@ -65,7 +72,13 @@ export function LearningSidebar() {
                 </p>
                 <button
                   type="button"
-                  className="mt-4 rounded-full bg-[#eaf4f1] px-4 py-2 text-sm font-semibold text-[#0d6e6e]"
+                  className="mt-4 rounded-full bg-[#eaf4f1] px-4 py-2 text-sm font-semibold text-[#0d6e6e] disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!recording.analysis}
+                  onClick={() => {
+                    if (recording.analysis && onOpenRecording) {
+                      onOpenRecording(recording);
+                    }
+                  }}
                 >
                   查看分析详情
                 </button>
