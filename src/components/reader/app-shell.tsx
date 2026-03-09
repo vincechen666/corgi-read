@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   analyzeTranscript,
@@ -15,6 +16,7 @@ import { LearningSidebar } from "@/components/reader/learning-sidebar";
 import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
+import { createPdfStageState } from "@/features/pdf/pdf-file-state";
 import { useSidebarStore } from "@/features/sidebar/sidebar-store";
 
 export function AppShell() {
@@ -28,10 +30,29 @@ export function AppShell() {
     null,
   );
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [readerError, setReaderError] = useState<string | null>(null);
   const [lastAudioBlob, setLastAudioBlob] = useState<Blob | null>(null);
   const [lastTranscript, setLastTranscript] = useState<string | null>(null);
+  const [pdfSource, setPdfSource] = useState<string | null>(null);
+  const [documentName, setDocumentName] = useState("未打开文档");
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
     null,
+  );
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (pdfSource?.startsWith("blob:")) {
+        URL.revokeObjectURL(pdfSource);
+      }
+    };
+  }, [pdfSource]);
+
+  const pdfStageState = useMemo(
+    () => createPdfStageState(pdfSource, isPdfLoading, readerError),
+    [isPdfLoading, pdfSource, readerError],
   );
 
   const completeAnalysis = useCallback(
@@ -164,16 +185,80 @@ export function AppShell() {
     }
   }, [completeAnalysis, lastAudioBlob]);
 
+  const handleToggleMenu = useCallback(() => {
+    setMenuOpen((value) => !value);
+  }, []);
+
+  const handleUploadClick = useCallback(() => {
+    setMenuOpen(false);
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0] ?? null;
+      event.target.value = "";
+
+      if (!file) {
+        return;
+      }
+
+      if (
+        file.type !== "application/pdf" &&
+        !file.name.toLowerCase().endsWith(".pdf")
+      ) {
+        setReaderError("Please choose a PDF file.");
+        return;
+      }
+
+      setReaderError(null);
+      setIsPdfLoading(true);
+      setDocumentName(file.name);
+
+      if (pdfSource?.startsWith("blob:")) {
+        URL.revokeObjectURL(pdfSource);
+      }
+
+      const nextSource = URL.createObjectURL(file);
+      setPdfSource(nextSource);
+
+      await Promise.resolve();
+      setIsPdfLoading(false);
+    },
+    [pdfSource],
+  );
+
   return (
     <main className="min-h-screen bg-[#f7f3ee] px-6 py-6 text-[#1a1a1a]">
       <div className="mx-auto max-w-[1500px]">
         <h1 className="sr-only">English PDF Reader</h1>
-        <TopBar />
+        <TopBar
+          documentLabel={documentName}
+          menuOpen={menuOpen}
+          onToggleMenu={handleToggleMenu}
+          onUploadClick={handleUploadClick}
+        />
+        <input
+          ref={fileInputRef}
+          accept="application/pdf,.pdf"
+          aria-label="Upload PDF input"
+          className="sr-only"
+          onChange={handleFileChange}
+          type="file"
+        />
 
         <div className="relative mt-4 flex gap-5">
-          <PdfStage />
+          <PdfStage
+            documentName={documentName}
+            error={pdfStageState.error}
+            source={pdfStageState.source}
+            status={pdfStageState.status}
+          />
           <LearningSidebar onOpenRecording={handleOpenRecording} />
-          <RecordingButton onStop={handleRecordingStop} />
+          <RecordingButton
+            disabled={pdfStageState.status !== "ready"}
+            onStop={handleRecordingStop}
+          />
         </div>
 
         {transcriptionError ? (
