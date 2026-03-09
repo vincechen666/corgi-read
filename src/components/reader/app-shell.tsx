@@ -6,7 +6,10 @@ import {
   analyzeTranscript,
   transcribeAudio,
 } from "@/features/analysis/analysis-client";
-import type { AnalysisResult } from "@/features/analysis/analysis-schema";
+import type {
+  AnalysisResult,
+  AnalysisRouteResponse,
+} from "@/features/analysis/analysis-schema";
 import { AnalysisModal } from "@/components/reader/analysis-modal";
 import { LearningSidebar } from "@/components/reader/learning-sidebar";
 import { PdfStage } from "@/components/reader/pdf-stage";
@@ -21,11 +24,15 @@ export function AppShell() {
     recordingId: string;
     result: AnalysisResult;
   } | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [lastTranscript, setLastTranscript] = useState<string | null>(null);
+  const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
+    null,
+  );
 
-  const handleRecordingStop = useCallback(
-    async (audioBlob: Blob | null) => {
-      const { transcript } = await transcribeAudio(audioBlob);
-      const analysis = await analyzeTranscript(transcript);
+  const completeAnalysis = useCallback(
+    async (transcript: string) => {
+      const response = await analyzeTranscript(transcript);
       const recordingId = `recording-${Date.now()}`;
 
       addRecording({
@@ -36,17 +43,36 @@ export function AppShell() {
           hour12: true,
         }).format(new Date()),
         page: 12,
-        summary: analysis.corrected,
-        feedback: `AI 点评：${analysis.coachFeedback}`,
-        analysis,
+        summary: response.result.corrected,
+        feedback: `AI 点评：${response.result.coachFeedback}`,
+        analysis: response.result,
       });
 
+      setAnalysisMeta(response.meta);
       setActiveAnalysis({
         recordingId,
-        result: analysis,
+        result: response.result,
       });
     },
     [addRecording],
+  );
+
+  const handleRecordingStop = useCallback(
+    async (audioBlob: Blob | null) => {
+      const { transcript } = await transcribeAudio(audioBlob);
+      setLastTranscript(transcript);
+      setAnalysisError(null);
+
+      try {
+        await completeAnalysis(transcript);
+      } catch {
+        setAnalysisMeta(null);
+        setActiveAnalysis(null);
+        setAnalysisError("分析失败，可重试");
+        throw new Error("analysis failed");
+      }
+    },
+    [completeAnalysis],
   );
 
   const handleOpenRecording = useCallback(
@@ -77,6 +103,22 @@ export function AppShell() {
     setActiveAnalysis(null);
   }, [activeAnalysis, addExpression]);
 
+  const handleRetryAnalysis = useCallback(async () => {
+    if (!lastTranscript) {
+      return;
+    }
+
+    setAnalysisError(null);
+
+    try {
+      await completeAnalysis(lastTranscript);
+    } catch {
+      setAnalysisMeta(null);
+      setActiveAnalysis(null);
+      setAnalysisError("分析失败，可重试");
+    }
+  }, [completeAnalysis, lastTranscript]);
+
   return (
     <main className="min-h-screen bg-[#f7f3ee] px-6 py-6 text-[#1a1a1a]">
       <div className="mx-auto max-w-[1500px]">
@@ -88,6 +130,21 @@ export function AppShell() {
           <LearningSidebar onOpenRecording={handleOpenRecording} />
           <RecordingButton onStop={handleRecordingStop} />
         </div>
+
+        {analysisError ? (
+          <div className="mt-5 flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530]">
+            <p>{analysisError}</p>
+            <button
+              className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
+              onClick={() => {
+                void handleRetryAnalysis();
+              }}
+              type="button"
+            >
+              重新分析
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <AnalysisModal
@@ -96,6 +153,12 @@ export function AppShell() {
         onClose={() => setActiveAnalysis(null)}
         result={activeAnalysis?.result ?? null}
       />
+
+      {analysisMeta ? (
+        <div className="pointer-events-none fixed bottom-6 right-6 rounded-full bg-[rgba(255,255,255,0.92)] px-4 py-2 text-xs font-mono tracking-[0.14em] text-[#6a625a] shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
+          {analysisMeta.provider} / {analysisMeta.mode}
+        </div>
+      ) : null}
     </main>
   );
 }
