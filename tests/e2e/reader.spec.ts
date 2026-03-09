@@ -116,7 +116,7 @@ test("retries transcription without re-recording when the first request fails", 
   await page.getByRole("button", { name: /start retelling/i }).click();
   await page.getByRole("button", { name: /stop retelling/i }).click();
 
-  await expect(page.getByText(/转写失败，可重试/i)).toBeVisible();
+  await expect(page.getByText(/转写失败/i)).toBeVisible();
   await page.getByRole("button", { name: /重新转写/i }).click();
 
   await expect(

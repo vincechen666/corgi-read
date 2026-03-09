@@ -12,6 +12,7 @@ export default defineConfig({
   webServer: {
     command:
       `AI_MODE=mock TRANSCRIPTION_MODE=mock NEXT_PUBLIC_E2E_STATIC_PDF=1 ` +
+      `NEXT_DIST_DIR=.next-playwright ` +
       `npx next dev --webpack --hostname 127.0.0.1 --port ${port}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
