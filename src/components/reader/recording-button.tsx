@@ -4,6 +4,10 @@ import { useMemo } from "react";
 
 import { useRecorder } from "@/features/recording/recorder";
 
+type RecordingButtonProps = {
+  onStop?: (audioBlob: Blob | null) => Promise<void> | void;
+};
+
 function formatElapsed(seconds: number) {
   const minutes = Math.floor(seconds / 60)
     .toString()
@@ -13,8 +17,8 @@ function formatElapsed(seconds: number) {
   return `${minutes}:${remainingSeconds}`;
 }
 
-export function RecordingButton() {
-  const { elapsedSeconds, startOrStop, state } = useRecorder();
+export function RecordingButton({ onStop }: RecordingButtonProps) {
+  const { elapsedSeconds, startOrStop, state } = useRecorder({ onStop });
   const buttonLabel = useMemo(() => {
     if (state === "recording") {
       return "Stop retelling";

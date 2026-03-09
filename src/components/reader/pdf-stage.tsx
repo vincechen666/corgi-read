@@ -1,10 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo, useRef, useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
-import type { OnDocumentLoadSuccess } from "react-pdf/dist/shared/types.js";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
 
 import { PdfToolbar } from "@/components/reader/pdf-toolbar";
 import { TranslationPopover } from "@/components/reader/translation-popover";
@@ -17,10 +14,16 @@ import {
 } from "@/features/translation/translation-schema";
 import { translateSelection } from "@/features/translation/translation-client";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+const PdfViewer = dynamic(
+  () =>
+    import("@/components/reader/pdf-viewer").then((module) => module.PdfViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="text-sm text-[#8a8178]">Loading sample PDF…</p>
+    ),
+  },
+);
 
 type SelectionState = PdfTextSelection & {
   result: TranslationResult;
@@ -44,10 +47,6 @@ export function PdfStage() {
 
   const zoom = 1.15;
   const zoomLabel = useMemo(() => `${Math.round(zoom * 100)}% zoom`, [zoom]);
-
-  function handleLoadSuccess({ numPages }: OnDocumentLoadSuccess) {
-    setTotalPages(numPages);
-  }
 
   async function handleMouseUp() {
     const root = selectionRootRef.current;
@@ -93,18 +92,12 @@ export function PdfStage() {
         <PdfToolbar currentPage={1} totalPages={totalPages} zoomLabel={zoomLabel} />
 
         <div className="overflow-auto rounded-[20px] border border-[#e7ded4] bg-white px-6 py-8 shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
-          <Document
+          <PdfViewer
             file="/sample/the-last-question.pdf"
-            loading={<p className="text-sm text-[#8a8178]">Loading sample PDF…</p>}
-            onLoadSuccess={handleLoadSuccess}
-          >
-            <Page
-              pageNumber={1}
-              renderAnnotationLayer={false}
-              renderTextLayer
-              scale={zoom}
-            />
-          </Document>
+            onLoadSuccess={setTotalPages}
+            pageNumber={1}
+            scale={zoom}
+          />
         </div>
 
         {selection ? (
