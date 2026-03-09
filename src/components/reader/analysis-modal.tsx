@@ -50,7 +50,7 @@ export function AnalysisModal({
       <div
         aria-labelledby="analysis-modal-title"
         aria-modal="true"
-        className="mx-auto max-w-[760px] rounded-[30px] border border-[#e7ded4] bg-[#fffdf9] p-8 shadow-[0_32px_80px_rgba(0,0,0,0.18)]"
+        className="mx-auto flex max-h-[calc(100vh-5rem)] max-w-[760px] flex-col overflow-y-auto rounded-[30px] border border-[#e7ded4] bg-[#fffdf9] p-8 shadow-[0_32px_80px_rgba(0,0,0,0.18)]"
         role="dialog"
       >
         <div className="flex items-start justify-between gap-6">

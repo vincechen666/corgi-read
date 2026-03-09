@@ -74,6 +74,7 @@ export function AppShell() {
       note: `${activeAnalysis.result.grammar} ${activeAnalysis.result.coachFeedback}`,
       sourceRecordingId: activeAnalysis.recordingId,
     });
+    setActiveAnalysis(null);
   }, [activeAnalysis, addExpression]);
 
   return (

@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Corgi Read
 
-## Getting Started
+Desktop-first English PDF reader for reading practice and spoken retelling. The current MVP follows the design spec and Pencil prototype already stored in this repo:
 
-First, run the development server:
+- design: `docs/plans/2026-03-08-english-pdf-reader-design.md`
+- implementation plan: `docs/plans/2026-03-09-english-pdf-reader-implementation.md`
+- prototype: `designs/english-pdf-reader-prototype.pen`
+
+## What Works
+
+- sample PDF rendered with `react-pdf`
+- selection-driven translation popover with mock translation data
+- Siri-style recording button with idle, recording, processing, and error states
+- mock `/api/transcribe` and `/api/analysis` routes
+- analysis modal with corrected retelling, grammar note, native expression, and coach feedback
+- persistent right sidebar for recordings, favorites, and expression library
+
+## Development
+
+Install dependencies and start the app:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm test
+npm run lint
+npm run test:e2e -- tests/e2e/reader.spec.ts
+```
 
-## Learn More
+Playwright starts its own local Next.js server through `playwright.config.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+## Mock AI Mode
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The MVP is mock-first. Both server routes return stable structured data even when no AI credentials are present:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `POST /api/transcribe`
+- `POST /api/analysis`
 
-## Deploy on Vercel
+The UI stays functional without any provider keys.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Future Provider Wiring
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+When the real provider is connected, these environment variables are expected:
+
+- `OPENAI_API_KEY`
+- `TRANSCRIPTION_MODEL`
+- `ANALYSIS_MODEL`
+
+Until then, the API routes intentionally stay in mock mode so the reading and speaking loop can be developed independently of backend integrations.
+
+## Stack
+
+- Next.js App Router
+- React 19
+- Tailwind CSS v4
+- Zustand
+- React PDF
+- Zod
+- Vitest
+- Playwright
