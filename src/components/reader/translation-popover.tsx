@@ -20,6 +20,7 @@ export function TranslationPopover({
 
   return (
     <div
+      data-translation-popover="true"
       className="absolute z-10 w-[264px] rounded-[20px] border border-[#e7ded4] bg-white p-[18px] shadow-[0_8px_18px_rgba(0,0,0,0.08)]"
       style={{ left: x, top: y }}
     >

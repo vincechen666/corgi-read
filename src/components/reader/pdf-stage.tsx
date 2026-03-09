@@ -10,7 +10,6 @@ import { normalizeSelectionText } from "@/features/pdf/pdf-selection";
 import type { PdfTextSelection } from "@/features/pdf/pdf-types";
 import {
   type TranslationResult,
-  translationResultSchema,
 } from "@/features/translation/translation-schema";
 import { translateSelection } from "@/features/translation/translation-client";
 
@@ -60,12 +59,6 @@ type SelectionState = PdfTextSelection & {
   result: TranslationResult;
 };
 
-const FALLBACK_TRANSLATION = translationResultSchema.parse({
-  sourceText: "deliberate translation moment",
-  translatedText: "按需触发的翻译提示",
-  note: "用户卡住时再看中文，避免阅读区长期双语并列。",
-});
-
 type PdfStageProps = {
   status?: "empty" | "loading" | "ready" | "error";
   documentName?: string;
@@ -80,29 +73,67 @@ export function PdfStage({
   error = null,
 }: PdfStageProps) {
   const selectionRootRef = useRef<HTMLDivElement | null>(null);
+  const ignoreDocumentClickRef = useRef(false);
+  const clickResetTimerRef = useRef<number | null>(null);
   const [totalPages, setTotalPages] = useState(1);
-  const [selection, setSelection] = useState<SelectionState | null>({
-    text: FALLBACK_TRANSLATION.sourceText,
-    x: 596,
-    y: 312,
-    result: FALLBACK_TRANSLATION,
-  });
+  const [selection, setSelection] = useState<SelectionState | null>(null);
 
   const zoom = 1.15;
   const zoomLabel = useMemo(() => `${Math.round(zoom * 100)}% zoom`, [zoom]);
+
+  useEffect(() => {
+    function handleDocumentClick(event: MouseEvent) {
+      if (ignoreDocumentClickRef.current) {
+        return;
+      }
+
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        setSelection(null);
+        return;
+      }
+
+      if (target.closest("[data-translation-popover]")) {
+        return;
+      }
+
+      setSelection(null);
+    }
+
+    document.addEventListener("click", handleDocumentClick);
+
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+
+      if (clickResetTimerRef.current !== null) {
+        window.clearTimeout(clickResetTimerRef.current);
+      }
+    };
+  }, []);
 
   async function handleMouseUp() {
     const root = selectionRootRef.current;
     const browserSelection = window.getSelection();
 
     if (!root || !browserSelection || browserSelection.rangeCount === 0) {
+      setSelection(null);
       return;
     }
 
     const text = normalizeSelectionText(browserSelection.toString());
     if (!text) {
+      setSelection(null);
       return;
     }
+
+    ignoreDocumentClickRef.current = true;
+    if (clickResetTimerRef.current !== null) {
+      window.clearTimeout(clickResetTimerRef.current);
+    }
+    clickResetTimerRef.current = window.setTimeout(() => {
+      ignoreDocumentClickRef.current = false;
+      clickResetTimerRef.current = null;
+    }, 0);
 
     const rangeRect = browserSelection.getRangeAt(0).getBoundingClientRect();
     const rootRect = root.getBoundingClientRect();
