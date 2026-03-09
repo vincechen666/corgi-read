@@ -1,7 +1,6 @@
 import {
-  analysisResultSchema,
+  analysisRouteResponseSchema,
   transcriptionResultSchema,
-  type AnalysisResult,
 } from "@/features/analysis/analysis-schema";
 
 async function postJson<TBody>(
@@ -36,5 +35,5 @@ export async function transcribeAudio(audioBlob: Blob | null) {
 
 export async function analyzeTranscript(transcript: string) {
   const json = await postJson("/api/analysis", { transcript });
-  return analysisResultSchema.parse(json) as AnalysisResult;
+  return analysisRouteResponseSchema.parse(json);
 }
