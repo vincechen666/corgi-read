@@ -6,6 +6,7 @@ import { useRecorder } from "@/features/recording/recorder";
 
 type RecordingButtonProps = {
   onStop?: (audioBlob: Blob | null) => Promise<void> | void;
+  disabled?: boolean;
 };
 
 function formatElapsed(seconds: number) {
@@ -17,7 +18,10 @@ function formatElapsed(seconds: number) {
   return `${minutes}:${remainingSeconds}`;
 }
 
-export function RecordingButton({ onStop }: RecordingButtonProps) {
+export function RecordingButton({
+  disabled = false,
+  onStop,
+}: RecordingButtonProps) {
   const { elapsedSeconds, startOrStop, state } = useRecorder({ onStop });
   const buttonLabel = useMemo(() => {
     if (state === "recording") {
@@ -40,32 +44,49 @@ export function RecordingButton({ onStop }: RecordingButtonProps) {
       type="button"
       aria-label={buttonLabel}
       className="absolute bottom-8 left-1/2 z-10 h-24 w-24 -translate-x-1/2 rounded-full bg-transparent disabled:cursor-wait"
-      disabled={state === "processing"}
+      disabled={disabled || state === "processing"}
       onClick={() => {
+        if (disabled) {
+          return;
+        }
         void startOrStop();
       }}
     >
       <span
         className={[
           "absolute inset-0 rounded-full transition",
-          state === "recording" ? "bg-[#e07b54]/25" : "bg-[#e07b54]/15",
+          disabled
+            ? "bg-[#d9d0c7]/30"
+            : state === "recording"
+              ? "bg-[#e07b54]/25"
+              : "bg-[#e07b54]/15",
         ].join(" ")}
       />
       <span
         className={[
           "absolute inset-[10px] rounded-full border border-[#f2d1c3] bg-[#fff4ec] shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition",
+          disabled ? "border-[#e5ddd4] bg-[#f4efe9]" : "",
           state === "processing" ? "scale-95 opacity-85" : "",
         ].join(" ")}
       />
       <span
         className={[
           "absolute inset-[22px] rounded-full transition",
-          state === "error" ? "bg-[#c25b34]" : "bg-[#e07b54]",
+          disabled
+            ? "bg-[#c9beb2]"
+            : state === "error"
+              ? "bg-[#c25b34]"
+              : "bg-[#e07b54]",
           state === "recording" ? "scale-105 shadow-[0_0_18px_rgba(224,123,84,0.4)]" : "",
           state === "processing" ? "animate-pulse" : "",
         ].join(" ")}
       />
-      <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-white">
+      <span
+        className={[
+          "absolute inset-0 flex items-center justify-center text-sm font-semibold",
+          disabled ? "text-[#6f675f]" : "text-white",
+        ].join(" ")}
+      >
         {state === "recording" ? formatElapsed(elapsedSeconds) : "•"}
       </span>
     </button>

@@ -1,10 +1,70 @@
+import path from "node:path";
+
+import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
+
+const samplePdfPath = path.join(
+  process.cwd(),
+  "public",
+  "sample",
+  "the-last-question.pdf",
+);
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    const stream = {
+      getTracks: () => [{ stop: () => undefined }],
+    };
+
+    class MockMediaRecorder {
+      ondataavailable: ((event: BlobEvent) => void) | null = null;
+      onstop: (() => void) | null = null;
+
+      start() {}
+
+      stop() {
+        this.ondataavailable?.(
+          new BlobEvent("dataavailable", {
+            data: new Blob(["audio"], { type: "audio/webm" }),
+          }),
+        );
+        this.onstop?.();
+      }
+    }
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: async () => stream,
+      },
+    });
+
+    Object.defineProperty(window, "MediaRecorder", {
+      configurable: true,
+      value: MockMediaRecorder,
+    });
+  });
+});
+
+async function uploadPdf(page: Page) {
+  await expect(page.getByText(/upload a pdf to start reading/i)).toBeVisible();
+  await page.getByRole("button", { name: /未打开文档/i }).click();
+
+  const chooser = page.waitForEvent("filechooser");
+  await page.getByRole("menuitem", { name: /上传 pdf/i }).click();
+  const fileChooser = await chooser;
+  await fileChooser.setFiles(samplePdfPath);
+
+  await expect(page.getByRole("button", { name: /the-last-question\.pdf/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /start retelling/i })).toBeEnabled();
+}
 
 test("reader core loop works with mock services", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByText(/read in english/i)).toBeVisible();
   await expect(page.getByText(/你的学习沉淀/i)).toBeVisible();
+  await uploadPdf(page);
 
   await page.getByRole("button", { name: /start retelling/i }).click();
   await page.getByRole("button", { name: /stop retelling/i }).click();
@@ -51,6 +111,7 @@ test("retries transcription without re-recording when the first request fails", 
   });
 
   await page.goto("/");
+  await uploadPdf(page);
 
   await page.getByRole("button", { name: /start retelling/i }).click();
   await page.getByRole("button", { name: /stop retelling/i }).click();
@@ -62,4 +123,14 @@ test("retries transcription without re-recording when the first request fails", 
     page.getByRole("dialog", { name: /ai retelling feedback/i }),
   ).toBeVisible();
   expect(transcriptionAttempts).toBe(2);
+});
+
+test("opens a local pdf from the top-right document menu", async ({ page }) => {
+  await page.goto("/");
+
+  await uploadPdf(page);
+  await expect(page.getByText(/upload a pdf to start reading/i)).not.toBeVisible();
+  await expect(
+    page.getByText(/local pdf loaded for automated browser verification/i),
+  ).toBeVisible();
 });
