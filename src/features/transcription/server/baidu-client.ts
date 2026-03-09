@@ -4,13 +4,15 @@ type RequestBaiduTranscriptionParams = {
   token: string;
   cuid: string;
   model: string;
-  audioBuffer: Buffer;
+  audioBuffer: Uint8Array;
 };
 
 export async function requestBaiduTranscription(
   params: RequestBaiduTranscriptionParams,
   fetchImpl: FetchLike = fetch,
 ) {
+  const audioBuffer = Buffer.from(params.audioBuffer);
+
   const response = await fetchImpl("http://vop.baidu.com/server_api", {
     method: "POST",
     headers: {
@@ -23,8 +25,8 @@ export async function requestBaiduTranscription(
       cuid: params.cuid,
       token: params.token,
       dev_pid: Number(params.model),
-      speech: params.audioBuffer.toString("base64"),
-      len: params.audioBuffer.byteLength,
+      speech: audioBuffer.toString("base64"),
+      len: audioBuffer.byteLength,
     }),
   });
 

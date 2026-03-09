@@ -33,19 +33,19 @@ type TranscribeRetellingDependencies = {
     token: string;
     cuid: string;
     model: string;
-    audioBuffer: Buffer;
+    audioBuffer: Uint8Array;
   }) => Promise<string>;
   writeTempFile?: (params: {
-    audioBuffer: Buffer;
+    audioBuffer: Uint8Array;
     extension: string;
   }) => Promise<TempFileHandle>;
   createTempPath?: (extension: string) => string;
-  readFile?: (path: string) => Promise<Buffer>;
+  readFile?: (path: string) => Promise<Uint8Array>;
   removeFile?: (path: string) => Promise<void>;
 };
 
 type TranscribeRetellingParams = {
-  audioBuffer: Buffer;
+  audioBuffer: Uint8Array;
   mimeType: string;
   env?: TranscriptionEnv;
   dependencies?: TranscribeRetellingDependencies;
@@ -65,7 +65,7 @@ async function writeTempAudioFile({
   audioBuffer,
   extension,
 }: {
-  audioBuffer: Buffer;
+  audioBuffer: Uint8Array;
   extension: string;
 }): Promise<TempFileHandle> {
   const path = createTempPath(extension);
