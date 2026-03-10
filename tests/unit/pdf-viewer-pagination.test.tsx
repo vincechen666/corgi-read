@@ -10,7 +10,6 @@ test("renders every page in the document for continuous scrolling", () => {
     <PdfViewer
       file="/sample/the-last-question.pdf"
       onLoadSuccess={handleLoadSuccess}
-      pageNumber={1}
       scale={1.15}
     />,
   );

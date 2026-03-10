@@ -13,7 +13,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 type PdfViewerProps = {
   file: string;
-  pageNumber: number;
   scale: number;
   onLoadSuccess: (numPages: number) => void;
 };
@@ -42,13 +41,18 @@ export function PdfViewer({
     >
       <div className="space-y-6">
         {pages.map((page) => (
-          <Page
+          <div
             key={page}
-            pageNumber={page}
-            renderAnnotationLayer={false}
-            renderTextLayer
-            scale={scale}
-          />
+            data-pdf-page-number={page}
+            data-testid="mock-pdf-page-wrapper"
+          >
+            <Page
+              pageNumber={page}
+              renderAnnotationLayer={false}
+              renderTextLayer
+              scale={scale}
+            />
+          </div>
         ))}
       </div>
     </Document>
