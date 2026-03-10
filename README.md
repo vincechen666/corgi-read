@@ -1,64 +1,79 @@
 # Corgi Read
 
-Desktop-first English PDF reader for reading practice and spoken retelling. The current MVP follows the design spec and Pencil prototype already stored in this repo:
+Corgi Read is a desktop-first English PDF reader for reading practice and spoken retelling. It combines continuous PDF reading, selection-based translation, voice retelling, speech-to-text, and AI feedback in one workspace.
 
-- design: `docs/plans/2026-03-08-english-pdf-reader-design.md`
-- implementation plan: `docs/plans/2026-03-09-english-pdf-reader-implementation.md`
-- prototype: `designs/english-pdf-reader-prototype.pen`
+## Features
 
-## What Works
+- Local upload for a single PDF file in the current browser session
+- Continuous PDF reading with an internally scrollable reader pane
+- Selection-based translation popover for words and short phrases
+- Siri-style recording button for spoken retelling
+- Baidu speech recognition for English retelling transcripts
+- OpenRouter-based analysis for correction, grammar notes, native phrasing, and coach feedback
+- Persistent right sidebar for recordings, saved translations, and expression snippets
 
-- sample PDF rendered with `react-pdf`
-- selection-driven translation popover with mock translation data
-- Siri-style recording button with idle, recording, processing, and error states
-- `/api/transcribe` can now run in `mock` or `real` mode
-- `/api/analysis` can now run in `mock` or `real` mode
-- analysis modal with corrected retelling, grammar note, native expression, and coach feedback
-- persistent right sidebar for recordings, favorites, and expression library
-- retry path when transcription or analysis fails
+## Quick Start
 
-## Development
-
-Install dependencies and start the app:
+Install dependencies:
 
 ```bash
 npm install
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Testing
+If you want real Baidu transcription, install `ffmpeg` on the machine that runs the Next.js server:
 
 ```bash
-npm test
-npm run lint
-npm run test:e2e -- tests/e2e/reader.spec.ts
+ffmpeg -version
 ```
 
-Playwright starts its own local Next.js server through `playwright.config.ts`.
+## Project Status
 
-## Mock AI Mode
+Current MVP supports:
 
-The MVP is still mock-first. Both transcription and analysis can run in mock mode without any provider key:
+- desktop-first reading layout
+- local PDF upload and in-page replacement
+- full-document vertical scrolling in the reader pane
+- translation popover on text selection
+- recording, transcription, and AI analysis flow
+- retry states for failed transcription and analysis
 
-- `POST /api/transcribe`
-- `POST /api/analysis`
+Current scope does not include:
 
-Default behavior:
+- mobile-first interaction design
+- multi-file library management
+- persisted local PDFs after refresh
+- pronunciation scoring
+- long-form asynchronous transcription jobs
 
-- `TRANSCRIPTION_MODE=mock` forces mock transcription
-- `TRANSCRIPTION_MODE=real` forces Baidu transcription
-- if `TRANSCRIPTION_MODE` is unset, the app uses `real` only when both `BAIDU_SPEECH_API_KEY` and `BAIDU_SPEECH_SECRET_KEY` exist
-- `AI_MODE=mock` forces mock analysis
-- `AI_MODE=real` forces OpenRouter analysis
-- if `AI_MODE` is unset, the app uses `real` only when `OPENROUTER_API_KEY` exists
+## Environment Setup
 
-The UI stays functional without provider keys. In real mode, the reader shell shows `转写失败，可重试` or `分析失败，可重试` instead of silently fabricating a fallback.
+Copy the variables you need into `.env.local`. Never commit real secrets.
 
-## Real Baidu Transcription Mode
+Minimal mock-first setup:
 
-Put real secrets only in `.env.local`, never in tracked files:
+```env
+AI_MODE=mock
+TRANSCRIPTION_MODE=mock
+```
+
+Real OpenRouter analysis:
+
+```env
+AI_MODE=real
+OPENROUTER_API_KEY=your-openrouter-key
+OPENROUTER_MODEL=stepfun/step-3.5-flash
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+```
+
+Real Baidu transcription:
 
 ```env
 TRANSCRIPTION_MODE=real
@@ -68,72 +83,48 @@ BAIDU_SPEECH_SECRET_KEY=your-baidu-secret-key
 BAIDU_SPEECH_MODEL=1737
 ```
 
-This real-mode integration targets Baidu short-audio standard recognition with the English model `dev_pid=1737`.
-
-Operational notes:
-
-- install `ffmpeg` on the machine running the Next.js server
-- keep retellings under 60 seconds
-- the Baidu English model returns no punctuation, so the app applies a light transcript normalizer before analysis
-
-## Real OpenRouter Mode
-
-Put real secrets only in `.env.local`, never in tracked files:
+Combined real setup:
 
 ```env
 AI_MODE=real
-OPENROUTER_API_KEY=your-secret-key
+OPENROUTER_API_KEY=your-openrouter-key
 OPENROUTER_MODEL=stepfun/step-3.5-flash
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+
+TRANSCRIPTION_MODE=real
+TRANSCRIPTION_PROVIDER=baidu
+BAIDU_SPEECH_API_KEY=your-baidu-api-key
+BAIDU_SPEECH_SECRET_KEY=your-baidu-secret-key
+BAIDU_SPEECH_MODEL=1737
 ```
 
-The current real-mode integration targets OpenRouter with `StepFun: Step 3.5 Flash`.
+Notes:
 
-## Environment Variables
+- `BAIDU_SPEECH_MODEL=1737` is the current English short-audio model
+- Baidu short-audio recognition is intended for short retellings, not long recordings
+- the English Baidu model returns text without punctuation, so the app applies light normalization before analysis
+- translation and analysis fall back gracefully when provider latency is too high or a request fails
 
-- `AI_MODE`
-- `OPENROUTER_API_KEY`
-- `OPENROUTER_MODEL`
-- `OPENROUTER_BASE_URL`
-- `TRANSCRIPTION_MODE`
-- `TRANSCRIPTION_PROVIDER`
-- `BAIDU_SPEECH_API_KEY`
-- `BAIDU_SPEECH_SECRET_KEY`
-- `BAIDU_SPEECH_MODEL`
-- `TRANSCRIPTION_MODEL`
-- `ANALYSIS_MODEL`
+See [`.env.example`](/Users/cyc/Documents/Code/corgi-read/.env.example) for the tracked template.
 
-`TRANSCRIPTION_MODEL` and `ANALYSIS_MODEL` remain compatibility placeholders. Real transcription now uses the Baidu variables, and real analysis uses the OpenRouter variables.
-
-## Running Modes
-
-Mock mode:
+## Scripts
 
 ```bash
 npm run dev
+npm run build
+npm run start
+npm run lint
+npm test
+npm run test:e2e
 ```
 
-Real Baidu transcription + real OpenRouter analysis:
+To run the current end-to-end reader flow only:
 
 ```bash
-TRANSCRIPTION_MODE=real AI_MODE=real npm run dev
+npm run test:e2e -- tests/e2e/reader.spec.ts
 ```
 
-Real OpenRouter mode:
-
-```bash
-AI_MODE=real npm run dev
-```
-
-## Secret Handling
-
-- keep provider keys in `.env.local`
-- never expose provider keys via `NEXT_PUBLIC_` variables
-- never paste real keys into tracked docs or source files
-- install `ffmpeg` before enabling real Baidu transcription
-- if a key was previously exposed outside secret storage, rotate it before production use
-
-## Stack
+## Tech Stack
 
 - Next.js App Router
 - React 19
@@ -143,3 +134,16 @@ AI_MODE=real npm run dev
 - Zod
 - Vitest
 - Playwright
+
+## Project Docs
+
+- Design spec: [2026-03-08-english-pdf-reader-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-08-english-pdf-reader-design.md)
+- Implementation plan: [2026-03-09-english-pdf-reader-implementation.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-english-pdf-reader-implementation.md)
+- Upload flow design: [2026-03-09-pdf-upload-entry-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-pdf-upload-entry-design.md)
+- OpenRouter analysis design: [2026-03-09-openrouter-analysis-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-openrouter-analysis-design.md)
+- Baidu transcription design: [2026-03-09-baidu-transcription-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-baidu-transcription-design.md)
+- Pencil prototype: [english-pdf-reader-prototype.pen](/Users/cyc/Documents/Code/corgi-read/designs/english-pdf-reader-prototype.pen)
+
+## License
+
+This project is licensed under the GNU General Public License v3.0. See [LICENSE](/Users/cyc/Documents/Code/corgi-read/LICENSE).
