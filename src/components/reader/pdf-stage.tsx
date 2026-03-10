@@ -150,29 +150,31 @@ export function PdfStage({
   }
 
   return (
-    <Card className="relative min-h-[760px] flex-1 p-9">
-      <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
-        READING WORKSPACE
-      </p>
-      <h2 className="mt-4 font-serif text-4xl font-medium text-[#1a1a1a]">
-        Read in English. Ask for Chinese only when needed.
-      </h2>
-
+    <Card
+      className="relative flex h-full min-h-0 flex-1 overflow-hidden p-0"
+      data-testid="pdf-stage-card"
+    >
       <Card
-        className="relative mt-10 min-h-[670px] w-full bg-[#fffdf9] px-8 py-10 shadow-[0_6px_16px_rgba(0,0,0,0.04)]"
-        ref={selectionRootRef}
-        onMouseUp={handleMouseUp}
+        className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#fffdf9] shadow-[0_6px_16px_rgba(0,0,0,0.04)]"
       >
-        <PdfToolbar currentPage={1} totalPages={totalPages} zoomLabel={zoomLabel} />
+        <div className="shrink-0 px-8 pb-5 pt-8">
+          <PdfToolbar currentPage={1} totalPages={totalPages} zoomLabel={zoomLabel} />
 
-        {status === "ready" && error ? (
-          <div className="mb-6 rounded-[18px] border border-[#f0d4c7] bg-[#fff8f4] px-5 py-4 text-sm text-[#7a4530]">
-            {error}
-          </div>
-        ) : null}
+          {status === "ready" && error ? (
+            <div className="mt-5 rounded-[18px] border border-[#f0d4c7] bg-[#fff8f4] px-5 py-4 text-sm text-[#7a4530]">
+              {error}
+            </div>
+          ) : null}
+        </div>
 
-        {status === "empty" ? (
-          <div className="flex min-h-[520px] flex-col items-center justify-center rounded-[20px] border border-dashed border-[#dfd2c3] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+        <div
+          className="relative min-h-0 flex-1 overflow-auto px-8 pb-8"
+          data-testid="pdf-stage-viewer"
+          onMouseUp={handleMouseUp}
+          ref={selectionRootRef}
+        >
+          {status === "empty" ? (
+            <div className="flex min-h-full flex-col items-center justify-center rounded-[20px] border border-dashed border-[#dfd2c3] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
               EMPTY READER VIEW
             </p>
@@ -182,9 +184,9 @@ export function PdfStage({
             <p className="mt-4 max-w-[520px] text-sm leading-7 text-[#6a625a]">
               点击右上角文档位，打开菜单后上传单个 PDF，在当前阅读页直接开始精读。
             </p>
-          </div>
-        ) : status === "loading" ? (
-          <div className="flex min-h-[520px] flex-col items-center justify-center rounded-[20px] border border-[#e7ded4] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            </div>
+          ) : status === "loading" ? (
+            <div className="flex min-h-full flex-col items-center justify-center rounded-[20px] border border-[#e7ded4] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
               LOADING PDF
             </p>
@@ -194,9 +196,9 @@ export function PdfStage({
             <p className="mt-4 text-sm leading-7 text-[#6a625a]">
               Loading PDF…
             </p>
-          </div>
-        ) : status === "error" ? (
-          <div className="flex min-h-[520px] flex-col items-center justify-center rounded-[20px] border border-[#f0d4c7] bg-[#fff8f4] px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            </div>
+          ) : status === "error" ? (
+            <div className="flex min-h-full flex-col items-center justify-center rounded-[20px] border border-[#f0d4c7] bg-[#fff8f4] px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#b26b4f]">
               PDF ERROR
             </p>
@@ -206,25 +208,26 @@ export function PdfStage({
             <p className="mt-4 text-sm leading-7 text-[#7a4530]">
               {error}
             </p>
-          </div>
-        ) : (
-          <div className="overflow-auto rounded-[20px] border border-[#e7ded4] bg-white px-6 py-8 shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            </div>
+          ) : (
+            <div className="min-h-full rounded-[20px] border border-[#e7ded4] bg-white px-6 py-8 shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
             <ResolvedPdfViewer
               file={source ?? ""}
               onLoadSuccess={setTotalPages}
               pageNumber={1}
               scale={zoom}
             />
-          </div>
-        )}
+            </div>
+          )}
 
-        {status === "ready" && selection ? (
-          <TranslationPopover
-            result={selection.result}
-            x={selection.x}
-            y={selection.y}
-          />
-        ) : null}
+          {status === "ready" && selection ? (
+            <TranslationPopover
+              result={selection.result}
+              x={selection.x}
+              y={selection.y}
+            />
+          ) : null}
+        </div>
       </Card>
     </Card>
   );

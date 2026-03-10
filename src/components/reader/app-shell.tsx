@@ -245,8 +245,11 @@ export function AppShell() {
   );
 
   return (
-    <main className="min-h-screen bg-[#f7f3ee] px-6 py-6 text-[#1a1a1a]">
-      <div className="mx-auto max-w-[1500px]">
+    <main
+      className="h-screen overflow-hidden bg-[#f7f3ee] px-6 py-6 text-[#1a1a1a]"
+      data-testid="app-shell"
+    >
+      <div className="mx-auto flex h-full max-w-[1500px] flex-col">
         <h1 className="sr-only">English PDF Reader</h1>
         <TopBar
           documentLabel={documentName}
@@ -263,7 +266,10 @@ export function AppShell() {
           type="file"
         />
 
-        <div className="relative mt-4 flex gap-5">
+        <div
+          className="relative mt-4 flex min-h-0 flex-1 gap-5"
+          data-testid="workspace-shell"
+        >
           <PdfStage
             documentName={documentName}
             error={pdfStageState.error}
@@ -277,33 +283,37 @@ export function AppShell() {
           />
         </div>
 
-        {transcriptionError ? (
-          <div className="mt-5 flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530]">
-            <p>{transcriptionError}</p>
-            <button
-              className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
-              onClick={() => {
-                void handleRetryTranscription();
-              }}
-              type="button"
-            >
-              重新转写
-            </button>
-          </div>
-        ) : null}
+        {transcriptionError || analysisError ? (
+          <div className="pointer-events-none absolute left-1/2 top-[108px] z-20 flex w-full max-w-[720px] -translate-x-1/2 flex-col gap-3 px-4">
+            {transcriptionError ? (
+              <div className="pointer-events-auto flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530] shadow-[0_12px_24px_rgba(0,0,0,0.08)]">
+                <p>{transcriptionError}</p>
+                <button
+                  className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
+                  onClick={() => {
+                    void handleRetryTranscription();
+                  }}
+                  type="button"
+                >
+                  重新转写
+                </button>
+              </div>
+            ) : null}
 
-        {analysisError ? (
-          <div className="mt-5 flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530]">
-            <p>{analysisError}</p>
-            <button
-              className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
-              onClick={() => {
-                void handleRetryAnalysis();
-              }}
-              type="button"
-            >
-              重新分析
-            </button>
+            {analysisError ? (
+              <div className="pointer-events-auto flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530] shadow-[0_12px_24px_rgba(0,0,0,0.08)]">
+                <p>{analysisError}</p>
+                <button
+                  className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
+                  onClick={() => {
+                    void handleRetryAnalysis();
+                  }}
+                  type="button"
+                >
+                  重新分析
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>

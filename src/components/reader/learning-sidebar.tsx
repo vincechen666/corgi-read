@@ -20,7 +20,10 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
   const expressions = useSidebarStore((state) => state.expressions);
 
   return (
-    <Card className="w-[372px] p-7">
+    <Card
+      className="flex h-full min-h-0 w-[372px] flex-col p-7"
+      data-testid="learning-sidebar"
+    >
       <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
         LEARNING SIDEBAR
       </p>
@@ -53,7 +56,11 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
         })}
       </div>
 
-      <div className="mt-7 space-y-7">
+      <div
+        className="mt-7 min-h-0 flex-1 overflow-y-auto pr-2"
+        data-testid="learning-sidebar-scroll"
+      >
+        <div className="space-y-7">
         {activeTab === "录音" ? (
           <section>
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
@@ -134,6 +141,7 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
             ))}
           </section>
         ) : null}
+        </div>
       </div>
     </Card>
   );

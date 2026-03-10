@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import type { DocumentCallback } from "react-pdf/dist/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -19,11 +20,17 @@ type PdfViewerProps = {
 
 export function PdfViewer({
   file,
-  pageNumber,
   scale,
   onLoadSuccess,
 }: PdfViewerProps) {
+  const [pageCount, setPageCount] = useState(0);
+  const pages = useMemo(
+    () => Array.from({ length: pageCount }, (_, index) => index + 1),
+    [pageCount],
+  );
+
   function handleLoadSuccess(document: DocumentCallback) {
+    setPageCount(document.numPages);
     onLoadSuccess(document.numPages);
   }
 
@@ -33,12 +40,17 @@ export function PdfViewer({
       loading={<p className="text-sm text-[#8a8178]">Loading sample PDF…</p>}
       onLoadSuccess={handleLoadSuccess}
     >
-      <Page
-        pageNumber={pageNumber}
-        renderAnnotationLayer={false}
-        renderTextLayer
-        scale={scale}
-      />
+      <div className="space-y-6">
+        {pages.map((page) => (
+          <Page
+            key={page}
+            pageNumber={page}
+            renderAnnotationLayer={false}
+            renderTextLayer
+            scale={scale}
+          />
+        ))}
+      </div>
     </Document>
   );
 }

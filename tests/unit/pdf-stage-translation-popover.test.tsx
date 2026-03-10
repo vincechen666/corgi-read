@@ -47,9 +47,9 @@ test("shows the translation popover after selecting text in the reader", async (
   });
   mockSelection("faithful attendants");
 
-  const { container } = render(<PdfStage status="ready" />);
+  render(<PdfStage status="ready" />);
 
-  fireEvent.mouseUp(container.querySelector("section section")!);
+  fireEvent.mouseUp(screen.getByTestId("pdf-stage-viewer"));
 
   expect((await screen.findAllByText(/划词翻译/i)).at(-1)).toBeInTheDocument();
   expect(screen.getByText(/忠实看护者/i)).toBeInTheDocument();
@@ -63,9 +63,9 @@ test("hides the translation popover when clicking outside the popover", async ()
   });
   mockSelection("faithful attendants");
 
-  const { container } = render(<PdfStage status="ready" />);
+  render(<PdfStage status="ready" />);
 
-  fireEvent.mouseUp(container.querySelector("section section")!);
+  fireEvent.mouseUp(screen.getByTestId("pdf-stage-viewer"));
   expect((await screen.findAllByText(/划词翻译/i)).at(-1)).toBeInTheDocument();
 
   fireEvent.click(document.body);
