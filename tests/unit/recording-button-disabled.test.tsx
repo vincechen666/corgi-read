@@ -9,4 +9,5 @@ test("disables recording interaction when no document is open", () => {
   expect(
     screen.getByRole("button", { name: /start retelling/i }),
   ).toBeDisabled();
+  expect(screen.getByTestId("recording-button-icon")).toBeInTheDocument();
 });

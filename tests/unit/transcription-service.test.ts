@@ -1,6 +1,9 @@
 import { expect, test, vi } from "vitest";
 
-import { transcribeRetelling } from "@/features/transcription/server/transcription-service";
+import {
+  getAudioFileExtension,
+  transcribeRetelling,
+} from "@/features/transcription/server/transcription-service";
 
 test("returns mock metadata in mock mode", async () => {
   const response = await transcribeRetelling({
@@ -38,4 +41,11 @@ test("normalizes provider transcript in real mode", async () => {
   });
 
   expect(response.result.transcript).toBe("People knew multivac well.");
+});
+
+test("maps supported browser audio mime types to stable file extensions", () => {
+  expect(getAudioFileExtension("audio/webm;codecs=opus")).toBe(".webm");
+  expect(getAudioFileExtension("audio/mp4")).toBe(".m4a");
+  expect(getAudioFileExtension("audio/ogg;codecs=opus")).toBe(".ogg");
+  expect(getAudioFileExtension("audio/wav")).toBe(".wav");
 });

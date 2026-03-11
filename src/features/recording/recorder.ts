@@ -38,6 +38,26 @@ type UseRecorderOptions = {
   onStop?: (audioBlob: Blob | null) => Promise<void> | void;
 };
 
+const preferredRecordingMimeTypes = [
+  "audio/webm;codecs=opus",
+  "audio/webm",
+  "audio/mp4",
+  "audio/ogg;codecs=opus",
+  "audio/ogg",
+];
+
+export function resolveRecordingMimeType(
+  mediaRecorderCtor: typeof MediaRecorder,
+) {
+  for (const mimeType of preferredRecordingMimeTypes) {
+    if (mediaRecorderCtor.isTypeSupported(mimeType)) {
+      return mimeType;
+    }
+  }
+
+  return "";
+}
+
 export function useRecorder(options: UseRecorderOptions = {}) {
   const [state, setState] = useState<RecordingStatus>("idle");
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -72,7 +92,10 @@ export function useRecorder(options: UseRecorderOptions = {}) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      const recorder = new MediaRecorder(stream);
+      const mimeType = resolveRecordingMimeType(MediaRecorder);
+      const recorder = mimeType
+        ? new MediaRecorder(stream, { mimeType })
+        : new MediaRecorder(stream);
       chunksRef.current = [];
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
@@ -95,7 +118,12 @@ export function useRecorder(options: UseRecorderOptions = {}) {
           recorder.onstop = () => {
             const audioBlob =
               chunksRef.current.length > 0
-                ? new Blob(chunksRef.current, { type: "audio/webm" })
+                ? new Blob(chunksRef.current, {
+                    type:
+                      recorder.mimeType ||
+                      chunksRef.current[0]?.type ||
+                      "audio/webm",
+                  })
                 : null;
             resolve(audioBlob);
           };

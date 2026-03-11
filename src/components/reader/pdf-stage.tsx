@@ -38,7 +38,7 @@ function StaticPdfViewer({
   }, [onLoadSuccess]);
 
   return (
-    <div className="rounded-[18px] border border-[#e7ded4] bg-[#fcfbf8] p-8 text-[#514942]">
+    <div className="border border-[#e7ded4] bg-[#fcfbf8] p-6 text-[#514942]">
       <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
         STATIC PDF PREVIEW
       </p>
@@ -82,6 +82,10 @@ export function PdfStage({
   source = "/sample/the-last-question.pdf",
   error = null,
 }: PdfStageProps) {
+  const defaultZoom = 1.15;
+  const minZoom = 0.8;
+  const maxZoom = 1.6;
+  const zoomStep = 0.1;
   const selectionRootRef = useRef<HTMLDivElement | null>(null);
   const ignoreDocumentClickRef = useRef(false);
   const clickResetTimerRef = useRef<number | null>(null);
@@ -89,8 +93,7 @@ export function PdfStage({
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [selection, setSelection] = useState<SelectionState | null>(null);
-
-  const zoom = 1.15;
+  const [zoom, setZoom] = useState(defaultZoom);
 
   function handleDocumentLoadSuccess(numPages: number) {
     setTotalPages(numPages);
@@ -100,6 +103,14 @@ export function PdfStage({
   function clearSelection() {
     translationRequestRef.current += 1;
     setSelection(null);
+  }
+
+  function handleZoomOut() {
+    setZoom((value) => Math.max(minZoom, Number((value - zoomStep).toFixed(2))));
+  }
+
+  function handleZoomIn() {
+    setZoom((value) => Math.min(maxZoom, Number((value + zoomStep).toFixed(2))));
   }
 
   useEffect(() => {
@@ -142,6 +153,10 @@ export function PdfStage({
     let frameId: number | null = null;
 
     function updateCurrentPage() {
+      if (!root) {
+        return;
+      }
+
       const rootRect = root.getBoundingClientRect();
       const pageNodes = Array.from(
         root.querySelectorAll<HTMLElement>("[data-pdf-page-number]"),
@@ -290,58 +305,58 @@ export function PdfStage({
       data-testid="pdf-stage-card"
     >
       <Card
-        className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#fffdf9] shadow-[0_6px_16px_rgba(0,0,0,0.04)]"
+        className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#fffdf9] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
       >
         <div
-          className="relative min-h-0 flex-1 overflow-auto px-8 py-8"
+          className="relative min-h-0 flex-1 overflow-auto px-3 py-3"
           data-testid="pdf-stage-viewer"
           onMouseUp={handleMouseUp}
           ref={selectionRootRef}
         >
           {status === "ready" && error ? (
-            <div className="mb-5 rounded-[18px] border border-[#f0d4c7] bg-[#fff8f4] px-5 py-4 text-sm text-[#7a4530]">
+            <div className="mb-3 border border-[#f0d4c7] bg-[#fff8f4] px-4 py-3 text-sm text-[#7a4530]">
               {error}
             </div>
           ) : null}
 
           {status === "empty" ? (
-            <div className="flex min-h-full flex-col items-center justify-center rounded-[20px] border border-dashed border-[#dfd2c3] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            <div className="flex min-h-full flex-col items-center justify-center border border-dashed border-[#dfd2c3] bg-white px-8 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
               <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
                 EMPTY READER VIEW
               </p>
-              <h3 className="mt-5 font-serif text-[34px] font-medium text-[#1a1a1a]">
+              <h3 className="mt-4 font-serif text-[34px] font-medium text-[#1a1a1a]">
                 Upload a PDF to start reading
               </h3>
-              <p className="mt-4 max-w-[520px] text-sm leading-7 text-[#6a625a]">
+              <p className="mt-3 max-w-[520px] text-sm leading-7 text-[#6a625a]">
                 点击右上角文档位，打开菜单后上传单个 PDF，在当前阅读页直接开始精读。
               </p>
             </div>
           ) : status === "loading" ? (
-            <div className="flex min-h-full flex-col items-center justify-center rounded-[20px] border border-[#e7ded4] bg-white px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            <div className="flex min-h-full flex-col items-center justify-center border border-[#e7ded4] bg-white px-8 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
               <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
                 LOADING PDF
               </p>
-              <h3 className="mt-5 font-serif text-[28px] font-medium text-[#1a1a1a]">
+              <h3 className="mt-4 font-serif text-[28px] font-medium text-[#1a1a1a]">
                 {documentName}
               </h3>
-              <p className="mt-4 text-sm leading-7 text-[#6a625a]">
+              <p className="mt-3 text-sm leading-7 text-[#6a625a]">
                 Loading PDF…
               </p>
             </div>
           ) : status === "error" ? (
-            <div className="flex min-h-full flex-col items-center justify-center rounded-[20px] border border-[#f0d4c7] bg-[#fff8f4] px-10 text-center shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            <div className="flex min-h-full flex-col items-center justify-center border border-[#f0d4c7] bg-[#fff8f4] px-8 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
               <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#b26b4f]">
                 PDF ERROR
               </p>
-              <h3 className="mt-5 font-serif text-[28px] font-medium text-[#1a1a1a]">
+              <h3 className="mt-4 font-serif text-[28px] font-medium text-[#1a1a1a]">
                 {documentName}
               </h3>
-              <p className="mt-4 text-sm leading-7 text-[#7a4530]">
+              <p className="mt-3 text-sm leading-7 text-[#7a4530]">
                 {error}
               </p>
             </div>
           ) : (
-            <div className="min-h-full rounded-[20px] border border-[#e7ded4] bg-white px-6 py-8 shadow-[0_6px_16px_rgba(0,0,0,0.04)]">
+            <div className="min-h-full border border-[#e7ded4] bg-white px-3 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
               <ResolvedPdfViewer
                 file={source ?? ""}
                 onLoadSuccess={handleDocumentLoadSuccess}
@@ -360,7 +375,31 @@ export function PdfStage({
         </div>
 
         {status === "ready" ? (
-          <div className="pointer-events-none absolute bottom-6 right-6 rounded-full bg-[rgba(255,255,255,0.92)] px-4 py-2 font-mono text-xs text-[#6f675f] shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
+          <div className="absolute right-3 top-3 z-10 flex items-center border border-[#e7ded4] bg-[rgba(255,255,255,0.92)] shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
+            <button
+              aria-label="Zoom out"
+              className="h-8 w-8 border-r border-[#e7ded4] text-[15px] text-[#6f675f]"
+              onClick={handleZoomOut}
+              type="button"
+            >
+              -
+            </button>
+            <div className="px-3 font-mono text-[11px] text-[#6f675f]">
+              {Math.round(zoom * 100)}%
+            </div>
+            <button
+              aria-label="Zoom in"
+              className="h-8 w-8 border-l border-[#e7ded4] text-[15px] text-[#6f675f]"
+              onClick={handleZoomIn}
+              type="button"
+            >
+              +
+            </button>
+          </div>
+        ) : null}
+
+        {status === "ready" ? (
+          <div className="pointer-events-none absolute bottom-3 right-3 border border-[#e7ded4] bg-[rgba(255,255,255,0.92)] px-3 py-2 font-mono text-[11px] text-[#6f675f] shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
             Page {currentPage} / {totalPages}
           </div>
         ) : null}

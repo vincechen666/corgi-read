@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo } from "react";
 
 import { useRecorder } from "@/features/recording/recorder";
@@ -43,7 +44,7 @@ export function RecordingButton({
     <button
       type="button"
       aria-label={buttonLabel}
-      className="absolute bottom-8 left-1/2 z-10 h-24 w-24 -translate-x-1/2 rounded-full bg-transparent disabled:cursor-wait"
+      className="absolute bottom-3 left-1/2 z-10 h-20 w-20 -translate-x-1/2 rounded-full bg-transparent disabled:cursor-wait"
       disabled={disabled || state === "processing"}
       onClick={() => {
         if (disabled) {
@@ -64,19 +65,21 @@ export function RecordingButton({
       />
       <span
         className={[
-          "absolute inset-[10px] rounded-full border border-[#f2d1c3] bg-[#fff4ec] shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition",
+          "absolute inset-[8px] rounded-full border border-[#e7ded4] bg-[#fff4ec] shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition",
           disabled ? "border-[#e5ddd4] bg-[#f4efe9]" : "",
           state === "processing" ? "scale-95 opacity-85" : "",
         ].join(" ")}
       />
       <span
         className={[
-          "absolute inset-[22px] rounded-full transition",
+          "absolute inset-[18px] rounded-full transition",
           disabled
-            ? "bg-[#c9beb2]"
+            ? "bg-[#d7cec4]"
             : state === "error"
               ? "bg-[#c25b34]"
-              : "bg-[#e07b54]",
+              : state === "recording"
+                ? "bg-[#d86f48]"
+                : "bg-[#eeded0]",
           state === "recording" ? "scale-105 shadow-[0_0_18px_rgba(224,123,84,0.4)]" : "",
           state === "processing" ? "animate-pulse" : "",
         ].join(" ")}
@@ -84,10 +87,29 @@ export function RecordingButton({
       <span
         className={[
           "absolute inset-0 flex items-center justify-center text-sm font-semibold",
-          disabled ? "text-[#6f675f]" : "text-white",
+          disabled ? "text-[#6f675f]" : state === "recording" ? "text-white" : "text-[#c25b34]",
         ].join(" ")}
       >
-        {state === "recording" ? formatElapsed(elapsedSeconds) : "•"}
+        {state === "recording" ? (
+          formatElapsed(elapsedSeconds)
+        ) : (
+          <Image
+            alt=""
+            aria-hidden="true"
+            className={state === "processing" ? "opacity-70" : ""}
+            data-testid="recording-button-icon"
+            height={22}
+            src="/recorder.svg"
+            style={{
+              filter: disabled
+                ? "brightness(0) saturate(100%) invert(57%) sepia(10%) saturate(294%) hue-rotate(342deg) brightness(93%) contrast(85%)"
+                : state === "error"
+                  ? "brightness(0) saturate(100%) invert(40%) sepia(48%) saturate(1296%) hue-rotate(340deg) brightness(94%) contrast(91%)"
+                  : "brightness(0) saturate(100%) invert(48%) sepia(54%) saturate(977%) hue-rotate(331deg) brightness(95%) contrast(92%)",
+            }}
+            width={22}
+          />
+        )}
       </span>
     </button>
   );

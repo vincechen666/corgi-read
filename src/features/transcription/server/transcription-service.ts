@@ -61,6 +61,36 @@ function createTempPath(extension: string) {
   return join(tmpdir(), `corgi-read-${randomUUID()}${extension}`);
 }
 
+export function getAudioFileExtension(mimeType: string) {
+  const normalized = mimeType.toLowerCase();
+
+  if (normalized.includes("webm")) {
+    return ".webm";
+  }
+
+  if (
+    normalized.includes("mp4") ||
+    normalized.includes("m4a") ||
+    normalized.includes("aac")
+  ) {
+    return ".m4a";
+  }
+
+  if (normalized.includes("ogg") || normalized.includes("opus")) {
+    return ".ogg";
+  }
+
+  if (normalized.includes("wav") || normalized.includes("wave")) {
+    return ".wav";
+  }
+
+  if (normalized.includes("mpeg") || normalized.includes("mp3")) {
+    return ".mp3";
+  }
+
+  return ".audio";
+}
+
 async function writeTempAudioFile({
   audioBuffer,
   extension,
@@ -102,7 +132,11 @@ export async function transcribeRetelling({
     throw new Error("BAIDU_SPEECH_API_KEY and BAIDU_SPEECH_SECRET_KEY are required in real mode");
   }
 
-  const inputExtension = mimeType.includes("webm") ? ".webm" : ".audio";
+  if (audioBuffer.byteLength === 0) {
+    throw new Error("Recorded audio is empty");
+  }
+
+  const inputExtension = getAudioFileExtension(mimeType);
   const writeTempFileImpl = dependencies.writeTempFile ?? writeTempAudioFile;
   const createTempPathImpl = dependencies.createTempPath ?? createTempPath;
   const convertAudio = dependencies.convertAudio ?? convertWebmToWav;

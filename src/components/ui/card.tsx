@@ -14,7 +14,7 @@ export const Card = forwardRef<ElementRef<"section">, CardProps>(
       <section
         ref={ref}
         className={cn(
-          "rounded-[24px] border border-[#e7ded4] bg-[#fffdf9]",
+          "rounded-none border border-[#e7ded4] bg-[#fffdf9]",
           className,
         )}
         {...props}

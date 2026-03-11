@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type TopBarProps = {
   documentLabel?: string;
   menuOpen?: boolean;
@@ -12,47 +14,63 @@ export function TopBar({
   onUploadClick,
 }: TopBarProps) {
   return (
-    <header className="flex items-center justify-between rounded-[18px] border border-[#e7ded4] bg-white px-6 py-4">
-      <div className="flex items-center gap-4">
-        <span className="font-serif text-3xl font-medium text-[#1a1a1a]">
-          corgi read
+    <header className="flex h-[60px] items-center justify-between border border-[#e7ded4] bg-white px-5 py-3">
+      <div className="flex items-center gap-3">
+        <span className="font-serif text-[26px] font-medium text-[#1a1a1a]">
+          CorgiRead
         </span>
         <span className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
           ENGLISH PDF READER
         </span>
       </div>
 
-      <div className="relative flex items-center gap-3 text-sm">
-        <button
-          aria-expanded={menuOpen}
-          aria-haspopup="menu"
-          className="rounded-full border border-[#e7ded4] bg-[#f8f4ee] px-4 py-2 text-[#514942]"
-          onClick={onToggleMenu}
-          type="button"
+      <div className="flex items-center gap-3 text-sm">
+        <div
+          className="relative"
+          data-testid="topbar-file-trigger-wrap"
         >
-          {documentLabel}
-        </button>
-        {menuOpen ? (
-          <div
-            className="absolute right-[182px] top-[48px] z-10 min-w-[160px] rounded-[18px] border border-[#e7ded4] bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]"
-            role="menu"
+          <button
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+            className="h-8 border border-[#e7ded4] bg-[#f8f4ee] px-4 text-[13px] text-[#514942]"
+            onClick={onToggleMenu}
+            type="button"
           >
-            <button
-              className="w-full rounded-[12px] px-4 py-3 text-left text-sm font-semibold text-[#514942] hover:bg-[#f8f4ee]"
-              onClick={onUploadClick}
-              role="menuitem"
-              type="button"
+            {documentLabel}
+          </button>
+          {menuOpen ? (
+            <div
+              className="absolute left-0 top-full z-10 mt-1 min-w-[156px] border border-[#e7ded4] bg-white p-1 shadow-[0_8px_20px_rgba(0,0,0,0.08)]"
+              role="menu"
             >
-              上传 PDF
-            </button>
-          </div>
-        ) : null}
-        <div className="rounded-full bg-[#fff4ec] px-4 py-2 text-[#c25b34]">
+              <button
+                className="w-full px-3 py-2 text-left text-sm font-semibold text-[#514942] hover:bg-[#f8f4ee]"
+                onClick={onUploadClick}
+                role="menuitem"
+                type="button"
+              >
+                上传 PDF
+              </button>
+            </div>
+          ) : null}
+        </div>
+        <div className="flex h-8 items-center border border-[#f1d4c6] bg-[#fff4ec] px-4 text-[13px] text-[#c25b34]">
           沉浸式精读模式
         </div>
-        <div className="rounded-full bg-[#f5f5f5] px-4 py-2 font-mono text-xs text-[#6f675f]">
-          Page 12 / Section 3 / 18 min
-        </div>
+        <button
+          aria-label="User avatar"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e7ded4] bg-[#f8f4ee] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+          data-testid="topbar-avatar-button"
+          type="button"
+        >
+          <Image
+            alt="CorgiRead avatar placeholder"
+            className="rounded-full object-cover"
+            height={28}
+            src="/logo.webp"
+            width={28}
+          />
+        </button>
       </div>
     </header>
   );

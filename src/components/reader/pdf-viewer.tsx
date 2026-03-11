@@ -42,6 +42,7 @@ export function PdfViewer({
       <div className="space-y-6">
         {pages.map((page) => (
           <div
+            className="flex justify-center"
             key={page}
             data-pdf-page-number={page}
             data-testid="mock-pdf-page-wrapper"

@@ -20,3 +20,17 @@ test("renders every page in the document for continuous scrolling", () => {
   expect(screen.getByText("PDF page 2")).toBeInTheDocument();
   expect(screen.getByText("PDF page 3")).toBeInTheDocument();
 });
+
+test("centers each rendered pdf page horizontally", () => {
+  render(
+    <PdfViewer
+      file="/sample/the-last-question.pdf"
+      onLoadSuccess={vi.fn()}
+      scale={1.15}
+    />,
+  );
+
+  const wrappers = screen.getAllByTestId("mock-pdf-page-wrapper");
+  expect(wrappers[0]).toHaveClass("flex");
+  expect(wrappers[0]).toHaveClass("justify-center");
+});

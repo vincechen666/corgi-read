@@ -246,7 +246,7 @@ export function AppShell() {
 
   return (
     <main
-      className="h-screen overflow-hidden bg-[#f7f3ee] px-6 py-6 text-[#1a1a1a]"
+      className="h-screen overflow-hidden bg-[#f7f3ee] px-3 py-3 text-[#1a1a1a]"
       data-testid="app-shell"
     >
       <div className="mx-auto flex h-full max-w-[1500px] flex-col">
@@ -267,7 +267,7 @@ export function AppShell() {
         />
 
         <div
-          className="relative mt-4 flex min-h-0 flex-1 gap-5"
+          className="relative mt-3 flex min-h-0 flex-1 gap-3"
           data-testid="workspace-shell"
         >
           <PdfStage
@@ -284,12 +284,12 @@ export function AppShell() {
         </div>
 
         {transcriptionError || analysisError ? (
-          <div className="pointer-events-none absolute left-1/2 top-[108px] z-20 flex w-full max-w-[720px] -translate-x-1/2 flex-col gap-3 px-4">
+          <div className="pointer-events-none absolute left-1/2 top-[78px] z-20 flex w-full max-w-[680px] -translate-x-1/2 flex-col gap-2 px-2">
             {transcriptionError ? (
-              <div className="pointer-events-auto flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530] shadow-[0_12px_24px_rgba(0,0,0,0.08)]">
+              <div className="pointer-events-auto flex items-center gap-3 border border-[#e7ded4] bg-[#fff7f0] px-4 py-3 text-sm text-[#7a4530] shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
                 <p>{transcriptionError}</p>
                 <button
-                  className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
+                  className="bg-[#e07b54] px-4 py-2 font-semibold text-white"
                   onClick={() => {
                     void handleRetryTranscription();
                   }}
@@ -301,10 +301,10 @@ export function AppShell() {
             ) : null}
 
             {analysisError ? (
-              <div className="pointer-events-auto flex items-center gap-3 rounded-[18px] border border-[#e7ded4] bg-[#fff7f0] px-5 py-4 text-sm text-[#7a4530] shadow-[0_12px_24px_rgba(0,0,0,0.08)]">
+              <div className="pointer-events-auto flex items-center gap-3 border border-[#e7ded4] bg-[#fff7f0] px-4 py-3 text-sm text-[#7a4530] shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
                 <p>{analysisError}</p>
                 <button
-                  className="rounded-full bg-[#e07b54] px-4 py-2 font-semibold text-white"
+                  className="bg-[#e07b54] px-4 py-2 font-semibold text-white"
                   onClick={() => {
                     void handleRetryAnalysis();
                   }}
@@ -326,7 +326,7 @@ export function AppShell() {
       />
 
       {analysisMeta ? (
-        <div className="pointer-events-none fixed bottom-6 right-6 rounded-full bg-[rgba(255,255,255,0.92)] px-4 py-2 text-xs font-mono tracking-[0.14em] text-[#6a625a] shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
+        <div className="pointer-events-none fixed bottom-3 right-3 border border-[#e7ded4] bg-[rgba(255,255,255,0.92)] px-3 py-2 text-[11px] font-mono tracking-[0.14em] text-[#6a625a] shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
           {analysisMeta.provider} / {analysisMeta.mode}
         </div>
       ) : null}

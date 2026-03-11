@@ -21,20 +21,20 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
 
   return (
     <Card
-      className="flex h-full min-h-0 w-[372px] flex-col p-7"
+      className="flex h-full min-h-0 w-[356px] flex-col p-5"
       data-testid="learning-sidebar"
     >
       <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
         LEARNING SIDEBAR
       </p>
-      <h2 className="mt-4 font-serif text-4xl font-medium text-[#1a1a1a]">
+      <h2 className="mt-2 font-serif text-[28px] font-medium text-[#1a1a1a]">
         你的学习沉淀
       </h2>
-      <p className="mt-3 max-w-[316px] text-sm leading-6 text-[#6a625a]">
+      <p className="mt-2 max-w-[300px] text-sm leading-6 text-[#6a625a]">
         录音记录、收藏内容和表达库都沉淀在右侧，阅读区保持专注。
       </p>
 
-      <div className="mt-7 inline-flex rounded-full bg-[#f4f0ea] p-1">
+      <div className="mt-4 inline-flex w-full border border-[#e7ded4] bg-[#f4f0ea] p-1">
         {tabs.map((tab) => {
           const active = tab === activeTab;
 
@@ -43,9 +43,9 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
               key={tab}
               type="button"
               className={[
-                "rounded-full px-6 py-2 text-sm transition",
+                "flex-1 px-0 py-2 text-center text-sm transition",
                 active
-                  ? "bg-white font-semibold text-[#1a1a1a] shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+                  ? "border border-[#e7ded4] bg-white font-semibold text-[#1a1a1a] shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
                   : "font-medium text-[#8a8178]",
               ].join(" ")}
               onClick={() => setActiveTab(tab)}
@@ -57,29 +57,29 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
       </div>
 
       <div
-        className="mt-7 min-h-0 flex-1 overflow-y-auto pr-2"
+        className="mt-4 min-h-0 flex-1 overflow-y-auto pr-1"
         data-testid="learning-sidebar-scroll"
       >
-        <div className="space-y-7">
+        <div className="space-y-4">
         {activeTab === "录音" ? (
           <section>
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
               最新复述
             </p>
             {recordings.map((recording) => (
-              <Card key={recording.id} className="mt-3 bg-[#fcfbf8] p-5">
+              <Card key={recording.id} className="mt-2 bg-[#fcfbf8] p-4 shadow-none">
                 <p className="font-mono text-xs text-[#8a8178]">
                   {recording.createdAt} • Page {recording.page}
                 </p>
-                <h3 className="mt-3 max-w-[280px] font-serif text-[20px] font-medium leading-[1.35] text-[#1a1a1a]">
+                <h3 className="mt-2 max-w-[280px] font-serif text-[19px] font-medium leading-[1.35] text-[#1a1a1a]">
                   {recording.summary}
                 </h3>
-                <p className="mt-3 max-w-[280px] text-sm leading-6 text-[#6a625a]">
+                <p className="mt-2 max-w-[280px] text-sm leading-6 text-[#6a625a]">
                   {recording.feedback}
                 </p>
                 <button
                   type="button"
-                  className="mt-4 rounded-full bg-[#eaf4f1] px-4 py-2 text-sm font-semibold text-[#0d6e6e] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-3 border border-[#cae4dc] bg-[#eaf4f1] px-4 py-2 text-sm font-semibold text-[#0d6e6e] disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!recording.analysis}
                   onClick={() => {
                     if (recording.analysis && onOpenRecording) {
@@ -102,7 +102,7 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
             {favorites.map((favorite) => (
               <Card
                 key={favorite.id}
-                className="mt-3 border-transparent bg-[#fff7f0] p-4"
+                className="mt-2 border-[#f1ddd0] bg-[#fff7f0] p-4 shadow-none"
               >
                 <h3 className="max-w-[284px] font-serif text-[20px] font-medium leading-[1.35] text-[#1a1a1a]">
                   {favorite.sourceText}
@@ -126,7 +126,7 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
             {expressions.map((expression) => (
               <Card
                 key={expression.id}
-                className="mt-3 border-transparent bg-[#f6fbfb] p-4"
+                className="mt-2 border-[#d9ebeb] bg-[#f6fbfb] p-4 shadow-none"
               >
                 <h3 className="max-w-[284px] font-serif text-[19px] font-medium leading-[1.35] text-[#1a1a1a]">
                   {expression.phrase}
