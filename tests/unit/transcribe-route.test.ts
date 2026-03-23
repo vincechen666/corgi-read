@@ -76,4 +76,44 @@ describe("POST /api/transcribe", () => {
 
     process.env.NODE_ENV = originalNodeEnv;
   });
+
+  test("logs server-side transcription details in production without returning them to the client", async () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+
+    transcriptionServiceMocks.transcribeRetelling.mockRejectedValue(
+      new Error("ffmpeg conversion failed: Command failed: ffmpeg"),
+    );
+
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    const formData = new FormData();
+    formData.append(
+      "audio",
+      new File(["audio"], "recording.webm", { type: "audio/webm" }),
+    );
+
+    const response = await POST(
+      new Request("http://localhost/api/transcribe", {
+        method: "POST",
+        body: formData,
+      }),
+    );
+    const json = await response.json();
+
+    expect(response.status).toBe(502);
+    expect(json.error).toBe("Transcription failed, please retry.");
+    expect(json.detail).toBeUndefined();
+    expect(consoleError).toHaveBeenCalledWith(
+      "[transcribe] request failed",
+      expect.objectContaining({
+        message: "ffmpeg conversion failed: Command failed: ffmpeg",
+      }),
+    );
+
+    consoleError.mockRestore();
+    process.env.NODE_ENV = originalNodeEnv;
+  });
 });

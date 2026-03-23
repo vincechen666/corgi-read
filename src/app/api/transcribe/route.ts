@@ -16,6 +16,27 @@ function isUploadFile(
   );
 }
 
+function serializeError(error: unknown) {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      ...(error.cause instanceof Error
+        ? {
+            cause: {
+              name: error.cause.name,
+              message: error.cause.message,
+            },
+          }
+        : {}),
+    };
+  }
+
+  return {
+    message: String(error),
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -35,6 +56,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json(transcriptionRouteResponseSchema.parse(response));
   } catch (error) {
+    console.error("[transcribe] request failed", serializeError(error));
+
     const detail =
       process.env.NODE_ENV !== "production" && error instanceof Error
         ? error.message
