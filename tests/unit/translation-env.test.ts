@@ -24,6 +24,15 @@ describe("resolveTranslationMode", () => {
       }),
     ).toBe("real");
   });
+
+  test("defaults to real when a Google project is configured for ambient ADC runtimes", () => {
+    expect(
+      resolveTranslationMode({
+        TRANSLATION_MODE: undefined,
+        GOOGLE_CLOUD_PROJECT: "demo-project",
+      }),
+    ).toBe("real");
+  });
 });
 
 test("returns google translation config defaults", () => {

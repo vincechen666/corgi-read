@@ -20,7 +20,9 @@ export function resolveTranslationMode(
     return "real";
   }
 
-  return env.GOOGLE_TRANSLATE_ACCESS_TOKEN || env.GOOGLE_APPLICATION_CREDENTIALS
+  return env.GOOGLE_TRANSLATE_ACCESS_TOKEN ||
+    env.GOOGLE_APPLICATION_CREDENTIALS ||
+    env.GOOGLE_CLOUD_PROJECT
     ? "real"
     : "mock";
 }

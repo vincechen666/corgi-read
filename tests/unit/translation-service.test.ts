@@ -82,3 +82,23 @@ test("falls back to a local translation when the provider is too slow", async ()
     translatedText: "中文翻译：stellar cartography",
   });
 });
+
+test("logs provider failures before returning the local fallback", async () => {
+  vi.spyOn(googleAuth, "resolveGoogleAccessToken").mockRejectedValue(
+    new Error("Google ADC did not return an access token"),
+  );
+  const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+  const result = await translateText("stellar cartography", {
+    TRANSLATION_MODE: "real",
+    GOOGLE_CLOUD_PROJECT: "demo-project",
+  });
+
+  expect(result.translatedText).toBe("中文翻译：stellar cartography");
+  expect(consoleError).toHaveBeenCalledWith(
+    "[translate] provider fallback",
+    expect.objectContaining({
+      message: "Google ADC did not return an access token",
+    }),
+  );
+});

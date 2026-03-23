@@ -31,6 +31,27 @@ const dictionary = new Map([
   ],
 ]);
 
+function serializeError(error: unknown) {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      ...(error.cause instanceof Error
+        ? {
+            cause: {
+              name: error.cause.name,
+              message: error.cause.message,
+            },
+          }
+        : {}),
+    };
+  }
+
+  return {
+    message: String(error),
+  };
+}
+
 function buildFallbackTranslation(sourceText: string) {
   const normalized = sourceText.trim();
 
@@ -81,7 +102,10 @@ export async function translateText(
       translatedText,
       note: "当前结果由 Google 翻译生成，可结合上下文继续判断术语和语气。",
     }))
-    .catch(() => fallbackResult);
+    .catch((error) => {
+      console.error("[translate] provider fallback", serializeError(error));
+      return fallbackResult;
+    });
 
   const fallbackTimeout = new Promise<typeof fallbackResult>((resolve) => {
     setTimeout(() => resolve(fallbackResult), 1500);
