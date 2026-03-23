@@ -44,7 +44,7 @@ export function RecordingButton({
     <button
       type="button"
       aria-label={buttonLabel}
-      className="absolute bottom-3 left-1/2 z-10 h-20 w-20 -translate-x-1/2 rounded-full bg-transparent disabled:cursor-wait"
+      className="absolute bottom-3 left-1/2 z-10 h-20 w-20 -translate-x-1/2 rounded-full bg-transparent disabled:cursor-not-allowed"
       disabled={disabled || state === "processing"}
       onClick={() => {
         if (disabled) {

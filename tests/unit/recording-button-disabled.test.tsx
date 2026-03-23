@@ -6,8 +6,10 @@ import { RecordingButton } from "@/components/reader/recording-button";
 test("disables recording interaction when no document is open", () => {
   render(<RecordingButton disabled onStop={async () => {}} />);
 
-  expect(
-    screen.getByRole("button", { name: /start retelling/i }),
-  ).toBeDisabled();
+  const button = screen.getByRole("button", { name: /start retelling/i });
+
+  expect(button).toBeDisabled();
+  expect(button).toHaveClass("disabled:cursor-not-allowed");
+  expect(button).not.toHaveClass("disabled:cursor-wait");
   expect(screen.getByTestId("recording-button-icon")).toBeInTheDocument();
 });
