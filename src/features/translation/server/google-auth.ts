@@ -33,11 +33,12 @@ export async function resolveGoogleAccessToken(
     return env.GOOGLE_TRANSLATE_ACCESS_TOKEN;
   }
 
-  if (env.GOOGLE_APPLICATION_CREDENTIALS) {
-    return getAdcToken(env);
+  try {
+    return await getAdcToken(env);
+  } catch (error) {
+    throw new Error(
+      "Google translation credentials are required in real mode",
+      { cause: error },
+    );
   }
-
-  throw new Error(
-    "Google translation credentials are required in real mode",
-  );
 }

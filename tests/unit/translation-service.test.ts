@@ -1,7 +1,8 @@
 import { afterEach, expect, test, vi } from "vitest";
 
 import { translateText } from "@/features/translation/server/translation-service";
-import * as openRouterTranslationClient from "@/features/translation/server/openrouter-translation-client";
+import * as googleTranslationClient from "@/features/translation/server/google-translation-client";
+import * as googleAuth from "@/features/translation/server/google-auth";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -10,45 +11,68 @@ afterEach(() => {
 
 test("returns the built-in dictionary translation immediately in real mode", async () => {
   const requestSpy = vi.spyOn(
-    openRouterTranslationClient,
-    "requestOpenRouterTranslation",
+    googleTranslationClient,
+    "requestGoogleTranslation",
   );
 
   const result = await translateText("faithful attendants of Multivac", {
-    AI_MODE: "real",
-    OPENROUTER_API_KEY: "test-key",
-    OPENROUTER_MODEL: "test-model",
-    OPENROUTER_BASE_URL: "https://example.com/api/v1",
+    TRANSLATION_MODE: "real",
+    GOOGLE_TRANSLATE_ACCESS_TOKEN: "test-token",
+    GOOGLE_CLOUD_PROJECT: "demo-project",
   });
 
   expect(result.translatedText).toBe("Multivac 的忠实看护者");
   expect(requestSpy).not.toHaveBeenCalled();
 });
 
+test("uses Google translation in real mode for non-dictionary text", async () => {
+  vi.spyOn(googleAuth, "resolveGoogleAccessToken").mockResolvedValue("token");
+  const requestSpy = vi
+    .spyOn(googleTranslationClient, "requestGoogleTranslation")
+    .mockResolvedValue("恒星制图");
+
+  const result = await translateText("stellar cartography", {
+    TRANSLATION_MODE: "real",
+    GOOGLE_TRANSLATE_ACCESS_TOKEN: "token",
+    GOOGLE_CLOUD_PROJECT: "demo-project",
+  });
+
+  expect(requestSpy).toHaveBeenCalledWith(
+    {
+      accessToken: "token",
+      projectId: "demo-project",
+      location: "global",
+    },
+    "stellar cartography",
+  );
+  expect(result).toMatchObject({
+    sourceText: "stellar cartography",
+    translatedText: "恒星制图",
+  });
+  expect(result.note).toMatch(/Google/);
+});
+
 test("falls back to a local translation when the provider is too slow", async () => {
   vi.useFakeTimers();
 
+  vi.spyOn(googleAuth, "resolveGoogleAccessToken").mockResolvedValue("token");
+
   vi.spyOn(
-    openRouterTranslationClient,
-    "requestOpenRouterTranslation",
+    googleTranslationClient,
+    "requestGoogleTranslation",
   ).mockImplementation(
     () =>
       new Promise((resolve) => {
         setTimeout(() => {
-          resolve({
-            sourceText: "stellar cartography",
-            translatedText: "恒星制图",
-            note: "真实 provider 结果。",
-          });
+          resolve("恒星制图");
         }, 10_000);
       }),
   );
 
   const resultPromise = translateText("stellar cartography", {
-    AI_MODE: "real",
-    OPENROUTER_API_KEY: "test-key",
-    OPENROUTER_MODEL: "test-model",
-    OPENROUTER_BASE_URL: "https://example.com/api/v1",
+    TRANSLATION_MODE: "real",
+    GOOGLE_TRANSLATE_ACCESS_TOKEN: "token",
+    GOOGLE_CLOUD_PROJECT: "demo-project",
   });
 
   await vi.advanceTimersByTimeAsync(1_500);
