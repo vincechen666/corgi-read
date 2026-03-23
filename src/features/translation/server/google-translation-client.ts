@@ -4,6 +4,8 @@ type GoogleTranslationConfig = {
   location: string;
 };
 
+export type { GoogleTranslationConfig };
+
 type GoogleTranslationResponse = {
   translations?: Array<{
     translatedText?: string;
