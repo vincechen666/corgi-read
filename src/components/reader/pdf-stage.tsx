@@ -89,7 +89,6 @@ export function PdfStage({
   const selectionRootRef = useRef<HTMLDivElement | null>(null);
   const ignoreDocumentClickRef = useRef(false);
   const clickResetTimerRef = useRef<number | null>(null);
-  const translationRequestRef = useRef(0);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [selection, setSelection] = useState<SelectionState | null>(null);
@@ -101,7 +100,6 @@ export function PdfStage({
   }
 
   function clearSelection() {
-    translationRequestRef.current += 1;
     setSelection(null);
   }
 
@@ -223,9 +221,6 @@ export function PdfStage({
       return;
     }
 
-    const requestId = translationRequestRef.current + 1;
-    translationRequestRef.current = requestId;
-
     await new Promise<void>((resolve) => {
       window.requestAnimationFrame(() => resolve());
     });
@@ -267,10 +262,6 @@ export function PdfStage({
     try {
       const result = await translateSelection(text);
 
-      if (translationRequestRef.current !== requestId) {
-        return;
-      }
-
       setSelection((currentSelection) => {
         if (!currentSelection || currentSelection.text !== text) {
           return currentSelection;
@@ -282,10 +273,6 @@ export function PdfStage({
         };
       });
     } catch {
-      if (translationRequestRef.current !== requestId) {
-        return;
-      }
-
       setSelection((currentSelection) => {
         if (!currentSelection || currentSelection.text !== text) {
           return currentSelection;

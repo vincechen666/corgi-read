@@ -151,3 +151,45 @@ test("does not reopen the popover when a pending translation resolves after dism
     expect(screen.queryByText(/忠实看护者/i)).not.toBeInTheDocument();
   });
 });
+
+test("uses the latest visible selection state instead of leaving duplicate requests stuck in loading", async () => {
+  let resolveFirstTranslation: ((value: {
+    sourceText: string;
+    translatedText: string;
+    note: string;
+  }) => void) | null = null;
+
+  translationClientMocks.translateSelection
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveFirstTranslation = resolve;
+        }),
+    )
+    .mockImplementationOnce(
+      () =>
+        new Promise(() => {
+          // Simulate a duplicate request that never resolves.
+        }),
+    );
+
+  mockSelection("faithful attendants");
+
+  render(<PdfStage status="ready" />);
+
+  const viewer = screen.getByTestId("pdf-stage-viewer");
+  fireEvent.mouseUp(viewer);
+  fireEvent.mouseUp(viewer);
+
+  expect(await screen.findByText(/翻译中/i)).toBeInTheDocument();
+
+  resolveFirstTranslation?.({
+    sourceText: "faithful attendants",
+    translatedText: "忠实看护者",
+    note: "短语释义",
+  });
+
+  await waitFor(() => {
+    expect(screen.getByText(/忠实看护者/i)).toBeInTheDocument();
+  });
+});
