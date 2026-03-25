@@ -4,7 +4,7 @@
 
 **Goal:** Add a lightweight Supabase-based user system to CorgiRead so authenticated users have private cloud-backed PDF storage and cloud-backed learning data while guest mode remains fully usable.
 
-**Architecture:** Keep the current reader shell and guest workflow intact, then layer in Supabase Auth, Storage, and Postgres-backed user data. Authenticated mode adds a left-side PDF library overlay, cloud-backed right-sidebar data, and cloud-backed PDF upload while guest mode continues to use local-only state. Security relies on Supabase RLS and user-scoped storage paths.
+**Architecture:** Keep the current reader shell and guest workflow intact, then layer in Supabase Auth, Storage, and Postgres-backed user data. The top-right round avatar stays visually consistent in both guest and authenticated states, while authenticated mode adds a left-side PDF library overlay, cloud-backed right-sidebar data, and cloud-backed PDF upload. Security relies on Supabase RLS and user-scoped storage paths.
 
 **Tech Stack:** Next.js App Router, React 19, Zustand, Supabase Auth, Supabase Storage, Supabase Postgres, Zod, Vitest, Playwright
 
@@ -64,7 +64,7 @@ git add src/features/auth/auth-env.ts src/features/auth/supabase-browser.ts src/
 git commit -m "feat: add supabase auth config"
 ```
 
-### Task 2: Add auth session model and top-bar login state
+### Task 2: Add auth session model and avatar-based top-bar auth state
 
 **Files:**
 - Create: `src/features/auth/auth-schema.ts`
@@ -79,23 +79,23 @@ git commit -m "feat: add supabase auth config"
 import { render, screen } from "@testing-library/react";
 import { TopBar } from "@/components/reader/top-bar";
 
-test("shows login entry for guests", () => {
+test("shows avatar entry for guests", () => {
   render(<TopBar isAuthenticated={false} />);
-  expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /account/i })).toBeInTheDocument();
 });
 ```
 
 **Step 2: Run test to verify it fails**
 
 Run: `npm test -- tests/unit/top-bar-auth-state.test.tsx`
-Expected: FAIL because top bar does not expose guest/authenticated user entry yet.
+Expected: FAIL because top bar does not expose a shared avatar-based guest/authenticated user entry yet.
 
 **Step 3: Write minimal implementation**
 
 - Add auth schema and local auth store for current session UI state
-- Update top bar to render guest login entry vs authenticated user entry
+- Update top bar so guest and authenticated states both use the same round avatar shell
 - Keep current upload control behavior intact
-- Reserve a future left-side PDF library trigger for authenticated users only
+- Render the PDF library trigger only for authenticated users
 
 **Step 4: Run test to verify it passes**
 
@@ -106,10 +106,10 @@ Expected: PASS
 
 ```bash
 git add src/features/auth/auth-schema.ts src/features/auth/auth-store.ts src/components/reader/top-bar.tsx src/components/reader/app-shell.tsx tests/unit/top-bar-auth-state.test.tsx
-git commit -m "feat: add auth-aware top bar state"
+git commit -m "feat: add avatar-based auth top bar state"
 ```
 
-### Task 3: Add lightweight email login overlay
+### Task 3: Add lightweight email login overlay from avatar entry
 
 **Files:**
 - Create: `src/components/reader/auth-modal.tsx`
@@ -125,7 +125,7 @@ import { AppShell } from "@/components/reader/app-shell";
 
 test("opens login modal from guest user entry", () => {
   render(<AppShell />);
-  fireEvent.click(screen.getByRole("button", { name: /login/i }));
+  fireEvent.click(screen.getByRole("button", { name: /account/i }));
   expect(screen.getByText(/email verification/i)).toBeInTheDocument();
 });
 ```
@@ -139,6 +139,7 @@ Expected: FAIL because login overlay does not exist.
 
 - Add lightweight auth modal
 - Collect email and start Supabase magic-link / OTP flow
+- Open the modal from the guest avatar entry rather than a text login chip
 - Keep failure state inline and non-blocking
 - Closing the modal must return users to the current reader state
 
@@ -150,7 +151,7 @@ Expected: PASS
 **Step 5: Commit**
 
 ```bash
-git add src/components/reader/auth-modal.tsx src/features/auth/auth-client.ts src/components/reader/app-shell.tsx tests/unit/auth-modal.test.tsx
+git add src/components/reader/auth-modal.tsx src/features/auth/auth-client.ts src/components/reader/app-shell.tsx src/components/reader/top-bar.tsx tests/unit/auth-modal.test.tsx
 git commit -m "feat: add email login overlay"
 ```
 
@@ -295,6 +296,7 @@ Expected: FAIL because the PDF library overlay does not exist.
 - Close on backdrop click
 - Block reader interaction while open
 - Only render trigger and panel for authenticated users
+- Keep the top-right avatar unchanged while the PDF library feature appears as a separate authenticated-only trigger
 
 **Step 4: Run test to verify it passes**
 
@@ -420,6 +422,7 @@ git commit -m "feat: add quota and cloud error states"
 
 Add an authenticated-mode fixture or test expectation to `tests/e2e/reader.spec.ts` that verifies:
 
+- guest avatar opens login path
 - authenticated upload trigger path
 - PDF library panel visibility
 - cloud-backed sidebar mode indicator or loaded content

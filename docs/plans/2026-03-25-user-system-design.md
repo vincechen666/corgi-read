@@ -48,20 +48,24 @@ The first release uses Supabase Auth with email verification login.
 
 - No social login in the first version
 - No password-heavy account management in the first version
-- The top-right avatar area becomes the login / user entry point
+- The top-right round avatar area becomes the login / user entry point
+- The same round avatar shape is shown in both guest and authenticated states
+- State changes affect behavior and menu content, not the top-bar silhouette
 
 States:
 
-- guest: login entry shown
-- authenticated: user entry shown, PDF library feature enabled
+- guest: avatar opens lightweight login flow
+- authenticated: avatar opens lightweight user menu, PDF library feature enabled
 
 ## Information Architecture
 
 ### Top Bar
 
-- Right-side avatar entry becomes the auth entry point
-- Guest state: opens lightweight login flow
-- Authenticated state: opens lightweight user menu
+- Right-side avatar entry is always rendered as a small round icon button
+- Guest state: clicking the avatar opens the email login overlay
+- Authenticated state: clicking the avatar opens a lightweight user menu
+- The document trigger, reading-mode pill, and avatar sit in a tighter right-aligned cluster with reduced spacing
+- The top bar should not switch between rectangle and avatar variants across auth states
 
 ### Left-Side PDF Library
 
@@ -88,6 +92,11 @@ The reading area keeps the current behavior. The only behavioral difference is t
 
 - guest uploads stay local
 - authenticated uploads are saved to the user’s cloud storage and opened in the reader
+
+When the PDF library overlay is open:
+
+- the reading surface is visually masked
+- reader interactions are blocked until the overlay closes
 
 ### Right Sidebar
 
@@ -197,7 +206,7 @@ This keeps the system lightweight while maintaining a clean security boundary.
 
 ### Login
 
-1. User clicks the avatar/login entry
+1. User clicks the round avatar entry in the top-right corner
 2. User completes email verification login
 3. UI switches to authenticated mode
 4. PDF library becomes available
@@ -217,6 +226,12 @@ This keeps the system lightweight while maintaining a clean security boundary.
 2. User selects a file
 3. The panel closes
 4. The selected PDF opens in the reader
+
+### Close PDF Library
+
+1. User clicks outside the left-side PDF library panel
+2. The overlay closes
+3. Reading interaction becomes active again
 
 ### Cloud Notes
 
@@ -258,6 +273,7 @@ When authenticated:
 ## Out of Scope for First Release
 
 - social login
+- custom avatars
 - reading-position sync
 - team sharing
 - collaborative notes
@@ -275,3 +291,16 @@ The first implementation should validate:
 - cloud-backed right sidebar data loading
 - quota exceeded handling
 - login and data-load failure states
+
+## Prototype Alignment
+
+The current prototype source of truth is:
+
+- `designs/english-pdf-reader-prototype.pen`
+
+The first implementation should follow these prototype constraints:
+
+- `Login Overlay View`: guest state still uses the same round top-right avatar entry
+- `Cloud Reader View`: authenticated state keeps the same avatar shell and unlocks the PDF library trigger
+- `PDF Library Open View`: the left overlay panel masks the reading area and closes on outside click
+- the right-side top-bar cluster uses compact spacing between document trigger, mode/library pill, and avatar
