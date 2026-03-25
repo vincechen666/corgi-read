@@ -17,8 +17,12 @@ import { LearningSidebar } from "@/components/reader/learning-sidebar";
 import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
+import { buildPdfUploadPlan } from "@/features/library/library-client";
 import { useAuthStore } from "@/features/auth/auth-store";
-import { createPdfStageState } from "@/features/pdf/pdf-file-state";
+import {
+  createPdfStageState,
+  normalizePdfDocumentLabel,
+} from "@/features/pdf/pdf-file-state";
 import {
   hydrateSidebarStore,
   sidebarStore,
@@ -46,6 +50,9 @@ export function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
+    null,
+  );
+  const pendingCloudUploadRef = useRef<ReturnType<typeof buildPdfUploadPlan> | null>(
     null,
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -241,7 +248,25 @@ export function AppShell() {
 
       setReaderError(null);
       setIsPdfLoading(true);
-      setDocumentName(file.name);
+
+      if (authSession.status === "authenticated") {
+        const uploadPlan = buildPdfUploadPlan({
+          userId: authSession.email ?? "guest",
+          file,
+        });
+
+        if (!uploadPlan.withinQuota) {
+          setIsPdfLoading(false);
+          setReaderError("已达到 1 GB 空间上限");
+          return;
+        }
+
+        pendingCloudUploadRef.current = uploadPlan;
+      } else {
+        pendingCloudUploadRef.current = null;
+      }
+
+      setDocumentName(normalizePdfDocumentLabel(file.name));
 
       if (pdfSource?.startsWith("blob:")) {
         URL.revokeObjectURL(pdfSource);
@@ -253,7 +278,7 @@ export function AppShell() {
       await Promise.resolve();
       setIsPdfLoading(false);
     },
-    [pdfSource],
+    [authSession.email, authSession.status, pdfSource],
   );
 
   return (

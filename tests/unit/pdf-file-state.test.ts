@@ -1,6 +1,9 @@
 import { expect, test } from "vitest";
 
-import { createPdfStageState } from "@/features/pdf/pdf-file-state";
+import {
+  createPdfStageState,
+  normalizePdfDocumentLabel,
+} from "@/features/pdf/pdf-file-state";
 
 test("returns empty state when no file is selected", () => {
   expect(createPdfStageState(null, false, null)).toEqual({
@@ -18,4 +21,8 @@ test("keeps the current document visible when a replacement upload fails", () =>
     source: "blob:lesson-3",
     error: "Please choose a PDF file.",
   });
+});
+
+test("normalizes uploaded pdf labels before display", () => {
+  expect(normalizePdfDocumentLabel(" lesson-3.pdf ")).toBe("lesson-3.pdf");
 });
