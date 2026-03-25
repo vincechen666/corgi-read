@@ -9,6 +9,7 @@ Corgi Read is a desktop-first English PDF reader for reading practice and spoken
 - Selection-based translation popover for words and short phrases
 - Siri-style recording button for spoken retelling
 - Baidu speech recognition for English retelling transcripts
+- Google Cloud Translation for on-demand Chinese text translation
 - OpenRouter-based analysis for correction, grammar notes, native phrasing, and coach feedback
 - Persistent right sidebar for recordings, saved translations, and expression snippets
 
@@ -73,6 +74,26 @@ OPENROUTER_MODEL=stepfun/step-3.5-flash
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 ```
 
+Real Google translation:
+
+```env
+TRANSLATION_MODE=real
+TRANSLATION_PROVIDER=google
+GOOGLE_CLOUD_PROJECT=your-google-cloud-project
+GOOGLE_TRANSLATE_LOCATION=global
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
+```
+
+Optional explicit Google bearer token:
+
+```env
+TRANSLATION_MODE=real
+TRANSLATION_PROVIDER=google
+GOOGLE_CLOUD_PROJECT=your-google-cloud-project
+GOOGLE_TRANSLATE_LOCATION=global
+GOOGLE_TRANSLATE_ACCESS_TOKEN=your-short-lived-access-token
+```
+
 Real Baidu transcription:
 
 ```env
@@ -91,6 +112,12 @@ OPENROUTER_API_KEY=your-openrouter-key
 OPENROUTER_MODEL=stepfun/step-3.5-flash
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 
+TRANSLATION_MODE=real
+TRANSLATION_PROVIDER=google
+GOOGLE_CLOUD_PROJECT=your-google-cloud-project
+GOOGLE_TRANSLATE_LOCATION=global
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account.json
+
 TRANSCRIPTION_MODE=real
 TRANSCRIPTION_PROVIDER=baidu
 BAIDU_SPEECH_API_KEY=your-baidu-api-key
@@ -101,6 +128,9 @@ BAIDU_SPEECH_MODEL=1737
 Notes:
 
 - `BAIDU_SPEECH_MODEL=1737` is the current English short-audio model
+- translation now uses Google Cloud Translation and no longer shares provider config with analysis
+- `GOOGLE_APPLICATION_CREDENTIALS` is the recommended production path for Google translation
+- `GOOGLE_TRANSLATE_ACCESS_TOKEN` is available for short-lived explicit token setups
 - Baidu short-audio recognition is intended for short retellings, not long recordings
 - the English Baidu model returns text without punctuation, so the app applies light normalization before analysis
 - translation and analysis fall back gracefully when provider latency is too high or a request fails

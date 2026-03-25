@@ -1,12 +1,15 @@
-import { getAnalysisConfig } from "@/features/analysis/server/analysis-env";
 import { translationResultSchema } from "@/features/translation/translation-schema";
-import { requestOpenRouterTranslation } from "@/features/translation/server/openrouter-translation-client";
+import { resolveGoogleAccessToken } from "@/features/translation/server/google-auth";
+import { requestGoogleTranslation } from "@/features/translation/server/google-translation-client";
+import { getTranslationConfig } from "@/features/translation/server/translation-env";
 
 type TranslationEnv = {
-  AI_MODE?: string;
-  OPENROUTER_API_KEY?: string;
-  OPENROUTER_MODEL?: string;
-  OPENROUTER_BASE_URL?: string;
+  TRANSLATION_MODE?: string;
+  TRANSLATION_PROVIDER?: string;
+  GOOGLE_CLOUD_PROJECT?: string;
+  GOOGLE_TRANSLATE_LOCATION?: string;
+  GOOGLE_TRANSLATE_ACCESS_TOKEN?: string;
+  GOOGLE_APPLICATION_CREDENTIALS?: string;
 } & Record<string, string | undefined>;
 
 const dictionary = new Map([
@@ -28,6 +31,27 @@ const dictionary = new Map([
   ],
 ]);
 
+function serializeError(error: unknown) {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      ...(error.cause instanceof Error
+        ? {
+            cause: {
+              name: error.cause.name,
+              message: error.cause.message,
+            },
+          }
+        : {}),
+    };
+  }
+
+  return {
+    message: String(error),
+  };
+}
+
 function buildFallbackTranslation(sourceText: string) {
   const normalized = sourceText.trim();
 
@@ -45,7 +69,7 @@ export async function translateText(
   env: TranslationEnv = process.env,
 ) {
   const normalized = sourceText.trim();
-  const config = getAnalysisConfig(env);
+  const config = getTranslationConfig(env);
   const dictionaryMatch = dictionary.get(normalized);
 
   if (dictionaryMatch) {
@@ -56,19 +80,32 @@ export async function translateText(
     return translationResultSchema.parse(buildFallbackTranslation(normalized));
   }
 
-  if (!config.apiKey) {
-    throw new Error("OPENROUTER_API_KEY is required in real mode");
+  if (!config.projectId) {
+    throw new Error("GOOGLE_CLOUD_PROJECT is required in real mode");
   }
 
+  const projectId = config.projectId;
   const fallbackResult = buildFallbackTranslation(normalized);
-  const realTranslation = requestOpenRouterTranslation(
-    {
-      apiKey: config.apiKey,
-      baseUrl: config.baseUrl,
-      model: config.model,
-    },
-    normalized,
-  ).catch(() => fallbackResult);
+  const realTranslation = resolveGoogleAccessToken(env)
+    .then((accessToken) =>
+      requestGoogleTranslation(
+        {
+          accessToken,
+          projectId,
+          location: config.location,
+        },
+        normalized,
+      ),
+    )
+    .then((translatedText) => ({
+      sourceText: normalized,
+      translatedText,
+      note: "当前结果由 Google 翻译生成，可结合上下文继续判断术语和语气。",
+    }))
+    .catch((error) => {
+      console.error("[translate] provider fallback", serializeError(error));
+      return fallbackResult;
+    });
 
   const fallbackTimeout = new Promise<typeof fallbackResult>((resolve) => {
     setTimeout(() => resolve(fallbackResult), 1500);
