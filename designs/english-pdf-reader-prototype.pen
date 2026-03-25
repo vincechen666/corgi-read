@@ -34,7 +34,7 @@
               "x": 20,
               "y": 15,
               "fill": "#1A1A1A",
-              "content": "corgi read",
+              "content": "CorgiRead",
               "fontFamily": "Newsreader",
               "fontSize": 26,
               "fontWeight": "500"
@@ -54,9 +54,9 @@
             {
               "type": "frame",
               "id": "t1sDs",
-              "x": 822,
+              "x": 1020,
               "y": 14,
-              "width": 244,
+              "width": 240,
               "height": 32,
               "fill": "#F8F4EE",
               "stroke": {
@@ -82,9 +82,9 @@
             {
               "type": "frame",
               "id": "51LX1",
-              "x": 1080,
+              "x": 1272,
               "y": 14,
-              "width": 136,
+              "width": 132,
               "height": 32,
               "fill": "#FFF4EC",
               "layout": "none",
@@ -105,23 +105,33 @@
             {
               "type": "frame",
               "id": "mivm2",
-              "x": 1230,
-              "y": 14,
-              "width": 226,
-              "height": 32,
-              "fill": "#F5F5F5",
+              "name": "userAvatar",
+              "x": 1416,
+              "y": 10,
+              "width": 40,
+              "height": 40,
+              "fill": "#F8F4EE",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
               "layout": "none",
               "children": [
                 {
-                  "type": "text",
+                  "type": "frame",
                   "id": "M0kX0",
-                  "x": 16,
-                  "y": 10,
-                  "fill": "#6F675F",
-                  "content": "Page 12 / Section 3 / 18 min",
-                  "fontFamily": "JetBrains Mono",
-                  "fontSize": 12,
-                  "fontWeight": "500"
+                  "x": 6,
+                  "y": 6,
+                  "width": 28,
+                  "height": 28,
+                  "cornerRadius": 14,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "../public/logo.webp",
+                    "mode": "fill"
+                  }
                 }
               ]
             }
@@ -840,7 +850,7 @@
               "x": 20,
               "y": 15,
               "fill": "#1A1A1A",
-              "content": "corgi read",
+              "content": "CorgiRead",
               "fontFamily": "Newsreader",
               "fontSize": 26,
               "fontWeight": "500"
@@ -860,9 +870,9 @@
             {
               "type": "frame",
               "id": "eS6lD",
-              "x": 822,
+              "x": 1020,
               "y": 14,
-              "width": 244,
+              "width": 240,
               "height": 32,
               "fill": "#F8F4EE",
               "stroke": {
@@ -888,9 +898,9 @@
             {
               "type": "frame",
               "id": "8MDRT",
-              "x": 1080,
+              "x": 1272,
               "y": 14,
-              "width": 136,
+              "width": 132,
               "height": 32,
               "fill": "#FFF4EC",
               "layout": "none",
@@ -911,23 +921,33 @@
             {
               "type": "frame",
               "id": "8pSgk",
-              "x": 1230,
-              "y": 14,
-              "width": 226,
-              "height": 32,
-              "fill": "#F5F5F5",
+              "name": "userAvatar",
+              "x": 1416,
+              "y": 10,
+              "width": 40,
+              "height": 40,
+              "fill": "#F8F4EE",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
               "layout": "none",
               "children": [
                 {
-                  "type": "text",
+                  "type": "frame",
                   "id": "HjFTW",
-                  "x": 16,
-                  "y": 10,
-                  "fill": "#6F675F",
-                  "content": "Page 12 / Section 3 / 18 min",
-                  "fontFamily": "JetBrains Mono",
-                  "fontSize": 12,
-                  "fontWeight": "500"
+                  "x": 6,
+                  "y": 6,
+                  "width": 28,
+                  "height": 28,
+                  "cornerRadius": 14,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "../public/logo.webp",
+                    "mode": "fill"
+                  }
                 }
               ]
             }
@@ -1910,6 +1930,2838 @@
                       "fontWeight": "600"
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "uA",
+      "x": 3216,
+      "y": 0,
+      "name": "Login Overlay View",
+      "clip": true,
+      "width": 1500,
+      "height": 980,
+      "fill": "#F7F3EE",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "uB",
+          "x": 12,
+          "y": 12,
+          "width": 1476,
+          "height": 60,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "uC",
+              "x": 20,
+              "y": 15,
+              "fill": "#1A1A1A",
+              "content": "CorgiRead",
+              "fontFamily": "Newsreader",
+              "fontSize": 26,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "uD",
+              "x": 176,
+              "y": 22,
+              "fill": "#8A8178",
+              "content": "ENGLISH PDF READER",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uE",
+              "x": 822,
+              "y": 14,
+              "width": 244,
+              "height": 32,
+              "fill": "#F8F4EE",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uF",
+                  "x": 16,
+                  "y": 10,
+                  "fill": "#514942",
+                  "content": "文档  The Last Question.pdf",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uG",
+              "x": 1080,
+              "y": 14,
+              "width": 136,
+              "height": 32,
+              "fill": "#FFF4EC",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uH",
+                  "x": 16,
+                  "y": 10,
+                  "fill": "#C25B34",
+                  "content": "访客模式",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uBA",
+              "x": 1238,
+              "y": 10,
+              "width": 90,
+              "height": 40,
+              "fill": "#FFF7F0",
+              "name": "loginEntry",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBB",
+                  "x": 31,
+                  "y": 12,
+                  "content": "登录",
+                  "fill": "#C25B34",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uK",
+          "x": 12,
+          "y": 84,
+          "width": 1108,
+          "height": 884,
+          "fill": "#FCFBF8",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "uL",
+              "x": 12,
+              "y": 12,
+              "clip": true,
+              "width": 1084,
+              "height": 860,
+              "fill": "#FFFDF9",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000008",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 6
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uM",
+                  "x": 72,
+                  "y": 64,
+                  "fill": "#1A1A1A",
+                  "content": "The Last Question",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 32,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uN",
+                  "x": 72,
+                  "y": 110,
+                  "fill": "#8A8178",
+                  "content": "by Isaac Asimov",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uO",
+                  "x": 72,
+                  "y": 182,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The last question was asked for the first time, half in jest, on May 21, 2061, at a time when humanity first stepped into the light of practical immortality.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uP",
+                  "x": 72,
+                  "y": 278,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The question came about as a result of a five-dollar bet over highballs, and it happened this way: Alexander Adell and Bertram Lupov were two of the faithful attendants of Multivac.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uQ",
+                  "x": 72,
+                  "y": 374,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "They had grown used to the mighty machine and understood it with the intimacy of men who keep watch beside a sleeping giant, yet they still joked about the impossible mysteries it held.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uR",
+                  "x": 72,
+                  "y": 470,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The selected sentence is highlighted here to suggest a deliberate, on-demand translation moment rather than always-on bilingual display.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uS",
+                  "x": 72,
+                  "y": 502,
+                  "opacity": 0.5899999999999996,
+                  "fill": "#F5DACC",
+                  "width": 332,
+                  "height": 28
+                },
+                {
+                  "type": "text",
+                  "id": "uT",
+                  "x": 72,
+                  "y": 566,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "Below the page, the learner can stop reading, summarize the paragraph aloud, then compare their own language against an AI-enhanced explanation panel.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uU",
+                  "x": 982,
+                  "y": 28,
+                  "name": "readerRail",
+                  "fill": "#EEE7DE",
+                  "width": 4,
+                  "height": 740
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uV",
+                  "x": 981,
+                  "y": 236,
+                  "name": "readerThumb",
+                  "fill": "#C9BCB0",
+                  "width": 6,
+                  "height": 148
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uW",
+              "x": 636,
+              "y": 332,
+              "width": 244,
+              "height": 194,
+              "fill": "#FFFFFF",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000010",
+                "offset": {
+                  "x": 0,
+                  "y": 4
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uX",
+                  "fill": "#8A8178",
+                  "content": "划词翻译",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 2
+                },
+                {
+                  "type": "text",
+                  "id": "uY",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "deliberate translation moment",
+                  "lineHeight": 1.3,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uZ",
+                  "fill": "#0D6E6E",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "按需触发的翻译提示",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "ua",
+                  "fill": "#6A625A",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "用户卡住时再看中文，避免阅读区长期双语并列。",
+                  "lineHeight": 1.45,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ub",
+                  "width": 92,
+                  "height": 34,
+                  "fill": "#FFF4EC",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uc",
+                      "x": 18,
+                      "y": 9,
+                      "fill": "#C25B34",
+                      "content": "收藏词句",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ud",
+          "x": 1132,
+          "y": 84,
+          "clip": true,
+          "width": 356,
+          "height": 884,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "ue",
+              "x": 20,
+              "y": 20,
+              "fill": "#8A8178",
+              "content": "LOCAL SIDEBAR",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "uf",
+              "x": 20,
+              "y": 42,
+              "fill": "#1A1A1A",
+              "content": "本地学习沉淀",
+              "fontFamily": "Newsreader",
+              "fontSize": 28,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "ug",
+              "x": 20,
+              "y": 82,
+              "fill": "#6A625A",
+              "textGrowth": "fixed-width",
+              "width": 300,
+              "content": "未登录时继续使用本地数据；登录后可在云端同步 PDF、录音、收藏和表达库。",
+              "lineHeight": 1.5,
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uh",
+              "x": 20,
+              "y": 124,
+              "width": 300,
+              "height": 40,
+              "fill": "#F4F0EA",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ui",
+                  "x": 4,
+                  "y": 4,
+                  "width": 96,
+                  "height": 36,
+                  "fill": "#FFFFFF",
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 8
+                  },
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uj",
+                      "x": 30,
+                      "y": 10,
+                      "fill": "#1A1A1A",
+                      "content": "录音",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "uk",
+                  "x": 130,
+                  "y": 14,
+                  "fill": "#8A8178",
+                  "content": "收藏",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "ul",
+                  "x": 228,
+                  "y": 14,
+                  "fill": "#8A8178",
+                  "content": "表达库",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "um",
+              "x": 20,
+              "y": 182,
+              "fill": "#8A8178",
+              "content": "最新复述",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "un",
+              "x": 20,
+              "y": 204,
+              "width": 300,
+              "height": 224,
+              "fill": "#FCFBF8",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uo",
+                  "fill": "#8A8178",
+                  "content": "08:42 PM  •  Page 12",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "up",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 280,
+                  "content": "The author shows that people felt close to Multivac, but never fully understood it.",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uq",
+                  "fill": "#6A625A",
+                  "textGrowth": "fixed-width",
+                  "width": 280,
+                  "content": "AI 点评：理解准确，表达自然度中等，句子连接词可以更像母语者。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ur",
+                  "width": 118,
+                  "height": 34,
+                  "fill": "#EAF4F1",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "us",
+                      "x": 18,
+                      "y": 9,
+                      "fill": "#0D6E6E",
+                      "content": "查看分析详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ut",
+              "x": 20,
+              "y": 430,
+              "fill": "#8A8178",
+              "content": "最近收藏",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uu",
+              "x": 20,
+              "y": 450,
+              "width": 300,
+              "height": 104,
+              "fill": "#FFF7F0",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uv",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "faithful attendants of Multivac",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uw",
+                  "fill": "#C25B34",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "Multivac 的忠实看护者",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "ux",
+                  "fill": "#8A8178",
+                  "content": "来自 Page 12  •  句子收藏",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uy",
+              "x": 20,
+              "y": 570,
+              "fill": "#8A8178",
+              "content": "表达库",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uz",
+              "x": 20,
+              "y": 590,
+              "width": 300,
+              "height": 144,
+              "fill": "#F6FBFB",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "u0",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "They felt close to Multivac, yet its mysteries stayed beyond them.",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 19,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "u1",
+                  "fill": "#4B5B5B",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "更地道的对比句式，可替换“they know it well but...”这样的平直表达。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "u2",
+                  "fill": "#8A8178",
+                  "content": "来源：08:42 PM 录音",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "u3",
+              "x": 344,
+              "y": 20,
+              "name": "sidebarRail",
+              "fill": "#EEE7DE",
+              "width": 2,
+              "height": 844
+            },
+            {
+              "type": "rectangle",
+              "id": "u4",
+              "x": 343,
+              "y": 280,
+              "name": "sidebarThumb",
+              "fill": "#C9BCB0",
+              "width": 4,
+              "height": 154
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "u5",
+          "x": 708,
+          "y": 876,
+          "name": "Siri Mic Button",
+          "width": 96,
+          "height": 96,
+          "fill": {
+            "type": "color",
+            "color": "#FFFFFF",
+            "enabled": false
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "u6",
+              "x": 0,
+              "y": 0,
+              "fill": "#E07B5422",
+              "width": 96,
+              "height": 96
+            },
+            {
+              "type": "ellipse",
+              "id": "u7",
+              "x": 10,
+              "y": 10,
+              "fill": "#FFF4EC",
+              "width": 76,
+              "height": 76,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#F2D1C3"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000014",
+                "offset": {
+                  "x": 0,
+                  "y": 8
+                },
+                "blur": 18
+              }
+            },
+            {
+              "type": "ellipse",
+              "id": "u8",
+              "x": 22,
+              "y": 22,
+              "fill": "#E07B54",
+              "width": 52,
+              "height": 52
+            },
+            {
+              "type": "icon_font",
+              "id": "u9",
+              "x": 36,
+              "y": 36,
+              "width": 24,
+              "height": 24,
+              "iconFontName": "mic",
+              "iconFontFamily": "Material Symbols Rounded",
+              "weight": 500,
+              "fill": "#FFFFFF"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uBC",
+          "x": 0,
+          "y": 0,
+          "width": 1500,
+          "height": 980,
+          "fill": "#2B2320B8",
+          "name": "loginScrim",
+          "layout": "none",
+          "children": []
+        },
+        {
+          "type": "frame",
+          "id": "uBD",
+          "x": 510,
+          "y": 210,
+          "width": 480,
+          "height": 420,
+          "fill": "#FFFDF9",
+          "name": "loginModal",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "uBE",
+              "x": 28,
+              "y": 28,
+              "content": "EMAIL LOGIN",
+              "fill": "#8A8178",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "uBF",
+              "x": 28,
+              "y": 60,
+              "content": "登录后保存你的 PDF 与学习记录",
+              "fill": "#1A1A1A",
+              "fontFamily": "Newsreader",
+              "fontSize": 32,
+              "fontWeight": "500",
+              "textGrowth": "fixed-width",
+              "width": 424
+            },
+            {
+              "type": "text",
+              "id": "uBG",
+              "x": 28,
+              "y": 134,
+              "content": "使用邮箱验证码登录。登录后，上传的 PDF 将进入你的 1GB 云端空间，右侧录音、收藏和表达库也会读取你的专属数据。",
+              "fill": "#6A625A",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal",
+              "textGrowth": "fixed-width",
+              "width": 424,
+              "lineHeight": 1.5
+            },
+            {
+              "type": "frame",
+              "id": "uBH",
+              "x": 28,
+              "y": 218,
+              "width": 424,
+              "height": 54,
+              "fill": "#FFFFFF",
+              "name": "emailField",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBI",
+                  "x": 18,
+                  "y": 18,
+                  "content": "your@email.com",
+                  "fill": "#8A8178",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uBJ",
+              "x": 28,
+              "y": 288,
+              "width": 268,
+              "height": 48,
+              "fill": "#FFFFFF",
+              "name": "codeField",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBK",
+                  "x": 18,
+                  "y": 15,
+                  "content": "输入验证码",
+                  "fill": "#8A8178",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uBL",
+              "x": 308,
+              "y": 288,
+              "width": 144,
+              "height": 48,
+              "fill": "#FFF4EC",
+              "name": "sendButton",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#F1D4C6"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBM",
+                  "x": 28,
+                  "y": 15,
+                  "content": "发送验证码",
+                  "fill": "#C25B34",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "uBN",
+      "x": 4836,
+      "y": 0,
+      "name": "Cloud Reader View",
+      "clip": true,
+      "width": 1500,
+      "height": 980,
+      "fill": "#F7F3EE",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "uBO",
+          "x": 12,
+          "y": 12,
+          "width": 1476,
+          "height": 60,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "uBP",
+              "x": 20,
+              "y": 15,
+              "fill": "#1A1A1A",
+              "content": "CorgiRead",
+              "fontFamily": "Newsreader",
+              "fontSize": 26,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "uBQ",
+              "x": 176,
+              "y": 22,
+              "fill": "#8A8178",
+              "content": "ENGLISH PDF READER",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uBR",
+              "x": 822,
+              "y": 14,
+              "width": 244,
+              "height": 32,
+              "fill": "#F8F4EE",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBS",
+                  "x": 16,
+                  "y": 10,
+                  "fill": "#514942",
+                  "content": "文档  The Last Question.pdf",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uCN",
+              "x": 1080,
+              "y": 14,
+              "width": 120,
+              "height": 32,
+              "fill": "#F2F5F1",
+              "name": "pdfLibraryTrigger",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#D8E1D6"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uCO",
+                  "x": 36,
+                  "y": 9,
+                  "content": "PDF 库",
+                  "fill": "#44615A",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uCP",
+              "x": 1410,
+              "y": 10,
+              "width": 40,
+              "height": 40,
+              "fill": "#F8F4EE",
+              "name": "userAvatar",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uCQ",
+                  "x": 6,
+                  "y": 6,
+                  "width": 28,
+                  "height": 28,
+                  "cornerRadius": 14,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "../public/logo.webp",
+                    "mode": "fill"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uBX",
+          "x": 12,
+          "y": 84,
+          "width": 1108,
+          "height": 884,
+          "fill": "#FCFBF8",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "uBY",
+              "x": 12,
+              "y": 12,
+              "clip": true,
+              "width": 1084,
+              "height": 860,
+              "fill": "#FFFDF9",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000008",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 6
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBZ",
+                  "x": 72,
+                  "y": 64,
+                  "fill": "#1A1A1A",
+                  "content": "The Last Question",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 32,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uBa",
+                  "x": 72,
+                  "y": 110,
+                  "fill": "#8A8178",
+                  "content": "by Isaac Asimov",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uBb",
+                  "x": 72,
+                  "y": 182,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The last question was asked for the first time, half in jest, on May 21, 2061, at a time when humanity first stepped into the light of practical immortality.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uBc",
+                  "x": 72,
+                  "y": 278,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The question came about as a result of a five-dollar bet over highballs, and it happened this way: Alexander Adell and Bertram Lupov were two of the faithful attendants of Multivac.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uBd",
+                  "x": 72,
+                  "y": 374,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "They had grown used to the mighty machine and understood it with the intimacy of men who keep watch beside a sleeping giant, yet they still joked about the impossible mysteries it held.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uBe",
+                  "x": 72,
+                  "y": 470,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The selected sentence is highlighted here to suggest a deliberate, on-demand translation moment rather than always-on bilingual display.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uBf",
+                  "x": 72,
+                  "y": 502,
+                  "opacity": 0.5899999999999996,
+                  "fill": "#F5DACC",
+                  "width": 332,
+                  "height": 28
+                },
+                {
+                  "type": "text",
+                  "id": "uBg",
+                  "x": 72,
+                  "y": 566,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "Below the page, the learner can stop reading, summarize the paragraph aloud, then compare their own language against an AI-enhanced explanation panel.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uBh",
+                  "x": 982,
+                  "y": 28,
+                  "name": "readerRail",
+                  "fill": "#EEE7DE",
+                  "width": 4,
+                  "height": 740
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uBi",
+                  "x": 981,
+                  "y": 236,
+                  "name": "readerThumb",
+                  "fill": "#C9BCB0",
+                  "width": 6,
+                  "height": 148
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uBj",
+              "x": 636,
+              "y": 332,
+              "width": 244,
+              "height": 194,
+              "fill": "#FFFFFF",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000010",
+                "offset": {
+                  "x": 0,
+                  "y": 4
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uBk",
+                  "fill": "#8A8178",
+                  "content": "划词翻译",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 2
+                },
+                {
+                  "type": "text",
+                  "id": "uBl",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "deliberate translation moment",
+                  "lineHeight": 1.3,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uBm",
+                  "fill": "#0D6E6E",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "按需触发的翻译提示",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "uBn",
+                  "fill": "#6A625A",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "用户卡住时再看中文，避免阅读区长期双语并列。",
+                  "lineHeight": 1.45,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "uBo",
+                  "width": 92,
+                  "height": 34,
+                  "fill": "#FFF4EC",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uBp",
+                      "x": 18,
+                      "y": 9,
+                      "fill": "#C25B34",
+                      "content": "收藏词句",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uBq",
+          "x": 1132,
+          "y": 84,
+          "clip": true,
+          "width": 356,
+          "height": 884,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "uBr",
+              "x": 20,
+              "y": 20,
+              "fill": "#8A8178",
+              "content": "CLOUD SIDEBAR",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "uBs",
+              "x": 20,
+              "y": 42,
+              "fill": "#1A1A1A",
+              "content": "你的云端学习沉淀",
+              "fontFamily": "Newsreader",
+              "fontSize": 28,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "uBt",
+              "x": 20,
+              "y": 82,
+              "fill": "#6A625A",
+              "textGrowth": "fixed-width",
+              "width": 300,
+              "content": "登录后，这些记录会跟随你的账号保存在云端，并在不同设备上继续查看。",
+              "lineHeight": 1.5,
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uBu",
+              "x": 20,
+              "y": 124,
+              "width": 300,
+              "height": 40,
+              "fill": "#F4F0EA",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uBv",
+                  "x": 4,
+                  "y": 4,
+                  "width": 96,
+                  "height": 36,
+                  "fill": "#FFFFFF",
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 8
+                  },
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uBw",
+                      "x": 30,
+                      "y": 10,
+                      "fill": "#1A1A1A",
+                      "content": "录音",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "uBx",
+                  "x": 130,
+                  "y": 14,
+                  "fill": "#8A8178",
+                  "content": "收藏",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uBy",
+                  "x": 228,
+                  "y": 14,
+                  "fill": "#8A8178",
+                  "content": "表达库",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uBz",
+              "x": 20,
+              "y": 182,
+              "fill": "#8A8178",
+              "content": "最新复述",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uB0",
+              "x": 20,
+              "y": 204,
+              "width": 300,
+              "height": 224,
+              "fill": "#FCFBF8",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uB1",
+                  "fill": "#8A8178",
+                  "content": "08:42 PM  •  Page 12",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uB2",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 280,
+                  "content": "The author shows that people felt close to Multivac, but never fully understood it.",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uB3",
+                  "fill": "#6A625A",
+                  "textGrowth": "fixed-width",
+                  "width": 280,
+                  "content": "AI 点评：理解准确，表达自然度中等，句子连接词可以更像母语者。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "uB4",
+                  "width": 118,
+                  "height": 34,
+                  "fill": "#EAF4F1",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uB5",
+                      "x": 18,
+                      "y": 9,
+                      "fill": "#0D6E6E",
+                      "content": "查看分析详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uB6",
+              "x": 20,
+              "y": 430,
+              "fill": "#8A8178",
+              "content": "最近收藏",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uB7",
+              "x": 20,
+              "y": 450,
+              "width": 300,
+              "height": 104,
+              "fill": "#FFF7F0",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uB8",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "faithful attendants of Multivac",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uB9",
+                  "fill": "#C25B34",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "Multivac 的忠实看护者",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "uCA",
+                  "fill": "#8A8178",
+                  "content": "来自 Page 12  •  句子收藏",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uCB",
+              "x": 20,
+              "y": 570,
+              "fill": "#8A8178",
+              "content": "表达库",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uCC",
+              "x": 20,
+              "y": 590,
+              "width": 300,
+              "height": 144,
+              "fill": "#F6FBFB",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uCD",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "They felt close to Multivac, yet its mysteries stayed beyond them.",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 19,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uCE",
+                  "fill": "#4B5B5B",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "更地道的对比句式，可替换“they know it well but...”这样的平直表达。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uCF",
+                  "fill": "#8A8178",
+                  "content": "来源：08:42 PM 录音",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "uCG",
+              "x": 344,
+              "y": 20,
+              "name": "sidebarRail",
+              "fill": "#EEE7DE",
+              "width": 2,
+              "height": 844
+            },
+            {
+              "type": "rectangle",
+              "id": "uCH",
+              "x": 343,
+              "y": 280,
+              "name": "sidebarThumb",
+              "fill": "#C9BCB0",
+              "width": 4,
+              "height": 154
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uCI",
+          "x": 708,
+          "y": 876,
+          "name": "Siri Mic Button",
+          "width": 96,
+          "height": 96,
+          "fill": {
+            "type": "color",
+            "color": "#FFFFFF",
+            "enabled": false
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "uCJ",
+              "x": 0,
+              "y": 0,
+              "fill": "#E07B5422",
+              "width": 96,
+              "height": 96
+            },
+            {
+              "type": "ellipse",
+              "id": "uCK",
+              "x": 10,
+              "y": 10,
+              "fill": "#FFF4EC",
+              "width": 76,
+              "height": 76,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#F2D1C3"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000014",
+                "offset": {
+                  "x": 0,
+                  "y": 8
+                },
+                "blur": 18
+              }
+            },
+            {
+              "type": "ellipse",
+              "id": "uCL",
+              "x": 22,
+              "y": 22,
+              "fill": "#E07B54",
+              "width": 52,
+              "height": 52
+            },
+            {
+              "type": "icon_font",
+              "id": "uCM",
+              "x": 36,
+              "y": 36,
+              "width": 24,
+              "height": 24,
+              "iconFontName": "mic",
+              "iconFontFamily": "Material Symbols Rounded",
+              "weight": 500,
+              "fill": "#FFFFFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "uCR",
+      "x": 6456,
+      "y": 0,
+      "name": "PDF Library Open View",
+      "clip": true,
+      "width": 1500,
+      "height": 980,
+      "fill": "#F7F3EE",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "uCS",
+          "x": 12,
+          "y": 12,
+          "width": 1476,
+          "height": 60,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "uCT",
+              "x": 20,
+              "y": 15,
+              "fill": "#1A1A1A",
+              "content": "CorgiRead",
+              "fontFamily": "Newsreader",
+              "fontSize": 26,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "uCU",
+              "x": 176,
+              "y": 22,
+              "fill": "#8A8178",
+              "content": "ENGLISH PDF READER",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uCV",
+              "x": 822,
+              "y": 14,
+              "width": 244,
+              "height": 32,
+              "fill": "#F8F4EE",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uCW",
+                  "x": 16,
+                  "y": 10,
+                  "fill": "#514942",
+                  "content": "文档  The Last Question.pdf",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uDR",
+              "x": 1080,
+              "y": 14,
+              "width": 120,
+              "height": 32,
+              "fill": "#EAF4F1",
+              "name": "activeLibraryTrigger",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#D4E4DE"
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uDS",
+                  "x": 36,
+                  "y": 9,
+                  "content": "PDF 库",
+                  "fill": "#0D6E6E",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uDT",
+              "x": 1410,
+              "y": 10,
+              "width": 40,
+              "height": 40,
+              "fill": "#F8F4EE",
+              "name": "userAvatar",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uDU",
+                  "x": 6,
+                  "y": 6,
+                  "width": 28,
+                  "height": 28,
+                  "cornerRadius": 14,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "../public/logo.webp",
+                    "mode": "fill"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uCb",
+          "x": 12,
+          "y": 84,
+          "width": 1108,
+          "height": 884,
+          "fill": "#FCFBF8",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "uCc",
+              "x": 12,
+              "y": 12,
+              "clip": true,
+              "width": 1084,
+              "height": 860,
+              "fill": "#FFFDF9",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000008",
+                "offset": {
+                  "x": 0,
+                  "y": 2
+                },
+                "blur": 6
+              },
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uCd",
+                  "x": 72,
+                  "y": 64,
+                  "fill": "#1A1A1A",
+                  "content": "The Last Question",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 32,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uCe",
+                  "x": 72,
+                  "y": 110,
+                  "fill": "#8A8178",
+                  "content": "by Isaac Asimov",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uCf",
+                  "x": 72,
+                  "y": 182,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The last question was asked for the first time, half in jest, on May 21, 2061, at a time when humanity first stepped into the light of practical immortality.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uCg",
+                  "x": 72,
+                  "y": 278,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The question came about as a result of a five-dollar bet over highballs, and it happened this way: Alexander Adell and Bertram Lupov were two of the faithful attendants of Multivac.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uCh",
+                  "x": 72,
+                  "y": 374,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "They had grown used to the mighty machine and understood it with the intimacy of men who keep watch beside a sleeping giant, yet they still joked about the impossible mysteries it held.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uCi",
+                  "x": 72,
+                  "y": 470,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "The selected sentence is highlighted here to suggest a deliberate, on-demand translation moment rather than always-on bilingual display.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uCj",
+                  "x": 72,
+                  "y": 502,
+                  "opacity": 0.5899999999999996,
+                  "fill": "#F5DACC",
+                  "width": 332,
+                  "height": 28
+                },
+                {
+                  "type": "text",
+                  "id": "uCk",
+                  "x": 72,
+                  "y": 566,
+                  "fill": "#2D2621",
+                  "textGrowth": "fixed-width",
+                  "width": 866,
+                  "content": "Below the page, the learner can stop reading, summarize the paragraph aloud, then compare their own language against an AI-enhanced explanation panel.",
+                  "lineHeight": 1.65,
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uCl",
+                  "x": 982,
+                  "y": 28,
+                  "name": "readerRail",
+                  "fill": "#EEE7DE",
+                  "width": 4,
+                  "height": 740
+                },
+                {
+                  "type": "rectangle",
+                  "id": "uCm",
+                  "x": 981,
+                  "y": 236,
+                  "name": "readerThumb",
+                  "fill": "#C9BCB0",
+                  "width": 6,
+                  "height": 148
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uCn",
+              "x": 636,
+              "y": 332,
+              "width": 244,
+              "height": 194,
+              "fill": "#FFFFFF",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000010",
+                "offset": {
+                  "x": 0,
+                  "y": 4
+                },
+                "blur": 12
+              },
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uCo",
+                  "fill": "#8A8178",
+                  "content": "划词翻译",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 2
+                },
+                {
+                  "type": "text",
+                  "id": "uCp",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "deliberate translation moment",
+                  "lineHeight": 1.3,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 18,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uCq",
+                  "fill": "#0D6E6E",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "按需触发的翻译提示",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "uCr",
+                  "fill": "#6A625A",
+                  "textGrowth": "fixed-width",
+                  "width": 228,
+                  "content": "用户卡住时再看中文，避免阅读区长期双语并列。",
+                  "lineHeight": 1.45,
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "uCs",
+                  "width": 92,
+                  "height": 34,
+                  "fill": "#FFF4EC",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uCt",
+                      "x": 18,
+                      "y": 9,
+                      "fill": "#C25B34",
+                      "content": "收藏词句",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uCu",
+          "x": 1132,
+          "y": 84,
+          "clip": true,
+          "width": 356,
+          "height": 884,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "uCv",
+              "x": 20,
+              "y": 20,
+              "fill": "#8A8178",
+              "content": "CLOUD SIDEBAR",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "text",
+              "id": "uCw",
+              "x": 20,
+              "y": 42,
+              "fill": "#1A1A1A",
+              "content": "你的云端学习沉淀",
+              "fontFamily": "Newsreader",
+              "fontSize": 28,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "uCx",
+              "x": 20,
+              "y": 82,
+              "fill": "#6A625A",
+              "textGrowth": "fixed-width",
+              "width": 300,
+              "content": "登录后，这些记录会跟随你的账号保存在云端，并在不同设备上继续查看。",
+              "lineHeight": 1.5,
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "uCy",
+              "x": 20,
+              "y": 124,
+              "width": 300,
+              "height": 40,
+              "fill": "#F4F0EA",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uCz",
+                  "x": 4,
+                  "y": 4,
+                  "width": 96,
+                  "height": 36,
+                  "fill": "#FFFFFF",
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#0000000A",
+                    "offset": {
+                      "x": 0,
+                      "y": 2
+                    },
+                    "blur": 8
+                  },
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uC0",
+                      "x": 30,
+                      "y": 10,
+                      "fill": "#1A1A1A",
+                      "content": "录音",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "uC1",
+                  "x": 130,
+                  "y": 14,
+                  "fill": "#8A8178",
+                  "content": "收藏",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uC2",
+                  "x": 228,
+                  "y": 14,
+                  "fill": "#8A8178",
+                  "content": "表达库",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uC3",
+              "x": 20,
+              "y": 182,
+              "fill": "#8A8178",
+              "content": "最新复述",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uC4",
+              "x": 20,
+              "y": 204,
+              "width": 300,
+              "height": 224,
+              "fill": "#FCFBF8",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uC5",
+                  "fill": "#8A8178",
+                  "content": "08:42 PM  •  Page 12",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uC6",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 280,
+                  "content": "The author shows that people felt close to Multivac, but never fully understood it.",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uC7",
+                  "fill": "#6A625A",
+                  "textGrowth": "fixed-width",
+                  "width": 280,
+                  "content": "AI 点评：理解准确，表达自然度中等，句子连接词可以更像母语者。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "uC8",
+                  "width": 118,
+                  "height": 34,
+                  "fill": "#EAF4F1",
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uC9",
+                      "x": 18,
+                      "y": 9,
+                      "fill": "#0D6E6E",
+                      "content": "查看分析详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uDA",
+              "x": 20,
+              "y": 430,
+              "fill": "#8A8178",
+              "content": "最近收藏",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uDB",
+              "x": 20,
+              "y": 450,
+              "width": 300,
+              "height": 104,
+              "fill": "#FFF7F0",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uDC",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "faithful attendants of Multivac",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uDD",
+                  "fill": "#C25B34",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "Multivac 的忠实看护者",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "uDE",
+                  "fill": "#8A8178",
+                  "content": "来自 Page 12  •  句子收藏",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "uDF",
+              "x": 20,
+              "y": 570,
+              "fill": "#8A8178",
+              "content": "表达库",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2
+            },
+            {
+              "type": "frame",
+              "id": "uDG",
+              "x": 20,
+              "y": 590,
+              "width": 300,
+              "height": 144,
+              "fill": "#F6FBFB",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uDH",
+                  "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "They felt close to Multivac, yet its mysteries stayed beyond them.",
+                  "lineHeight": 1.35,
+                  "fontFamily": "Newsreader",
+                  "fontSize": 19,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "uDI",
+                  "fill": "#4B5B5B",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
+                  "content": "更地道的对比句式，可替换“they know it well but...”这样的平直表达。",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "uDJ",
+                  "fill": "#8A8178",
+                  "content": "来源：08:42 PM 录音",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "uDK",
+              "x": 344,
+              "y": 20,
+              "name": "sidebarRail",
+              "fill": "#EEE7DE",
+              "width": 2,
+              "height": 844
+            },
+            {
+              "type": "rectangle",
+              "id": "uDL",
+              "x": 343,
+              "y": 280,
+              "name": "sidebarThumb",
+              "fill": "#C9BCB0",
+              "width": 4,
+              "height": 154
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uDM",
+          "x": 708,
+          "y": 876,
+          "name": "Siri Mic Button",
+          "width": 96,
+          "height": 96,
+          "fill": {
+            "type": "color",
+            "color": "#FFFFFF",
+            "enabled": false
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "ellipse",
+              "id": "uDN",
+              "x": 0,
+              "y": 0,
+              "fill": "#E07B5422",
+              "width": 96,
+              "height": 96
+            },
+            {
+              "type": "ellipse",
+              "id": "uDO",
+              "x": 10,
+              "y": 10,
+              "fill": "#FFF4EC",
+              "width": 76,
+              "height": 76,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#F2D1C3"
+              },
+              "effect": {
+                "type": "shadow",
+                "shadowType": "outer",
+                "color": "#00000014",
+                "offset": {
+                  "x": 0,
+                  "y": 8
+                },
+                "blur": 18
+              }
+            },
+            {
+              "type": "ellipse",
+              "id": "uDP",
+              "x": 22,
+              "y": 22,
+              "fill": "#E07B54",
+              "width": 52,
+              "height": 52
+            },
+            {
+              "type": "icon_font",
+              "id": "uDQ",
+              "x": 36,
+              "y": 36,
+              "width": 24,
+              "height": 24,
+              "iconFontName": "mic",
+              "iconFontFamily": "Material Symbols Rounded",
+              "weight": 500,
+              "fill": "#FFFFFF"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "uDV",
+          "x": 12,
+          "y": 84,
+          "width": 1108,
+          "height": 884,
+          "fill": "#2B232066",
+          "name": "libraryMask",
+          "layout": "none",
+          "children": []
+        },
+        {
+          "type": "frame",
+          "id": "uDW",
+          "x": 12,
+          "y": 84,
+          "width": 344,
+          "height": 884,
+          "fill": "#FFFDF9",
+          "name": "libraryPanel",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E7DED4"
+          },
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 20,
+          "children": [
+            {
+              "type": "text",
+              "id": "uDX",
+              "x": 0,
+              "y": 0,
+              "content": "PDF LIBRARY",
+              "fill": "#8A8178",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "600",
+              "letterSpacing": 2,
+              "name": "libraryEyebrow"
+            },
+            {
+              "type": "text",
+              "id": "uDY",
+              "x": 0,
+              "y": 0,
+              "content": "你的 PDF 库",
+              "fill": "#1A1A1A",
+              "fontFamily": "Newsreader",
+              "fontSize": 28,
+              "fontWeight": "500",
+              "name": "libraryTitle"
+            },
+            {
+              "type": "text",
+              "id": "uDZ",
+              "x": 0,
+              "y": 0,
+              "content": "点击任意文件即可在主阅读区打开；点击面板外区域则关闭文件库。",
+              "fill": "#6A625A",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "lineHeight": 1.5,
+              "name": "libraryDesc"
+            },
+            {
+              "type": "frame",
+              "id": "uDa",
+              "x": 0,
+              "y": 0,
+              "width": "fill_container",
+              "height": 110,
+              "fill": "#FCFBF8",
+              "name": "fileItem1",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uDb",
+                  "x": 0,
+                  "y": 0,
+                  "content": "lesson-3-energy-reading.pdf",
+                  "fill": "#1A1A1A",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 21,
+                  "fontWeight": "500",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "name": "file1Name"
+                },
+                {
+                  "type": "text",
+                  "id": "uDc",
+                  "x": 0,
+                  "y": 0,
+                  "content": "Uploaded 2026-03-25  •  4.8 MB",
+                  "fill": "#8A8178",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500",
+                  "name": "file1Meta"
+                },
+                {
+                  "type": "text",
+                  "id": "uDd",
+                  "x": 0,
+                  "y": 0,
+                  "content": "最近打开 · 精读中",
+                  "fill": "#0D6E6E",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600",
+                  "name": "file1Hint"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uDe",
+              "x": 0,
+              "y": 0,
+              "width": "fill_container",
+              "height": 96,
+              "fill": "#FFFFFF",
+              "name": "fileItem2",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uDf",
+                  "x": 0,
+                  "y": 0,
+                  "content": "the-last-question.pdf",
+                  "fill": "#1A1A1A",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "name": "file2Name"
+                },
+                {
+                  "type": "text",
+                  "id": "uDg",
+                  "x": 0,
+                  "y": 0,
+                  "content": "Uploaded 2026-03-22  •  1.2 MB",
+                  "fill": "#8A8178",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500",
+                  "name": "file2Meta"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uDh",
+              "x": 0,
+              "y": 0,
+              "width": "fill_container",
+              "height": 96,
+              "fill": "#FFFFFF",
+              "name": "fileItem3",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E7DED4"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uDi",
+                  "x": 0,
+                  "y": 0,
+                  "content": "ielts-longform-practice.pdf",
+                  "fill": "#1A1A1A",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "name": "file3Name"
+                },
+                {
+                  "type": "text",
+                  "id": "uDj",
+                  "x": 0,
+                  "y": 0,
+                  "content": "Uploaded 2026-03-18  •  6.1 MB",
+                  "fill": "#8A8178",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500",
+                  "name": "file3Meta"
                 }
               ]
             }
