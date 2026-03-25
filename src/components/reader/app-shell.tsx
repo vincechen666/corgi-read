@@ -12,10 +12,12 @@ import type {
   AnalysisRouteResponse,
 } from "@/features/analysis/analysis-schema";
 import { AnalysisModal } from "@/components/reader/analysis-modal";
+import { AuthModal } from "@/components/reader/auth-modal";
 import { LearningSidebar } from "@/components/reader/learning-sidebar";
 import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
+import { useAuthStore } from "@/features/auth/auth-store";
 import { createPdfStageState } from "@/features/pdf/pdf-file-state";
 import {
   hydrateSidebarStore,
@@ -24,6 +26,7 @@ import {
 } from "@/features/sidebar/sidebar-store";
 
 export function AppShell() {
+  const authSession = useAuthStore((state) => state.session);
   const addRecording = useSidebarStore((state) => state.addRecording);
   const addExpression = useSidebarStore((state) => state.addExpression);
   const [activeAnalysis, setActiveAnalysis] = useState<{
@@ -41,6 +44,7 @@ export function AppShell() {
   const [documentName, setDocumentName] = useState("未打开文档");
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
     null,
   );
@@ -253,7 +257,10 @@ export function AppShell() {
         <h1 className="sr-only">English PDF Reader</h1>
         <TopBar
           documentLabel={documentName}
+          isAuthenticated={authSession.status === "authenticated"}
           menuOpen={menuOpen}
+          onAvatarClick={() => setAuthModalOpen(true)}
+          onOpenLibrary={() => {}}
           onToggleMenu={handleToggleMenu}
           onUploadClick={handleUploadClick}
         />
@@ -323,6 +330,10 @@ export function AppShell() {
         onAddExpression={handleAddExpression}
         onClose={() => setActiveAnalysis(null)}
         result={activeAnalysis?.result ?? null}
+      />
+      <AuthModal
+        onClose={() => setAuthModalOpen(false)}
+        open={authModalOpen}
       />
 
       {analysisMeta ? (
