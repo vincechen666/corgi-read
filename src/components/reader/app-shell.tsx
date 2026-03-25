@@ -209,6 +209,14 @@ export function AppShell() {
     setMenuOpen((value) => !value);
   }, []);
 
+  const handleAvatarClick = useCallback(() => {
+    if (authSession.status === "authenticated") {
+      return;
+    }
+
+    setAuthModalOpen(true);
+  }, [authSession.status]);
+
   const handleUploadClick = useCallback(() => {
     setMenuOpen(false);
     fileInputRef.current?.click();
@@ -259,7 +267,7 @@ export function AppShell() {
           documentLabel={documentName}
           isAuthenticated={authSession.status === "authenticated"}
           menuOpen={menuOpen}
-          onAvatarClick={() => setAuthModalOpen(true)}
+          onAvatarClick={handleAvatarClick}
           onOpenLibrary={() => {}}
           onToggleMenu={handleToggleMenu}
           onUploadClick={handleUploadClick}

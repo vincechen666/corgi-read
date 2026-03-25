@@ -1,17 +1,67 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, test, vi } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, expect, test, vi } from "vitest";
 
-import { AppShell } from "@/components/reader/app-shell";
+import { AuthModal } from "@/components/reader/auth-modal";
+import { startEmailLogin } from "@/features/auth/auth-client";
 
-vi.mock("@/features/analysis/analysis-client", () => ({
-  analyzeTranscript: vi.fn(),
-  transcribeAudio: vi.fn(),
+vi.mock("@/features/auth/auth-client", () => ({
+  startEmailLogin: vi.fn(),
 }));
 
-test("opens login modal from guest user entry", () => {
-  render(<AppShell />);
+afterEach(() => {
+  cleanup();
+  vi.mocked(startEmailLogin).mockReset();
+});
 
-  fireEvent.click(screen.getByRole("button", { name: /account/i }));
+test("resets the form after closing and reopening", async () => {
+  vi.mocked(startEmailLogin).mockResolvedValueOnce(undefined);
 
-  expect(screen.getByText(/email verification/i)).toBeInTheDocument();
+  const { rerender } = render(
+    <AuthModal open onClose={vi.fn()} />,
+  );
+
+  fireEvent.change(screen.getByRole("textbox", { name: /email address/i }), {
+    target: { value: "reader@example.com" },
+  });
+  fireEvent.submit(screen.getByRole("button", { name: /send link/i }));
+
+  expect(
+    await screen.findByText(/verification email sent/i),
+  ).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole("button", { name: /close/i }));
+  rerender(<AuthModal open={false} onClose={vi.fn()} />);
+  rerender(<AuthModal open onClose={vi.fn()} />);
+
+  expect(screen.getByRole("textbox", { name: /email address/i })).toHaveValue(
+    "",
+  );
+  expect(
+    screen.queryByText(/verification email sent/i),
+  ).not.toBeInTheDocument();
+  expect(screen.queryByText(/failed to start login/i)).not.toBeInTheDocument();
+});
+
+test("resets the error after closing and reopening", async () => {
+  vi.mocked(startEmailLogin).mockRejectedValueOnce(new Error("boom"));
+
+  const { rerender } = render(
+    <AuthModal open onClose={vi.fn()} />,
+  );
+
+  fireEvent.change(screen.getByRole("textbox", { name: /email address/i }), {
+    target: { value: "reader@example.com" },
+  });
+  fireEvent.submit(screen.getByRole("button", { name: /send link/i }));
+
+  expect(await screen.findByText("boom")).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole("button", { name: /close/i }));
+  rerender(<AuthModal open={false} onClose={vi.fn()} />);
+  rerender(<AuthModal open onClose={vi.fn()} />);
+
+  expect(screen.getByRole("textbox", { name: /email address/i })).toHaveValue(
+    "",
+  );
+  expect(screen.queryByText("boom")).not.toBeInTheDocument();
 });

@@ -14,6 +14,17 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
   const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
   const [error, setError] = useState<string | null>(null);
 
+  const resetForm = () => {
+    setEmail("");
+    setStatus("idle");
+    setError(null);
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
+
   if (!open) {
     return null;
   }
@@ -75,7 +86,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
           <div className="flex gap-3">
             <button
               className="h-11 flex-1 border border-[#e7ded4] bg-white text-sm font-medium text-[#514942]"
-              onClick={onClose}
+              onClick={handleClose}
               type="button"
             >
               Close
