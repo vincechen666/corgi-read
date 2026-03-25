@@ -11,18 +11,16 @@
       "width": 1500,
       "height": 980,
       "fill": "#F7F3EE",
-      "cornerRadius": 24,
       "layout": "none",
       "children": [
         {
           "type": "frame",
           "id": "Y6hF9",
-          "x": 24,
-          "y": 24,
-          "width": 1452,
-          "height": 72,
+          "x": 12,
+          "y": 12,
+          "width": 1476,
+          "height": 60,
           "fill": "#FFFFFF",
-          "cornerRadius": 18,
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -33,19 +31,19 @@
             {
               "type": "text",
               "id": "ZAWaS",
-              "x": 24,
-              "y": 21,
+              "x": 20,
+              "y": 15,
               "fill": "#1A1A1A",
               "content": "corgi read",
               "fontFamily": "Newsreader",
-              "fontSize": 28,
+              "fontSize": 26,
               "fontWeight": "500"
             },
             {
               "type": "text",
               "id": "Ap8O8",
-              "x": 183,
-              "y": 28,
+              "x": 176,
+              "y": 22,
               "fill": "#8A8178",
               "content": "ENGLISH PDF READER",
               "fontFamily": "JetBrains Mono",
@@ -56,12 +54,11 @@
             {
               "type": "frame",
               "id": "t1sDs",
-              "x": 786,
-              "y": 18,
-              "width": 250,
-              "height": 36,
+              "x": 822,
+              "y": 14,
+              "width": 244,
+              "height": 32,
               "fill": "#F8F4EE",
-              "cornerRadius": 18,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -85,12 +82,11 @@
             {
               "type": "frame",
               "id": "51LX1",
-              "x": 1050,
-              "y": 18,
-              "width": 144,
-              "height": 36,
+              "x": 1080,
+              "y": 14,
+              "width": 136,
+              "height": 32,
               "fill": "#FFF4EC",
-              "cornerRadius": 18,
               "layout": "none",
               "children": [
                 {
@@ -109,12 +105,11 @@
             {
               "type": "frame",
               "id": "mivm2",
-              "x": 1208,
-              "y": 18,
-              "width": 220,
-              "height": 36,
+              "x": 1230,
+              "y": 14,
+              "width": 226,
+              "height": 32,
               "fill": "#F5F5F5",
-              "cornerRadius": 18,
               "layout": "none",
               "children": [
                 {
@@ -135,12 +130,11 @@
         {
           "type": "frame",
           "id": "QoLKa",
-          "x": 24,
-          "y": 112,
-          "width": 1060,
-          "height": 844,
+          "x": 12,
+          "y": 84,
+          "width": 1108,
+          "height": 884,
           "fill": "#FCFBF8",
-          "cornerRadius": 24,
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -151,13 +145,12 @@
             {
               "type": "frame",
               "id": "4uV7f",
-              "x": 24,
-              "y": 24,
-              "width": 1012,
-              "height": 796,
-              "fill": "#FFFDF9",
-              "cornerRadius": 20,
+              "x": 12,
+              "y": 12,
               "clip": true,
+              "width": 1084,
+              "height": 860,
+              "fill": "#FFFDF9",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -166,12 +159,12 @@
               "effect": {
                 "type": "shadow",
                 "shadowType": "outer",
-                "color": "#0000000A",
+                "color": "#00000008",
                 "offset": {
                   "x": 0,
-                  "y": 6
+                  "y": 2
                 },
-                "blur": 16
+                "blur": 6
               },
               "layout": "none",
               "children": [
@@ -255,7 +248,6 @@
                 },
                 {
                   "type": "rectangle",
-                  "cornerRadius": 8,
                   "id": "25MW8",
                   "x": 72,
                   "y": 502,
@@ -280,20 +272,20 @@
                 },
                 {
                   "type": "rectangle",
-                  "cornerRadius": 999,
                   "id": "EtAem",
                   "x": 982,
                   "y": 28,
+                  "name": "readerRail",
                   "fill": "#EEE7DE",
                   "width": 4,
                   "height": 740
                 },
                 {
                   "type": "rectangle",
-                  "cornerRadius": 999,
                   "id": "pauzm",
                   "x": 981,
                   "y": 236,
+                  "name": "readerThumb",
                   "fill": "#C9BCB0",
                   "width": 6,
                   "height": 148
@@ -303,12 +295,11 @@
             {
               "type": "frame",
               "id": "j1gxk",
-              "x": 596,
-              "y": 312,
-              "width": 264,
-              "height": 197,
+              "x": 636,
+              "y": 332,
+              "width": 244,
+              "height": 194,
               "fill": "#FFFFFF",
-              "cornerRadius": 20,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -317,15 +308,15 @@
               "effect": {
                 "type": "shadow",
                 "shadowType": "outer",
-                "color": "#00000012",
+                "color": "#00000010",
                 "offset": {
                   "x": 0,
-                  "y": 8
+                  "y": 4
                 },
-                "blur": 18
+                "blur": 12
               },
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 18,
               "children": [
                 {
@@ -380,7 +371,6 @@
                   "width": 92,
                   "height": 34,
                   "fill": "#FFF4EC",
-                  "cornerRadius": 17,
                   "layout": "none",
                   "children": [
                     {
@@ -403,13 +393,12 @@
         {
           "type": "frame",
           "id": "eYEot",
-          "x": 1104,
-          "y": 112,
-          "width": 372,
-          "height": 844,
-          "fill": "#FFFFFF",
-          "cornerRadius": 24,
+          "x": 1132,
+          "y": 84,
           "clip": true,
+          "width": 356,
+          "height": 884,
+          "fill": "#FFFFFF",
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -420,8 +409,8 @@
             {
               "type": "text",
               "id": "TZEbk",
-              "x": 28,
-              "y": 28,
+              "x": 20,
+              "y": 20,
               "fill": "#8A8178",
               "content": "LEARNING SIDEBAR",
               "fontFamily": "JetBrains Mono",
@@ -432,22 +421,22 @@
             {
               "type": "text",
               "id": "Pbeqe",
-              "x": 28,
-              "y": 54,
+              "x": 20,
+              "y": 42,
               "fill": "#1A1A1A",
               "content": "你的学习沉淀",
               "fontFamily": "Newsreader",
-              "fontSize": 30,
+              "fontSize": 28,
               "fontWeight": "500"
             },
             {
               "type": "text",
               "id": "scsof",
-              "x": 28,
-              "y": 96,
+              "x": 20,
+              "y": 82,
               "fill": "#6A625A",
               "textGrowth": "fixed-width",
-              "width": 316,
+              "width": 300,
               "content": "录音记录、收藏内容和表达库都沉淀在右侧，阅读区保持专注。",
               "lineHeight": 1.5,
               "fontFamily": "Inter",
@@ -457,12 +446,11 @@
             {
               "type": "frame",
               "id": "6UBLm",
-              "x": 28,
-              "y": 142,
-              "width": 316,
-              "height": 44,
+              "x": 20,
+              "y": 124,
+              "width": 300,
+              "height": 40,
               "fill": "#F4F0EA",
-              "cornerRadius": 22,
               "layout": "none",
               "children": [
                 {
@@ -473,7 +461,6 @@
                   "width": 96,
                   "height": 36,
                   "fill": "#FFFFFF",
-                  "cornerRadius": 18,
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
@@ -526,8 +513,8 @@
             {
               "type": "text",
               "id": "h4JeT",
-              "x": 28,
-              "y": 214,
+              "x": 20,
+              "y": 182,
               "fill": "#8A8178",
               "content": "最新复述",
               "fontFamily": "JetBrains Mono",
@@ -538,19 +525,18 @@
             {
               "type": "frame",
               "id": "0LBEl",
-              "x": 28,
-              "y": 236,
-              "width": 316,
-              "height": 236,
+              "x": 20,
+              "y": 204,
+              "width": 300,
+              "height": 224,
               "fill": "#FCFBF8",
-              "cornerRadius": 20,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
               "layout": "vertical",
-              "gap": 14,
+              "gap": 10,
               "padding": 18,
               "children": [
                 {
@@ -592,7 +578,6 @@
                   "width": 118,
                   "height": 34,
                   "fill": "#EAF4F1",
-                  "cornerRadius": 17,
                   "layout": "none",
                   "children": [
                     {
@@ -613,8 +598,8 @@
             {
               "type": "text",
               "id": "Zccet",
-              "x": 28,
-              "y": 486,
+              "x": 20,
+              "y": 430,
               "fill": "#8A8178",
               "content": "最近收藏",
               "fontFamily": "JetBrains Mono",
@@ -625,14 +610,13 @@
             {
               "type": "frame",
               "id": "fmrXQ",
-              "x": 28,
-              "y": 508,
-              "width": 316,
-              "height": 122,
+              "x": 20,
+              "y": 450,
+              "width": 300,
+              "height": 104,
               "fill": "#FFF7F0",
-              "cornerRadius": 18,
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 16,
               "children": [
                 {
@@ -672,8 +656,8 @@
             {
               "type": "text",
               "id": "6zYX5",
-              "x": 28,
-              "y": 648,
+              "x": 20,
+              "y": 570,
               "fill": "#8A8178",
               "content": "表达库",
               "fontFamily": "JetBrains Mono",
@@ -684,14 +668,13 @@
             {
               "type": "frame",
               "id": "RPYVN",
-              "x": 28,
-              "y": 670,
-              "width": 316,
-              "height": 152,
+              "x": 20,
+              "y": 590,
+              "width": 300,
+              "height": 144,
               "fill": "#F6FBFB",
-              "cornerRadius": 18,
               "layout": "vertical",
-              "gap": 10,
+              "gap": 8,
               "padding": 16,
               "children": [
                 {
@@ -731,22 +714,22 @@
             },
             {
               "type": "rectangle",
-              "cornerRadius": 999,
               "id": "U8Xc4",
-              "x": 354,
-              "y": 28,
+              "x": 344,
+              "y": 20,
+              "name": "sidebarRail",
               "fill": "#EEE7DE",
-              "width": 4,
-              "height": 788
+              "width": 2,
+              "height": 844
             },
             {
               "type": "rectangle",
-              "cornerRadius": 999,
               "id": "Qrro7",
-              "x": 353,
-              "y": 286,
+              "x": 343,
+              "y": 280,
+              "name": "sidebarThumb",
               "fill": "#C9BCB0",
-              "width": 6,
+              "width": 4,
               "height": 154
             }
           ]
@@ -754,8 +737,8 @@
         {
           "type": "frame",
           "id": "X1dqg",
-          "x": 702,
-          "y": 836,
+          "x": 708,
+          "y": 876,
           "name": "Siri Mic Button",
           "width": 96,
           "height": 96,
@@ -834,18 +817,16 @@
       "width": 1500,
       "height": 980,
       "fill": "#F7F3EE",
-      "cornerRadius": 24,
       "layout": "none",
       "children": [
         {
           "type": "frame",
           "id": "qNxLa",
-          "x": 24,
-          "y": 24,
-          "width": 1452,
-          "height": 72,
+          "x": 12,
+          "y": 12,
+          "width": 1476,
+          "height": 60,
           "fill": "#FFFFFF",
-          "cornerRadius": 18,
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -856,19 +837,19 @@
             {
               "type": "text",
               "id": "rV4m9",
-              "x": 24,
-              "y": 14,
+              "x": 20,
+              "y": 15,
               "fill": "#1A1A1A",
               "content": "corgi read",
               "fontFamily": "Newsreader",
-              "fontSize": 28,
+              "fontSize": 26,
               "fontWeight": "500"
             },
             {
               "type": "text",
               "id": "wE7ax",
-              "x": 183,
-              "y": 28,
+              "x": 176,
+              "y": 22,
               "fill": "#8A8178",
               "content": "ENGLISH PDF READER",
               "fontFamily": "JetBrains Mono",
@@ -879,12 +860,11 @@
             {
               "type": "frame",
               "id": "eS6lD",
-              "x": 786,
-              "y": 18,
-              "width": 250,
-              "height": 36,
+              "x": 822,
+              "y": 14,
+              "width": 244,
+              "height": 32,
               "fill": "#F8F4EE",
-              "cornerRadius": 18,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -908,12 +888,11 @@
             {
               "type": "frame",
               "id": "8MDRT",
-              "x": 1050,
-              "y": 18,
-              "width": 144,
-              "height": 36,
+              "x": 1080,
+              "y": 14,
+              "width": 136,
+              "height": 32,
               "fill": "#FFF4EC",
-              "cornerRadius": 18,
               "layout": "none",
               "children": [
                 {
@@ -932,12 +911,11 @@
             {
               "type": "frame",
               "id": "8pSgk",
-              "x": 1208,
-              "y": 18,
-              "width": 220,
-              "height": 36,
+              "x": 1230,
+              "y": 14,
+              "width": 226,
+              "height": 32,
               "fill": "#F5F5F5",
-              "cornerRadius": 18,
               "layout": "none",
               "children": [
                 {
@@ -958,12 +936,11 @@
         {
           "type": "frame",
           "id": "2NOnY",
-          "x": 24,
-          "y": 112,
-          "width": 1060,
-          "height": 844,
+          "x": 12,
+          "y": 84,
+          "width": 1108,
+          "height": 884,
           "fill": "#FCFBF8",
-          "cornerRadius": 24,
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -974,13 +951,12 @@
             {
               "type": "frame",
               "id": "0pFTc",
-              "x": 24,
-              "y": 24,
-              "width": 1012,
-              "height": 796,
-              "fill": "#FFFDF9",
-              "cornerRadius": 20,
+              "x": 12,
+              "y": 12,
               "clip": true,
+              "width": 1084,
+              "height": 860,
+              "fill": "#FFFDF9",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -989,12 +965,12 @@
               "effect": {
                 "type": "shadow",
                 "shadowType": "outer",
-                "color": "#0000000A",
+                "color": "#00000008",
                 "offset": {
                   "x": 0,
-                  "y": 6
+                  "y": 2
                 },
-                "blur": 16
+                "blur": 6
               },
               "layout": "none",
               "children": [
@@ -1078,7 +1054,6 @@
                 },
                 {
                   "type": "rectangle",
-                  "cornerRadius": 8,
                   "id": "sPHK4",
                   "x": 119,
                   "y": 511,
@@ -1102,20 +1077,20 @@
                 },
                 {
                   "type": "rectangle",
-                  "cornerRadius": 999,
                   "id": "Q4Egr",
                   "x": 982,
                   "y": 28,
+                  "name": "feedbackRail",
                   "fill": "#EEE7DE",
                   "width": 4,
                   "height": 740
                 },
                 {
                   "type": "rectangle",
-                  "cornerRadius": 999,
                   "id": "Iyb0i",
                   "x": 981,
                   "y": 254,
+                  "name": "feedbackThumb",
                   "fill": "#C9BCB0",
                   "width": 6,
                   "height": 148
@@ -1125,12 +1100,11 @@
             {
               "type": "frame",
               "id": "eh5ql",
-              "x": 596,
-              "y": 312,
-              "width": 264,
-              "height": 188,
+              "x": 644,
+              "y": 336,
+              "width": 236,
+              "height": 194,
               "fill": "#FFFFFF",
-              "cornerRadius": 20,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -1139,15 +1113,15 @@
               "effect": {
                 "type": "shadow",
                 "shadowType": "outer",
-                "color": "#00000012",
+                "color": "#00000010",
                 "offset": {
                   "x": 0,
-                  "y": 8
+                  "y": 4
                 },
-                "blur": 18
+                "blur": 12
               },
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 18,
               "children": [
                 {
@@ -1202,7 +1176,6 @@
                   "width": 92,
                   "height": 34,
                   "fill": "#FFF4EC",
-                  "cornerRadius": 17,
                   "layout": "none",
                   "children": [
                     {
@@ -1225,13 +1198,12 @@
         {
           "type": "frame",
           "id": "V8o13",
-          "x": 1104,
-          "y": 112,
-          "width": 372,
-          "height": 844,
-          "fill": "#FFFFFF",
-          "cornerRadius": 24,
+          "x": 1132,
+          "y": 84,
           "clip": true,
+          "width": 356,
+          "height": 884,
+          "fill": "#FFFFFF",
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -1242,8 +1214,8 @@
             {
               "type": "text",
               "id": "5YH38",
-              "x": 28,
-              "y": 28,
+              "x": 20,
+              "y": 20,
               "fill": "#8A8178",
               "content": "LEARNING SIDEBAR",
               "fontFamily": "JetBrains Mono",
@@ -1254,22 +1226,22 @@
             {
               "type": "text",
               "id": "wlibq",
-              "x": 28,
-              "y": 54,
+              "x": 20,
+              "y": 42,
               "fill": "#1A1A1A",
               "content": "你的学习沉淀",
               "fontFamily": "Newsreader",
-              "fontSize": 30,
+              "fontSize": 28,
               "fontWeight": "500"
             },
             {
               "type": "text",
               "id": "u41lP",
-              "x": 28,
-              "y": 96,
+              "x": 20,
+              "y": 82,
               "fill": "#6A625A",
               "textGrowth": "fixed-width",
-              "width": 316,
+              "width": 300,
               "content": "录音记录、收藏内容和表达库都沉淀在右侧，阅读区保持专注。",
               "lineHeight": 1.5,
               "fontFamily": "Inter",
@@ -1279,12 +1251,11 @@
             {
               "type": "frame",
               "id": "xcKcJ",
-              "x": 28,
-              "y": 142,
-              "width": 316,
-              "height": 44,
+              "x": 20,
+              "y": 124,
+              "width": 300,
+              "height": 40,
               "fill": "#F4F0EA",
-              "cornerRadius": 22,
               "layout": "none",
               "children": [
                 {
@@ -1295,7 +1266,6 @@
                   "width": 96,
                   "height": 36,
                   "fill": "#FFFFFF",
-                  "cornerRadius": 18,
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
@@ -1348,8 +1318,8 @@
             {
               "type": "text",
               "id": "PZwBs",
-              "x": 28,
-              "y": 214,
+              "x": 20,
+              "y": 182,
               "fill": "#8A8178",
               "content": "最新复述",
               "fontFamily": "JetBrains Mono",
@@ -1360,19 +1330,18 @@
             {
               "type": "frame",
               "id": "jWxmd",
-              "x": 28,
-              "y": 236,
-              "width": 316,
-              "height": 236,
+              "x": 20,
+              "y": 204,
+              "width": 300,
+              "height": 224,
               "fill": "#FCFBF8",
-              "cornerRadius": 20,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
               "layout": "vertical",
-              "gap": 14,
+              "gap": 10,
               "padding": 18,
               "children": [
                 {
@@ -1414,7 +1383,6 @@
                   "width": 118,
                   "height": 34,
                   "fill": "#EAF4F1",
-                  "cornerRadius": 17,
                   "layout": "none",
                   "children": [
                     {
@@ -1435,8 +1403,8 @@
             {
               "type": "text",
               "id": "RuMga",
-              "x": 28,
-              "y": 486,
+              "x": 20,
+              "y": 430,
               "fill": "#8A8178",
               "content": "最近收藏",
               "fontFamily": "JetBrains Mono",
@@ -1447,14 +1415,13 @@
             {
               "type": "frame",
               "id": "uNBqU",
-              "x": 28,
-              "y": 508,
-              "width": 316,
-              "height": 110,
+              "x": 20,
+              "y": 450,
+              "width": 300,
+              "height": 102,
               "fill": "#FFF7F0",
-              "cornerRadius": 18,
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 16,
               "children": [
                 {
@@ -1494,8 +1461,8 @@
             {
               "type": "text",
               "id": "jYoMD",
-              "x": 28,
-              "y": 648,
+              "x": 20,
+              "y": 570,
               "fill": "#8A8178",
               "content": "表达库",
               "fontFamily": "JetBrains Mono",
@@ -1506,14 +1473,13 @@
             {
               "type": "frame",
               "id": "zF0E0",
-              "x": 28,
-              "y": 670,
-              "width": 316,
-              "height": 152,
+              "x": 20,
+              "y": 590,
+              "width": 300,
+              "height": 144,
               "fill": "#F6FBFB",
-              "cornerRadius": 18,
               "layout": "vertical",
-              "gap": 10,
+              "gap": 8,
               "padding": 16,
               "children": [
                 {
@@ -1553,22 +1519,22 @@
             },
             {
               "type": "rectangle",
-              "cornerRadius": 999,
               "id": "QCYEW",
-              "x": 354,
-              "y": 28,
+              "x": 344,
+              "y": 20,
+              "name": "feedbackSidebarRail",
               "fill": "#EEE7DE",
-              "width": 4,
-              "height": 788
+              "width": 2,
+              "height": 844
             },
             {
               "type": "rectangle",
-              "cornerRadius": 999,
               "id": "d7IoC",
-              "x": 353,
-              "y": 286,
+              "x": 343,
+              "y": 280,
+              "name": "feedbackSidebarThumb",
               "fill": "#C9BCB0",
-              "width": 6,
+              "width": 4,
               "height": 154
             }
           ]
@@ -1576,8 +1542,8 @@
         {
           "type": "frame",
           "id": "EFr9V",
-          "x": 702,
-          "y": 836,
+          "x": 708,
+          "y": 876,
           "name": "Siri Mic Button",
           "width": 96,
           "height": 96,
@@ -1654,13 +1620,12 @@
         {
           "type": "frame",
           "id": "f9w81",
-          "x": 474,
-          "y": 128,
+          "x": 480,
+          "y": 120,
           "name": "modal",
-          "width": 552,
-          "height": 764,
+          "width": 540,
+          "height": 740,
           "fill": "#FFFDF9",
-          "cornerRadius": 28,
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -1669,15 +1634,15 @@
           "effect": {
             "type": "shadow",
             "shadowType": "outer",
-            "color": "#00000024",
+            "color": "#00000020",
             "offset": {
               "x": 0,
-              "y": 16
+              "y": 10
             },
-            "blur": 32
+            "blur": 22
           },
           "layout": "vertical",
-          "gap": 16,
+          "gap": 10,
           "padding": 28,
           "children": [
             {
@@ -1717,14 +1682,13 @@
               "width": 496,
               "height": 124,
               "fill": "#FCFBF8",
-              "cornerRadius": 20,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 16,
               "children": [
                 {
@@ -1757,9 +1721,8 @@
               "width": 496,
               "height": 136,
               "fill": "#FFF7F0",
-              "cornerRadius": 20,
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 16,
               "children": [
                 {
@@ -1804,9 +1767,8 @@
               "width": 496,
               "height": 118,
               "fill": "#F6FBFB",
-              "cornerRadius": 20,
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 16,
               "children": [
                 {
@@ -1839,14 +1801,13 @@
               "width": 496,
               "height": 104,
               "fill": "#FCFBF8",
-              "cornerRadius": 20,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
               "layout": "vertical",
-              "gap": 8,
+              "gap": 6,
               "padding": 16,
               "children": [
                 {
@@ -1889,7 +1850,6 @@
                   "width": 138,
                   "height": 40,
                   "fill": "#0D6E6E",
-                  "cornerRadius": 20,
                   "layout": "none",
                   "children": [
                     {
@@ -1913,7 +1873,6 @@
                   "width": 116,
                   "height": 40,
                   "fill": "#F4F0EA",
-                  "cornerRadius": 20,
                   "layout": "none",
                   "children": [
                     {
@@ -1937,7 +1896,6 @@
                   "width": 110,
                   "height": 40,
                   "fill": "#FFF4EC",
-                  "cornerRadius": 20,
                   "layout": "none",
                   "children": [
                     {
