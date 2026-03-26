@@ -22,6 +22,7 @@ import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
 import { authStore, useAuthStore } from "@/features/auth/auth-store";
+import { authSessionSchema } from "@/features/auth/auth-schema";
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
 import { uploadPdfDocumentToCloud } from "@/features/library/library-client";
 import { canUploadFileWithinQuota } from "@/features/library/quota";
@@ -62,6 +63,7 @@ const AUTH_LIBRARY_SEED_DOCUMENTS: PdfLibraryDocument[] = [
     previewSource: "/sample/the-last-question.pdf",
   },
 ];
+const E2E_AUTH_SESSION_STORAGE_KEY = "corgi-read-e2e-auth-session";
 
 export function AppShell() {
   const authSession = useAuthStore((state) => state.session);
@@ -93,6 +95,14 @@ export function AppShell() {
     null,
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const storageQuotaBytes =
+    authSession.status === "authenticated"
+      ? authSession.storageQuotaBytes
+      : undefined;
+  const storageUsedBytes =
+    authSession.status === "authenticated"
+      ? authSession.storageUsedBytes
+      : undefined;
   const hasSupabaseBrowserConfig = Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -108,6 +118,27 @@ export function AppShell() {
 
   useEffect(() => {
     hydrateSidebarStore(sidebarStore);
+  }, []);
+
+  useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_E2E_AUTH_BOOTSTRAP !== "1" ||
+      typeof window === "undefined"
+    ) {
+      return;
+    }
+
+    const rawSession = window.localStorage.getItem(E2E_AUTH_SESSION_STORAGE_KEY);
+    if (!rawSession) {
+      return;
+    }
+
+    try {
+      const parsedSession = authSessionSchema.parse(JSON.parse(rawSession));
+      authStore.setState({ session: parsedSession });
+    } catch (error) {
+      console.error("[auth-e2e] failed to bootstrap session", error);
+    }
   }, []);
 
   useEffect(() => {
@@ -425,8 +456,8 @@ export function AppShell() {
         if (
           !canUploadFileWithinQuota({
             incomingFileSizeBytes: file.size,
-            storageQuotaBytes: authSession.storageQuotaBytes,
-            storageUsedBytes: authSession.storageUsedBytes,
+            storageQuotaBytes,
+            storageUsedBytes,
           })
         ) {
           setCloudError("已达到 1 GB 空间上限");
@@ -438,8 +469,8 @@ export function AppShell() {
           client: createSupabaseBrowserClient(),
           userId: initiatingUserId,
           file,
-          storageQuotaBytes: authSession.storageQuotaBytes,
-          storageUsedBytes: authSession.storageUsedBytes,
+          storageQuotaBytes,
+          storageUsedBytes,
         })
           .then(() => {
             authStore.setState((state) => {
@@ -486,10 +517,10 @@ export function AppShell() {
     },
     [
       authSession.status,
-      authSession.storageQuotaBytes,
-      authSession.storageUsedBytes,
       authSession.userId,
       pdfSource,
+      storageQuotaBytes,
+      storageUsedBytes,
     ],
   );
 
@@ -545,8 +576,8 @@ export function AppShell() {
           isOpen={authSession.status === "authenticated" && isPdfLibraryOpen}
           onClose={handleCloseLibrary}
           onOpenDocument={handleOpenLibraryDocument}
-          storageQuotaBytes={authSession.storageQuotaBytes}
-          storageUsedBytes={authSession.storageUsedBytes}
+          storageQuotaBytes={storageQuotaBytes}
+          storageUsedBytes={storageUsedBytes}
         />
 
         {transcriptionError || analysisError || cloudError ? (

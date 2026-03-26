@@ -17,6 +17,10 @@ test.beforeEach(async ({ page }) => {
     };
 
     class MockMediaRecorder {
+      static isTypeSupported() {
+        return true;
+      }
+
       ondataavailable: ((event: BlobEvent) => void) | null = null;
       onstop: (() => void) | null = null;
 
@@ -59,10 +63,25 @@ async function uploadPdf(page: Page) {
   await expect(page.getByRole("button", { name: /start retelling/i })).toBeEnabled();
 }
 
+async function enableAuthenticatedSession(page: Page) {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      "corgi-read-e2e-auth-session",
+      JSON.stringify({
+        status: "authenticated",
+        userId: "user-e2e",
+        email: "reader@example.com",
+        storageQuotaBytes: 1073741824,
+        storageUsedBytes: 2048,
+      }),
+    );
+  });
+}
+
 test("reader core loop works with mock services", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByText(/read in english/i)).toBeVisible();
+  await expect(page.getByText(/upload a pdf to start reading/i)).toBeVisible();
   await expect(page.getByText(/你的学习沉淀/i)).toBeVisible();
   await uploadPdf(page);
 
@@ -133,4 +152,25 @@ test("opens a local pdf from the top-right document menu", async ({ page }) => {
   await expect(
     page.getByText(/local pdf loaded for automated browser verification/i),
   ).toBeVisible();
+});
+
+test("authenticated mode exposes the pdf library workspace and cloud sidebar copy", async ({
+  page,
+}) => {
+  await enableAuthenticatedSession(page);
+  await page.goto("/");
+
+  await expect(page.getByTestId("pdf-library-trigger")).toBeVisible();
+  await expect(
+    page.getByText(/登录后，录音记录、收藏内容和表达库会从你的云端空间读取/i),
+  ).toBeVisible();
+
+  await page.getByTestId("pdf-library-trigger").click();
+
+  await expect(
+    page.getByRole("button", { name: /lesson-1\.pdf/i }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /lesson-1\.pdf/i }),
+  ).toContainText("2.0 KB");
 });

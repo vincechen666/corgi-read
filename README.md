@@ -5,6 +5,9 @@ Corgi Read is a desktop-first English PDF reader for reading practice and spoken
 ## Features
 
 - Local upload for a single PDF file in the current browser session
+- Optional email-based user system backed by Supabase Auth
+- Per-user cloud PDF library with a 1 GB starting quota
+- Cloud-backed recordings, saved translations, and expression snippets for signed-in users
 - Continuous PDF reading with an internally scrollable reader pane
 - Selection-based translation popover for words and short phrases
 - Siri-style recording button for spoken retelling
@@ -40,7 +43,10 @@ ffmpeg -version
 Current MVP supports:
 
 - desktop-first reading layout
+- guest mode for local-only reading
+- authenticated mode for cloud-backed PDFs and sidebar records
 - local PDF upload and in-page replacement
+- left-side PDF library overlay for signed-in users
 - full-document vertical scrolling in the reader pane
 - translation popover on text selection
 - recording, transcription, and AI analysis flow
@@ -71,6 +77,18 @@ Supabase auth and storage setup:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
+
+Supabase user system rollout assumes:
+
+- Auth provider: email OTP / magic link
+- Storage bucket: `pdf-documents`
+- Tables: `profiles`, `pdf_documents`, `recordings`, `favorites`, `expression_library`
+- Row Level Security enabled on all user-owned tables and storage paths
+
+Recommended profile defaults:
+
+- `storage_quota_bytes = 1073741824`
+- `storage_used_bytes = 0`
 
 Real OpenRouter analysis:
 
@@ -177,6 +195,9 @@ npm run test:e2e -- tests/e2e/reader.spec.ts
 - Design spec: [2026-03-08-english-pdf-reader-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-08-english-pdf-reader-design.md)
 - Implementation plan: [2026-03-09-english-pdf-reader-implementation.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-english-pdf-reader-implementation.md)
 - Upload flow design: [2026-03-09-pdf-upload-entry-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-pdf-upload-entry-design.md)
+- User system design: [2026-03-25-user-system-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-25-user-system-design.md)
+- User system implementation: [2026-03-25-user-system-implementation.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-25-user-system-implementation.md)
+- User system rollout notes: [2026-03-25-user-system-rollout-notes.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-25-user-system-rollout-notes.md)
 - OpenRouter analysis design: [2026-03-09-openrouter-analysis-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-openrouter-analysis-design.md)
 - Baidu transcription design: [2026-03-09-baidu-transcription-design.md](/Users/cyc/Documents/Code/corgi-read/docs/plans/2026-03-09-baidu-transcription-design.md)
 - Pencil prototype: [english-pdf-reader-prototype.pen](/Users/cyc/Documents/Code/corgi-read/designs/english-pdf-reader-prototype.pen)
