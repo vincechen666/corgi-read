@@ -9,10 +9,14 @@ import {
 const tabs = ["录音", "收藏", "表达库"] as const;
 
 type LearningSidebarProps = {
+  isAuthenticated?: boolean;
   onOpenRecording?: (recording: RecordingItem) => void;
 };
 
-export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
+export function LearningSidebar({
+  isAuthenticated = false,
+  onOpenRecording,
+}: LearningSidebarProps) {
   const activeTab = useSidebarStore((state) => state.activeTab);
   const setActiveTab = useSidebarStore((state) => state.setActiveTab);
   const recordings = useSidebarStore((state) => state.recordings);
@@ -31,7 +35,9 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
         你的学习沉淀
       </h2>
       <p className="mt-2 max-w-[300px] text-sm leading-6 text-[#6a625a]">
-        录音记录、收藏内容和表达库都沉淀在右侧，阅读区保持专注。
+        {isAuthenticated
+          ? "登录后，录音记录、收藏内容和表达库会从你的云端空间读取。"
+          : "录音记录、收藏内容和表达库都沉淀在右侧，阅读区保持专注。"}
       </p>
 
       <div className="mt-4 inline-flex w-full border border-[#e7ded4] bg-[#f4f0ea] p-1">
@@ -66,6 +72,13 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
               最新复述
             </p>
+            {recordings.length === 0 ? (
+              <p className="mt-3 text-sm leading-6 text-[#8a8178]">
+                {isAuthenticated
+                  ? "云端录音记录会显示在这里。"
+                  : "完成一次复述后，记录会显示在这里。"}
+              </p>
+            ) : null}
             {recordings.map((recording) => (
               <Card key={recording.id} className="mt-2 bg-[#fcfbf8] p-4 shadow-none">
                 <p className="font-mono text-xs text-[#8a8178]">
@@ -99,6 +112,13 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
               最近收藏
             </p>
+            {favorites.length === 0 ? (
+              <p className="mt-3 text-sm leading-6 text-[#8a8178]">
+                {isAuthenticated
+                  ? "云端收藏内容会显示在这里。"
+                  : "收藏词句后，它们会显示在这里。"}
+              </p>
+            ) : null}
             {favorites.map((favorite) => (
               <Card
                 key={favorite.id}
@@ -123,6 +143,13 @@ export function LearningSidebar({ onOpenRecording }: LearningSidebarProps) {
             <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
               表达库
             </p>
+            {expressions.length === 0 ? (
+              <p className="mt-3 text-sm leading-6 text-[#8a8178]">
+                {isAuthenticated
+                  ? "云端表达库会显示在这里。"
+                  : "加入表达库后，可复用表达会显示在这里。"}
+              </p>
+            ) : null}
             {expressions.map((expression) => (
               <Card
                 key={expression.id}

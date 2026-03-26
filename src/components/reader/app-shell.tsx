@@ -12,18 +12,62 @@ import type {
   AnalysisRouteResponse,
 } from "@/features/analysis/analysis-schema";
 import { AnalysisModal } from "@/components/reader/analysis-modal";
+import { AuthModal } from "@/components/reader/auth-modal";
 import { LearningSidebar } from "@/components/reader/learning-sidebar";
+import {
+  PdfLibraryPanel,
+  type PdfLibraryDocument,
+} from "@/components/reader/pdf-library-panel";
 import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
-import { createPdfStageState } from "@/features/pdf/pdf-file-state";
+import { authStore, useAuthStore } from "@/features/auth/auth-store";
+import { authSessionSchema } from "@/features/auth/auth-schema";
+import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
+import { uploadPdfDocumentToCloud } from "@/features/library/library-client";
+import { canUploadFileWithinQuota } from "@/features/library/quota";
+import {
+  createPdfStageState,
+  normalizePdfDocumentLabel,
+} from "@/features/pdf/pdf-file-state";
 import {
   hydrateSidebarStore,
+  replaceSidebarStoreWithCloudData,
+  restoreGuestSidebarStore,
   sidebarStore,
   useSidebarStore,
+  type ExpressionItem,
+  type FavoriteItem,
+  type RecordingItem,
 } from "@/features/sidebar/sidebar-store";
+import {
+  loadSidebarCloudState,
+  saveExpressionToCloud,
+  saveFavoriteToCloud,
+  saveRecordingToCloud,
+} from "@/features/sidebar/sidebar-cloud-client";
+
+const AUTH_LIBRARY_SEED_DOCUMENTS: PdfLibraryDocument[] = [
+  {
+    createdAt: "2026-03-25T10:00:00.000Z",
+    fileName: "lesson-1.pdf",
+    fileSizeBytes: 2048,
+    id: "library-seed-lesson-1",
+    previewSource: "/sample/the-last-question.pdf",
+  },
+  {
+    createdAt: "2026-03-25T10:30:00.000Z",
+    fileName: "reading-notes.pdf",
+    fileSizeBytes: 4096,
+    id: "library-seed-reading-notes",
+    previewSource: "/sample/the-last-question.pdf",
+  },
+];
+const E2E_AUTH_SESSION_STORAGE_KEY = "corgi-read-e2e-auth-session";
 
 export function AppShell() {
+  const authSession = useAuthStore((state) => state.session);
+  const addFavorite = useSidebarStore((state) => state.addFavorite);
   const addRecording = useSidebarStore((state) => state.addRecording);
   const addExpression = useSidebarStore((state) => state.addExpression);
   const [activeAnalysis, setActiveAnalysis] = useState<{
@@ -34,17 +78,35 @@ export function AppShell() {
     null,
   );
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [cloudError, setCloudError] = useState<string | null>(null);
   const [readerError, setReaderError] = useState<string | null>(null);
   const [lastAudioBlob, setLastAudioBlob] = useState<Blob | null>(null);
   const [lastTranscript, setLastTranscript] = useState<string | null>(null);
   const [pdfSource, setPdfSource] = useState<string | null>(null);
   const [documentName, setDocumentName] = useState("未打开文档");
   const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [isPdfLibraryOpen, setIsPdfLibraryOpen] = useState(false);
+  const [uploadedLibraryDocuments, setUploadedLibraryDocuments] = useState<
+    PdfLibraryDocument[]
+  >([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
     null,
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const storageQuotaBytes =
+    authSession.status === "authenticated"
+      ? authSession.storageQuotaBytes
+      : undefined;
+  const storageUsedBytes =
+    authSession.status === "authenticated"
+      ? authSession.storageUsedBytes
+      : undefined;
+  const hasSupabaseBrowserConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  );
 
   useEffect(() => {
     return () => {
@@ -58,17 +120,84 @@ export function AppShell() {
     hydrateSidebarStore(sidebarStore);
   }, []);
 
+  useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_E2E_AUTH_BOOTSTRAP !== "1" ||
+      typeof window === "undefined"
+    ) {
+      return;
+    }
+
+    const rawSession = window.localStorage.getItem(E2E_AUTH_SESSION_STORAGE_KEY);
+    if (!rawSession) {
+      return;
+    }
+
+    try {
+      const parsedSession = authSessionSchema.parse(JSON.parse(rawSession));
+      authStore.setState({ session: parsedSession });
+    } catch (error) {
+      console.error("[auth-e2e] failed to bootstrap session", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authSession.status !== "authenticated") {
+      restoreGuestSidebarStore(sidebarStore);
+      return;
+    }
+
+    replaceSidebarStoreWithCloudData(sidebarStore, {
+      recordings: [],
+      favorites: [],
+      expressions: [],
+    });
+
+    if (!hasSupabaseBrowserConfig) {
+      return;
+    }
+
+    const client = createSupabaseBrowserClient();
+    let cancelled = false;
+
+    void loadSidebarCloudState({
+      client,
+      userId: authSession.userId,
+    })
+      .then((cloudState) => {
+        if (!cancelled) {
+          setCloudError(null);
+          replaceSidebarStoreWithCloudData(sidebarStore, cloudState);
+        }
+      })
+      .catch((error) => {
+        console.error("[sidebar-cloud] failed to load sidebar data", error);
+        setCloudError("云端数据加载失败");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authSession.status, authSession.userId, hasSupabaseBrowserConfig]);
+
   const pdfStageState = useMemo(
     () => createPdfStageState(pdfSource, isPdfLoading, readerError),
     [isPdfLoading, pdfSource, readerError],
   );
+  const libraryDocuments = useMemo(() => {
+    if (authSession.status !== "authenticated") {
+      return [];
+    }
+
+    return [...uploadedLibraryDocuments, ...AUTH_LIBRARY_SEED_DOCUMENTS];
+  }, [authSession.status, uploadedLibraryDocuments]);
 
   const completeAnalysis = useCallback(
     async (transcript: string) => {
       const response = await analyzeTranscript(transcript);
       const recordingId = `recording-${Date.now()}`;
 
-      addRecording({
+      const recordingItem: RecordingItem = {
         id: recordingId,
         createdAt: new Intl.DateTimeFormat("en-US", {
           hour: "2-digit",
@@ -79,7 +208,19 @@ export function AppShell() {
         summary: response.result.corrected,
         feedback: `AI 点评：${response.result.coachFeedback}`,
         analysis: response.result,
-      });
+      };
+
+      addRecording(recordingItem);
+
+      if (authSession.status === "authenticated" && hasSupabaseBrowserConfig) {
+        void saveRecordingToCloud({
+          client: createSupabaseBrowserClient(),
+          item: recordingItem,
+          userId: authSession.userId,
+        }).catch((error) => {
+          console.error("[sidebar-cloud] failed to save recording", error);
+        });
+      }
 
       setAnalysisMeta(response.meta);
       setActiveAnalysis({
@@ -87,7 +228,7 @@ export function AppShell() {
         result: response.result,
       });
     },
-    [addRecording],
+    [addRecording, authSession, hasSupabaseBrowserConfig],
   );
 
   const handleRecordingStop = useCallback(
@@ -145,14 +286,44 @@ export function AppShell() {
       return;
     }
 
-    addExpression({
+    const expressionItem: ExpressionItem = {
       id: `expression-${activeAnalysis.recordingId}`,
       phrase: activeAnalysis.result.nativeExpression,
       note: `${activeAnalysis.result.grammar} ${activeAnalysis.result.coachFeedback}`,
       sourceRecordingId: activeAnalysis.recordingId,
-    });
+    };
+
+    addExpression(expressionItem);
+
+    if (authSession.status === "authenticated" && hasSupabaseBrowserConfig) {
+      void saveExpressionToCloud({
+        client: createSupabaseBrowserClient(),
+        item: expressionItem,
+        userId: authSession.userId,
+      }).catch((error) => {
+        console.error("[sidebar-cloud] failed to save expression", error);
+      });
+    }
+
     setActiveAnalysis(null);
-  }, [activeAnalysis, addExpression]);
+  }, [activeAnalysis, addExpression, authSession, hasSupabaseBrowserConfig]);
+
+  const handleFavorite = useCallback(
+    (item: FavoriteItem) => {
+      addFavorite(item);
+
+      if (authSession.status === "authenticated" && hasSupabaseBrowserConfig) {
+        void saveFavoriteToCloud({
+          client: createSupabaseBrowserClient(),
+          item,
+          userId: authSession.userId,
+        }).catch((error) => {
+          console.error("[sidebar-cloud] failed to save favorite", error);
+        });
+      }
+    },
+    [addFavorite, authSession, hasSupabaseBrowserConfig],
+  );
 
   const handleRetryAnalysis = useCallback(async () => {
     if (!lastTranscript) {
@@ -205,10 +376,48 @@ export function AppShell() {
     setMenuOpen((value) => !value);
   }, []);
 
+  const handleAvatarClick = useCallback(() => {
+    if (authSession.status === "authenticated") {
+      return;
+    }
+
+    setAuthModalOpen(true);
+  }, [authSession.status]);
+
   const handleUploadClick = useCallback(() => {
     setMenuOpen(false);
     fileInputRef.current?.click();
   }, []);
+
+  const handleOpenLibrary = useCallback(() => {
+    if (authSession.status !== "authenticated") {
+      return;
+    }
+
+    setIsPdfLibraryOpen(true);
+  }, [authSession.status]);
+
+  const handleCloseLibrary = useCallback(() => {
+    setIsPdfLibraryOpen(false);
+  }, []);
+
+  const handleOpenLibraryDocument = useCallback(
+    (document: PdfLibraryDocument) => {
+      const nextSource = document.previewSource;
+
+      if (nextSource) {
+        if (pdfSource?.startsWith("blob:")) {
+          URL.revokeObjectURL(pdfSource);
+        }
+
+        setPdfSource(nextSource);
+        setDocumentName(normalizePdfDocumentLabel(document.fileName));
+      }
+
+      setIsPdfLibraryOpen(false);
+    },
+    [pdfSource],
+  );
 
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -228,8 +437,10 @@ export function AppShell() {
       }
 
       setReaderError(null);
+      setCloudError(null);
       setIsPdfLoading(true);
-      setDocumentName(file.name);
+
+      setDocumentName(normalizePdfDocumentLabel(file.name));
 
       if (pdfSource?.startsWith("blob:")) {
         URL.revokeObjectURL(pdfSource);
@@ -240,8 +451,77 @@ export function AppShell() {
 
       await Promise.resolve();
       setIsPdfLoading(false);
+
+      if (authSession.status === "authenticated") {
+        if (
+          !canUploadFileWithinQuota({
+            incomingFileSizeBytes: file.size,
+            storageQuotaBytes,
+            storageUsedBytes,
+          })
+        ) {
+          setCloudError("已达到 1 GB 空间上限");
+          return;
+        }
+
+        const initiatingUserId = authSession.userId;
+        void uploadPdfDocumentToCloud({
+          client: createSupabaseBrowserClient(),
+          userId: initiatingUserId,
+          file,
+          storageQuotaBytes,
+          storageUsedBytes,
+        })
+          .then(() => {
+            authStore.setState((state) => {
+              if (
+                state.session.status !== "authenticated" ||
+                state.session.userId !== initiatingUserId
+              ) {
+                return state;
+              }
+
+              return {
+                session: {
+                  ...state.session,
+                  storageUsedBytes:
+                    (state.session.storageUsedBytes ?? 0) + file.size,
+                },
+              };
+            });
+
+            setUploadedLibraryDocuments((currentDocuments) => [
+              {
+                createdAt: new Date().toISOString(),
+                fileName: file.name,
+                fileSizeBytes: file.size,
+                id: `library-${Date.now()}`,
+                previewSource: nextSource,
+              },
+              ...currentDocuments,
+            ]);
+          })
+          .catch((uploadError) => {
+            const errorMessage =
+              uploadError instanceof Error
+                ? uploadError.message
+                : "Cloud upload failed";
+
+            setCloudError(
+              errorMessage === "Storage quota exceeded"
+                ? "已达到 1 GB 空间上限"
+                : "云端保存失败",
+            );
+          });
+      }
     },
-    [pdfSource],
+    [
+      authSession.status,
+      authSession.userId,
+      pdfSource,
+      storageQuotaBytes,
+      storageUsedBytes,
+    ],
   );
 
   return (
@@ -253,7 +533,10 @@ export function AppShell() {
         <h1 className="sr-only">English PDF Reader</h1>
         <TopBar
           documentLabel={documentName}
+          isAuthenticated={authSession.status === "authenticated"}
           menuOpen={menuOpen}
+          onAvatarClick={handleAvatarClick}
+          onOpenLibrary={handleOpenLibrary}
           onToggleMenu={handleToggleMenu}
           onUploadClick={handleUploadClick}
         />
@@ -273,18 +556,40 @@ export function AppShell() {
           <PdfStage
             documentName={documentName}
             error={pdfStageState.error}
+            onFavorite={handleFavorite}
             source={pdfStageState.source}
             status={pdfStageState.status}
           />
-          <LearningSidebar onOpenRecording={handleOpenRecording} />
+          <LearningSidebar
+            isAuthenticated={authSession.status === "authenticated"}
+            onOpenRecording={handleOpenRecording}
+          />
           <RecordingButton
             disabled={pdfStageState.status !== "ready"}
             onStop={handleRecordingStop}
           />
         </div>
 
-        {transcriptionError || analysisError ? (
+        <PdfLibraryPanel
+          documents={libraryDocuments}
+          errorMessage={cloudError}
+          isOpen={authSession.status === "authenticated" && isPdfLibraryOpen}
+          onClose={handleCloseLibrary}
+          onOpenDocument={handleOpenLibraryDocument}
+          storageQuotaBytes={storageQuotaBytes}
+          storageUsedBytes={storageUsedBytes}
+        />
+
+        {transcriptionError || analysisError || cloudError ? (
           <div className="pointer-events-none absolute left-1/2 top-[78px] z-20 flex w-full max-w-[680px] -translate-x-1/2 flex-col gap-2 px-2">
+            {cloudError ? (
+              <div
+                className="pointer-events-auto flex items-center gap-3 border border-[#e7ded4] bg-[#fff7f0] px-4 py-3 text-sm text-[#7a4530] shadow-[0_6px_16px_rgba(0,0,0,0.06)]"
+                data-testid="cloud-error-banner"
+              >
+                <p>{cloudError}</p>
+              </div>
+            ) : null}
             {transcriptionError ? (
               <div className="pointer-events-auto flex items-center gap-3 border border-[#e7ded4] bg-[#fff7f0] px-4 py-3 text-sm text-[#7a4530] shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
                 <p>{transcriptionError}</p>
@@ -323,6 +628,10 @@ export function AppShell() {
         onAddExpression={handleAddExpression}
         onClose={() => setActiveAnalysis(null)}
         result={activeAnalysis?.result ?? null}
+      />
+      <AuthModal
+        onClose={() => setAuthModalOpen(false)}
+        open={authModalOpen}
       />
 
       {analysisMeta ? (

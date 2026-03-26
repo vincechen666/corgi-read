@@ -12,6 +12,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.100.0",
     "google-auth-library": "^10.6.2",
     "next": "16.1.6",
     "pdfjs-dist": "5.4.296",

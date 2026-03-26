@@ -2,20 +2,37 @@ import Image from "next/image";
 
 type TopBarProps = {
   documentLabel?: string;
+  isAuthenticated?: boolean;
   menuOpen?: boolean;
   onToggleMenu?: () => void;
+  onAvatarClick?: () => void;
+  onOpenLibrary?: () => void;
   onUploadClick?: () => void;
 };
 
 export function TopBar({
   documentLabel = "文档 The Last Question.pdf",
+  isAuthenticated = false,
   menuOpen = false,
   onToggleMenu,
+  onAvatarClick,
+  onOpenLibrary,
   onUploadClick,
 }: TopBarProps) {
   return (
     <header className="flex h-[60px] items-center justify-between border border-[#e7ded4] bg-white px-5 py-3">
       <div className="flex items-center gap-3">
+        {isAuthenticated ? (
+          <button
+            aria-label="PDF library"
+            className="h-8 border border-[#d8e1d6] bg-[#f2f5f1] px-4 text-[13px] font-medium text-[#44615a]"
+            data-testid="pdf-library-trigger"
+            onClick={onOpenLibrary}
+            type="button"
+          >
+            PDF 库
+          </button>
+        ) : null}
         <span className="font-serif text-[26px] font-medium text-[#1a1a1a]">
           CorgiRead
         </span>
@@ -58,9 +75,10 @@ export function TopBar({
           沉浸式精读模式
         </div>
         <button
-          aria-label="User avatar"
+          aria-label="Account"
           className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e7ded4] bg-[#f8f4ee] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
           data-testid="topbar-avatar-button"
+          onClick={onAvatarClick}
           type="button"
         >
           <Image

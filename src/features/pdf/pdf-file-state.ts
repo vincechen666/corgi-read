@@ -1,5 +1,11 @@
 export type PdfStageStatus = "empty" | "loading" | "ready" | "error";
 
+export function normalizePdfDocumentLabel(fileName: string) {
+  const trimmed = fileName.trim();
+
+  return trimmed || "未命名 PDF";
+}
+
 export function createPdfStageState(
   source: string | null,
   isLoading: boolean,
