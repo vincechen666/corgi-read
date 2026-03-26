@@ -10,9 +10,12 @@ export type PdfLibraryDocument = {
 
 type PdfLibraryPanelProps = {
   documents: PdfLibraryDocument[];
+  errorMessage?: string | null;
   isOpen: boolean;
   onClose: () => void;
   onOpenDocument: (document: PdfLibraryDocument) => void;
+  storageQuotaBytes?: number;
+  storageUsedBytes?: number;
 };
 
 function formatFileSize(fileSizeBytes: number) {
@@ -38,11 +41,28 @@ function formatTimestamp(isoTimestamp: string) {
   return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
+function formatQuotaSummary(
+  storageUsedBytes?: number,
+  storageQuotaBytes?: number,
+) {
+  if (storageQuotaBytes === undefined) {
+    return "1 GB cloud space";
+  }
+
+  const used = formatFileSize(storageUsedBytes ?? 0);
+  const total = formatFileSize(storageQuotaBytes);
+
+  return `${used} / ${total}`;
+}
+
 export function PdfLibraryPanel({
   documents,
+  errorMessage = null,
   isOpen,
   onClose,
   onOpenDocument,
+  storageQuotaBytes,
+  storageUsedBytes,
 }: PdfLibraryPanelProps) {
   if (!isOpen) {
     return null;
@@ -66,6 +86,14 @@ export function PdfLibraryPanel({
           <p className="mt-2 text-[14px] text-[#514942]">
             已上传的 PDF 将显示在这里
           </p>
+          <p className="mt-2 text-[12px] text-[#8a8178]">
+            {formatQuotaSummary(storageUsedBytes, storageQuotaBytes)}
+          </p>
+          {errorMessage ? (
+            <p className="mt-3 border border-[#f1d4c6] bg-[#fff4ec] px-3 py-2 text-[12px] leading-5 text-[#b44d28]">
+              {errorMessage}
+            </p>
+          ) : null}
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto p-2">

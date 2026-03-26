@@ -24,6 +24,7 @@ import { TopBar } from "@/components/reader/top-bar";
 import { authStore, useAuthStore } from "@/features/auth/auth-store";
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
 import { uploadPdfDocumentToCloud } from "@/features/library/library-client";
+import { canUploadFileWithinQuota } from "@/features/library/quota";
 import {
   createPdfStageState,
   normalizePdfDocumentLabel,
@@ -75,6 +76,7 @@ export function AppShell() {
     null,
   );
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [cloudError, setCloudError] = useState<string | null>(null);
   const [readerError, setReaderError] = useState<string | null>(null);
   const [lastAudioBlob, setLastAudioBlob] = useState<Blob | null>(null);
   const [lastTranscript, setLastTranscript] = useState<string | null>(null);
@@ -133,11 +135,13 @@ export function AppShell() {
     })
       .then((cloudState) => {
         if (!cancelled) {
+          setCloudError(null);
           replaceSidebarStoreWithCloudData(sidebarStore, cloudState);
         }
       })
       .catch((error) => {
         console.error("[sidebar-cloud] failed to load sidebar data", error);
+        setCloudError("云端数据加载失败");
       });
 
     return () => {
@@ -402,6 +406,7 @@ export function AppShell() {
       }
 
       setReaderError(null);
+      setCloudError(null);
       setIsPdfLoading(true);
 
       setDocumentName(normalizePdfDocumentLabel(file.name));
@@ -417,6 +422,17 @@ export function AppShell() {
       setIsPdfLoading(false);
 
       if (authSession.status === "authenticated") {
+        if (
+          !canUploadFileWithinQuota({
+            incomingFileSizeBytes: file.size,
+            storageQuotaBytes: authSession.storageQuotaBytes,
+            storageUsedBytes: authSession.storageUsedBytes,
+          })
+        ) {
+          setCloudError("已达到 1 GB 空间上限");
+          return;
+        }
+
         const initiatingUserId = authSession.userId;
         void uploadPdfDocumentToCloud({
           client: createSupabaseBrowserClient(),
@@ -460,10 +476,10 @@ export function AppShell() {
                 ? uploadError.message
                 : "Cloud upload failed";
 
-            setReaderError(
+            setCloudError(
               errorMessage === "Storage quota exceeded"
                 ? "已达到 1 GB 空间上限"
-                : errorMessage,
+                : "云端保存失败",
             );
           });
       }
@@ -525,13 +541,24 @@ export function AppShell() {
 
         <PdfLibraryPanel
           documents={libraryDocuments}
+          errorMessage={cloudError}
           isOpen={authSession.status === "authenticated" && isPdfLibraryOpen}
           onClose={handleCloseLibrary}
           onOpenDocument={handleOpenLibraryDocument}
+          storageQuotaBytes={authSession.storageQuotaBytes}
+          storageUsedBytes={authSession.storageUsedBytes}
         />
 
-        {transcriptionError || analysisError ? (
+        {transcriptionError || analysisError || cloudError ? (
           <div className="pointer-events-none absolute left-1/2 top-[78px] z-20 flex w-full max-w-[680px] -translate-x-1/2 flex-col gap-2 px-2">
+            {cloudError ? (
+              <div
+                className="pointer-events-auto flex items-center gap-3 border border-[#e7ded4] bg-[#fff7f0] px-4 py-3 text-sm text-[#7a4530] shadow-[0_6px_16px_rgba(0,0,0,0.06)]"
+                data-testid="cloud-error-banner"
+              >
+                <p>{cloudError}</p>
+              </div>
+            ) : null}
             {transcriptionError ? (
               <div className="pointer-events-auto flex items-center gap-3 border border-[#e7ded4] bg-[#fff7f0] px-4 py-3 text-sm text-[#7a4530] shadow-[0_6px_16px_rgba(0,0,0,0.06)]">
                 <p>{transcriptionError}</p>
