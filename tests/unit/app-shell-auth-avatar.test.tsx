@@ -11,13 +11,17 @@ vi.mock("@/features/analysis/analysis-client", () => ({
 
 afterEach(() => {
   authStore.setState({
-    session: { status: "guest", email: null },
+    session: { status: "guest", userId: null, email: null },
   });
 });
 
 test("authenticated avatar does not open the login modal", () => {
   authStore.setState({
-    session: { status: "authenticated", email: "reader@example.com" },
+    session: {
+      status: "authenticated",
+      userId: "user-1",
+      email: "reader@example.com",
+    },
   });
 
   render(<AppShell />);

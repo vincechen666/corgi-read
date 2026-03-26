@@ -95,3 +95,34 @@ test("uploads cloud pdf metadata to storage and database", async () => {
     },
   ]);
 });
+
+test("removes uploaded pdf from storage when metadata insert fails", async () => {
+  const upload = vi.fn().mockResolvedValue({ error: null });
+  const remove = vi.fn().mockResolvedValue({ error: null });
+  const insert = vi.fn().mockResolvedValue({
+    error: { message: "metadata failed" },
+  });
+  const client = {
+    storage: {
+      from: vi.fn(() => ({
+        upload,
+        remove,
+      })),
+    },
+    from: vi.fn(() => ({
+      insert,
+    })),
+  };
+
+  await expect(
+    uploadPdfDocumentToCloud({
+      client: client as never,
+      file: new File(["pdf"], "lesson-1.pdf", { type: "application/pdf" }),
+      userId: "user-1",
+      documentId: "doc-1",
+      createdAt: "2026-03-25T10:00:00.000Z",
+    }),
+  ).rejects.toThrow("Supabase metadata insert failed: metadata failed");
+
+  expect(remove).toHaveBeenCalledWith(["users/user-1/pdf/doc-1.pdf"]);
+});

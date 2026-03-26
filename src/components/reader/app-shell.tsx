@@ -17,8 +17,9 @@ import { LearningSidebar } from "@/components/reader/learning-sidebar";
 import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
-import { buildPdfUploadPlan } from "@/features/library/library-client";
-import { useAuthStore } from "@/features/auth/auth-store";
+import { authStore, useAuthStore } from "@/features/auth/auth-store";
+import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
+import { uploadPdfDocumentToCloud } from "@/features/library/library-client";
 import {
   createPdfStageState,
   normalizePdfDocumentLabel,
@@ -50,9 +51,6 @@ export function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
-    null,
-  );
-  const pendingCloudUploadRef = useRef<ReturnType<typeof buildPdfUploadPlan> | null>(
     null,
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -249,23 +247,6 @@ export function AppShell() {
       setReaderError(null);
       setIsPdfLoading(true);
 
-      if (authSession.status === "authenticated") {
-        const uploadPlan = buildPdfUploadPlan({
-          userId: authSession.email ?? "guest",
-          file,
-        });
-
-        if (!uploadPlan.withinQuota) {
-          setIsPdfLoading(false);
-          setReaderError("已达到 1 GB 空间上限");
-          return;
-        }
-
-        pendingCloudUploadRef.current = uploadPlan;
-      } else {
-        pendingCloudUploadRef.current = null;
-      }
-
       setDocumentName(normalizePdfDocumentLabel(file.name));
 
       if (pdfSource?.startsWith("blob:")) {
@@ -277,8 +258,55 @@ export function AppShell() {
 
       await Promise.resolve();
       setIsPdfLoading(false);
+
+      if (authSession.status === "authenticated") {
+        const initiatingUserId = authSession.userId;
+        void uploadPdfDocumentToCloud({
+          client: createSupabaseBrowserClient(),
+          userId: initiatingUserId,
+          file,
+          storageQuotaBytes: authSession.storageQuotaBytes,
+          storageUsedBytes: authSession.storageUsedBytes,
+        })
+          .then(() => {
+            authStore.setState((state) => {
+              if (
+                state.session.status !== "authenticated" ||
+                state.session.userId !== initiatingUserId
+              ) {
+                return state;
+              }
+
+              return {
+                session: {
+                  ...state.session,
+                  storageUsedBytes:
+                    (state.session.storageUsedBytes ?? 0) + file.size,
+                },
+              };
+            });
+          })
+          .catch((uploadError) => {
+            const errorMessage =
+              uploadError instanceof Error
+                ? uploadError.message
+                : "Cloud upload failed";
+
+            setReaderError(
+              errorMessage === "Storage quota exceeded"
+                ? "已达到 1 GB 空间上限"
+                : errorMessage,
+            );
+          });
+      }
     },
-    [authSession.email, authSession.status, pdfSource],
+    [
+      authSession.status,
+      authSession.storageQuotaBytes,
+      authSession.storageUsedBytes,
+      authSession.userId,
+      pdfSource,
+    ],
   );
 
   return (

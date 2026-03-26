@@ -90,6 +90,16 @@ export async function uploadPdfDocumentToCloud({
     .insert([plan.pdfDocument]);
 
   if (metadataResult.error) {
+    const cleanupResult = await client.storage
+      .from(PDF_STORAGE_BUCKET)
+      .remove([plan.storagePath]);
+
+    if (cleanupResult.error) {
+      console.warn(
+        `Supabase storage cleanup failed after metadata insert error: ${cleanupResult.error.message}`,
+      );
+    }
+
     throw new Error(
       `Supabase metadata insert failed: ${metadataResult.error.message}`,
     );

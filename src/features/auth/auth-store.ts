@@ -8,27 +8,42 @@ import type { AuthSession } from "@/features/auth/auth-schema";
 type AuthState = {
   session: AuthSession;
   setGuest: () => void;
-  setAuthenticated: (email: string) => void;
+  setAuthenticated: (
+    userId: string,
+    email: string,
+    storageQuotaBytes?: number,
+    storageUsedBytes?: number,
+  ) => void;
 };
 
 export function createAuthStore(initialSession?: AuthSession) {
   return createStore<AuthState>()((set) => ({
     session: initialSession ?? {
       status: "guest",
+      userId: null,
       email: null,
     },
     setGuest: () =>
       set({
         session: {
           status: "guest",
+          userId: null,
           email: null,
         },
       }),
-    setAuthenticated: (email) =>
+    setAuthenticated: (
+      userId,
+      email,
+      storageQuotaBytes,
+      storageUsedBytes,
+    ) =>
       set({
         session: {
           status: "authenticated",
+          userId,
           email,
+          storageQuotaBytes,
+          storageUsedBytes,
         },
       }),
   }));

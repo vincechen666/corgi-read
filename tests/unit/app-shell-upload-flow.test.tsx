@@ -2,10 +2,19 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
 
+const libraryClientMocks = vi.hoisted(() => ({
+  uploadPdfDocumentToCloud: vi.fn(),
+}));
+
+vi.mock("@/features/library/library-client", () => ({
+  uploadPdfDocumentToCloud: libraryClientMocks.uploadPdfDocumentToCloud,
+}));
+
 import { AppShell } from "@/components/reader/app-shell";
 
 afterEach(() => {
   vi.restoreAllMocks();
+  libraryClientMocks.uploadPdfDocumentToCloud.mockClear();
 });
 
 test("updates the reader when a local pdf is selected", async () => {
@@ -23,4 +32,5 @@ test("updates the reader when a local pdf is selected", async () => {
   );
 
   expect(await screen.findByText(/lesson-3\.pdf/i)).toBeInTheDocument();
+  expect(libraryClientMocks.uploadPdfDocumentToCloud).not.toHaveBeenCalled();
 });
