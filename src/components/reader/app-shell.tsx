@@ -14,6 +14,10 @@ import type {
 import { AnalysisModal } from "@/components/reader/analysis-modal";
 import { AuthModal } from "@/components/reader/auth-modal";
 import { LearningSidebar } from "@/components/reader/learning-sidebar";
+import {
+  PdfLibraryPanel,
+  type PdfLibraryDocument,
+} from "@/components/reader/pdf-library-panel";
 import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
@@ -29,6 +33,23 @@ import {
   sidebarStore,
   useSidebarStore,
 } from "@/features/sidebar/sidebar-store";
+
+const AUTH_LIBRARY_SEED_DOCUMENTS: PdfLibraryDocument[] = [
+  {
+    createdAt: "2026-03-25T10:00:00.000Z",
+    fileName: "lesson-1.pdf",
+    fileSizeBytes: 2048,
+    id: "library-seed-lesson-1",
+    previewSource: "/sample/the-last-question.pdf",
+  },
+  {
+    createdAt: "2026-03-25T10:30:00.000Z",
+    fileName: "reading-notes.pdf",
+    fileSizeBytes: 4096,
+    id: "library-seed-reading-notes",
+    previewSource: "/sample/the-last-question.pdf",
+  },
+];
 
 export function AppShell() {
   const authSession = useAuthStore((state) => state.session);
@@ -48,6 +69,10 @@ export function AppShell() {
   const [pdfSource, setPdfSource] = useState<string | null>(null);
   const [documentName, setDocumentName] = useState("未打开文档");
   const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [isPdfLibraryOpen, setIsPdfLibraryOpen] = useState(false);
+  const [uploadedLibraryDocuments, setUploadedLibraryDocuments] = useState<
+    PdfLibraryDocument[]
+  >([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
@@ -71,6 +96,13 @@ export function AppShell() {
     () => createPdfStageState(pdfSource, isPdfLoading, readerError),
     [isPdfLoading, pdfSource, readerError],
   );
+  const libraryDocuments = useMemo(() => {
+    if (authSession.status !== "authenticated") {
+      return [];
+    }
+
+    return [...uploadedLibraryDocuments, ...AUTH_LIBRARY_SEED_DOCUMENTS];
+  }, [authSession.status, uploadedLibraryDocuments]);
 
   const completeAnalysis = useCallback(
     async (transcript: string) => {
@@ -227,6 +259,36 @@ export function AppShell() {
     fileInputRef.current?.click();
   }, []);
 
+  const handleOpenLibrary = useCallback(() => {
+    if (authSession.status !== "authenticated") {
+      return;
+    }
+
+    setIsPdfLibraryOpen(true);
+  }, [authSession.status]);
+
+  const handleCloseLibrary = useCallback(() => {
+    setIsPdfLibraryOpen(false);
+  }, []);
+
+  const handleOpenLibraryDocument = useCallback(
+    (document: PdfLibraryDocument) => {
+      const nextSource = document.previewSource;
+
+      if (nextSource) {
+        if (pdfSource?.startsWith("blob:")) {
+          URL.revokeObjectURL(pdfSource);
+        }
+
+        setPdfSource(nextSource);
+        setDocumentName(normalizePdfDocumentLabel(document.fileName));
+      }
+
+      setIsPdfLibraryOpen(false);
+    },
+    [pdfSource],
+  );
+
   const handleFileChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0] ?? null;
@@ -285,6 +347,17 @@ export function AppShell() {
                 },
               };
             });
+
+            setUploadedLibraryDocuments((currentDocuments) => [
+              {
+                createdAt: new Date().toISOString(),
+                fileName: file.name,
+                fileSizeBytes: file.size,
+                id: `library-${Date.now()}`,
+                previewSource: nextSource,
+              },
+              ...currentDocuments,
+            ]);
           })
           .catch((uploadError) => {
             const errorMessage =
@@ -321,7 +394,7 @@ export function AppShell() {
           isAuthenticated={authSession.status === "authenticated"}
           menuOpen={menuOpen}
           onAvatarClick={handleAvatarClick}
-          onOpenLibrary={() => {}}
+          onOpenLibrary={handleOpenLibrary}
           onToggleMenu={handleToggleMenu}
           onUploadClick={handleUploadClick}
         />
@@ -350,6 +423,13 @@ export function AppShell() {
             onStop={handleRecordingStop}
           />
         </div>
+
+        <PdfLibraryPanel
+          documents={libraryDocuments}
+          isOpen={authSession.status === "authenticated" && isPdfLibraryOpen}
+          onClose={handleCloseLibrary}
+          onOpenDocument={handleOpenLibraryDocument}
+        />
 
         {transcriptionError || analysisError ? (
           <div className="pointer-events-none absolute left-1/2 top-[78px] z-20 flex w-full max-w-[680px] -translate-x-1/2 flex-col gap-2 px-2">

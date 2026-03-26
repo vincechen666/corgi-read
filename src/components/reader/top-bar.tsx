@@ -22,6 +22,17 @@ export function TopBar({
   return (
     <header className="flex h-[60px] items-center justify-between border border-[#e7ded4] bg-white px-5 py-3">
       <div className="flex items-center gap-3">
+        {isAuthenticated ? (
+          <button
+            aria-label="PDF library"
+            className="h-8 border border-[#d8e1d6] bg-[#f2f5f1] px-4 text-[13px] font-medium text-[#44615a]"
+            data-testid="pdf-library-trigger"
+            onClick={onOpenLibrary}
+            type="button"
+          >
+            PDF 库
+          </button>
+        ) : null}
         <span className="font-serif text-[26px] font-medium text-[#1a1a1a]">
           CorgiRead
         </span>
@@ -63,16 +74,6 @@ export function TopBar({
         <div className="flex h-8 items-center border border-[#f1d4c6] bg-[#fff4ec] px-4 text-[13px] text-[#c25b34]">
           沉浸式精读模式
         </div>
-        {isAuthenticated ? (
-          <button
-            aria-label="PDF library"
-            className="flex h-8 items-center border border-[#d8e1d6] bg-[#f2f5f1] px-4 text-[13px] font-medium text-[#44615a]"
-            onClick={onOpenLibrary}
-            type="button"
-          >
-            PDF 库
-          </button>
-        ) : null}
         <button
           aria-label="Account"
           className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e7ded4] bg-[#f8f4ee] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
