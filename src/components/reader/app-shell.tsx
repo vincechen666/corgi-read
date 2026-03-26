@@ -30,9 +30,20 @@ import {
 } from "@/features/pdf/pdf-file-state";
 import {
   hydrateSidebarStore,
+  replaceSidebarStoreWithCloudData,
+  restoreGuestSidebarStore,
   sidebarStore,
   useSidebarStore,
+  type ExpressionItem,
+  type FavoriteItem,
+  type RecordingItem,
 } from "@/features/sidebar/sidebar-store";
+import {
+  loadSidebarCloudState,
+  saveExpressionToCloud,
+  saveFavoriteToCloud,
+  saveRecordingToCloud,
+} from "@/features/sidebar/sidebar-cloud-client";
 
 const AUTH_LIBRARY_SEED_DOCUMENTS: PdfLibraryDocument[] = [
   {
@@ -53,6 +64,7 @@ const AUTH_LIBRARY_SEED_DOCUMENTS: PdfLibraryDocument[] = [
 
 export function AppShell() {
   const authSession = useAuthStore((state) => state.session);
+  const addFavorite = useSidebarStore((state) => state.addFavorite);
   const addRecording = useSidebarStore((state) => state.addRecording);
   const addExpression = useSidebarStore((state) => state.addExpression);
   const [activeAnalysis, setActiveAnalysis] = useState<{
@@ -79,6 +91,10 @@ export function AppShell() {
     null,
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const hasSupabaseBrowserConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  );
 
   useEffect(() => {
     return () => {
@@ -91,6 +107,43 @@ export function AppShell() {
   useEffect(() => {
     hydrateSidebarStore(sidebarStore);
   }, []);
+
+  useEffect(() => {
+    if (authSession.status !== "authenticated") {
+      restoreGuestSidebarStore(sidebarStore);
+      return;
+    }
+
+    replaceSidebarStoreWithCloudData(sidebarStore, {
+      recordings: [],
+      favorites: [],
+      expressions: [],
+    });
+
+    if (!hasSupabaseBrowserConfig) {
+      return;
+    }
+
+    const client = createSupabaseBrowserClient();
+    let cancelled = false;
+
+    void loadSidebarCloudState({
+      client,
+      userId: authSession.userId,
+    })
+      .then((cloudState) => {
+        if (!cancelled) {
+          replaceSidebarStoreWithCloudData(sidebarStore, cloudState);
+        }
+      })
+      .catch((error) => {
+        console.error("[sidebar-cloud] failed to load sidebar data", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authSession.status, authSession.userId, hasSupabaseBrowserConfig]);
 
   const pdfStageState = useMemo(
     () => createPdfStageState(pdfSource, isPdfLoading, readerError),
@@ -109,7 +162,7 @@ export function AppShell() {
       const response = await analyzeTranscript(transcript);
       const recordingId = `recording-${Date.now()}`;
 
-      addRecording({
+      const recordingItem: RecordingItem = {
         id: recordingId,
         createdAt: new Intl.DateTimeFormat("en-US", {
           hour: "2-digit",
@@ -120,7 +173,19 @@ export function AppShell() {
         summary: response.result.corrected,
         feedback: `AI 点评：${response.result.coachFeedback}`,
         analysis: response.result,
-      });
+      };
+
+      addRecording(recordingItem);
+
+      if (authSession.status === "authenticated" && hasSupabaseBrowserConfig) {
+        void saveRecordingToCloud({
+          client: createSupabaseBrowserClient(),
+          item: recordingItem,
+          userId: authSession.userId,
+        }).catch((error) => {
+          console.error("[sidebar-cloud] failed to save recording", error);
+        });
+      }
 
       setAnalysisMeta(response.meta);
       setActiveAnalysis({
@@ -128,7 +193,7 @@ export function AppShell() {
         result: response.result,
       });
     },
-    [addRecording],
+    [addRecording, authSession, hasSupabaseBrowserConfig],
   );
 
   const handleRecordingStop = useCallback(
@@ -186,14 +251,44 @@ export function AppShell() {
       return;
     }
 
-    addExpression({
+    const expressionItem: ExpressionItem = {
       id: `expression-${activeAnalysis.recordingId}`,
       phrase: activeAnalysis.result.nativeExpression,
       note: `${activeAnalysis.result.grammar} ${activeAnalysis.result.coachFeedback}`,
       sourceRecordingId: activeAnalysis.recordingId,
-    });
+    };
+
+    addExpression(expressionItem);
+
+    if (authSession.status === "authenticated" && hasSupabaseBrowserConfig) {
+      void saveExpressionToCloud({
+        client: createSupabaseBrowserClient(),
+        item: expressionItem,
+        userId: authSession.userId,
+      }).catch((error) => {
+        console.error("[sidebar-cloud] failed to save expression", error);
+      });
+    }
+
     setActiveAnalysis(null);
-  }, [activeAnalysis, addExpression]);
+  }, [activeAnalysis, addExpression, authSession, hasSupabaseBrowserConfig]);
+
+  const handleFavorite = useCallback(
+    (item: FavoriteItem) => {
+      addFavorite(item);
+
+      if (authSession.status === "authenticated" && hasSupabaseBrowserConfig) {
+        void saveFavoriteToCloud({
+          client: createSupabaseBrowserClient(),
+          item,
+          userId: authSession.userId,
+        }).catch((error) => {
+          console.error("[sidebar-cloud] failed to save favorite", error);
+        });
+      }
+    },
+    [addFavorite, authSession, hasSupabaseBrowserConfig],
+  );
 
   const handleRetryAnalysis = useCallback(async () => {
     if (!lastTranscript) {
@@ -414,10 +509,14 @@ export function AppShell() {
           <PdfStage
             documentName={documentName}
             error={pdfStageState.error}
+            onFavorite={handleFavorite}
             source={pdfStageState.source}
             status={pdfStageState.status}
           />
-          <LearningSidebar onOpenRecording={handleOpenRecording} />
+          <LearningSidebar
+            isAuthenticated={authSession.status === "authenticated"}
+            onOpenRecording={handleOpenRecording}
+          />
           <RecordingButton
             disabled={pdfStageState.status !== "ready"}
             onStop={handleRecordingStop}

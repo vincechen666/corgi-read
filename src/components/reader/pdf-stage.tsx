@@ -7,6 +7,7 @@ import { TranslationPopover } from "@/components/reader/translation-popover";
 import { Card } from "@/components/ui/card";
 import { normalizeSelectionText } from "@/features/pdf/pdf-selection";
 import type { PdfTextSelection } from "@/features/pdf/pdf-types";
+import type { FavoriteItem } from "@/features/sidebar/sidebar-store";
 import {
   type TranslationResult,
 } from "@/features/translation/translation-schema";
@@ -74,6 +75,7 @@ type PdfStageProps = {
   documentName?: string;
   source?: string | null;
   error?: string | null;
+  onFavorite?: (item: FavoriteItem) => void;
 };
 
 export function PdfStage({
@@ -81,6 +83,7 @@ export function PdfStage({
   documentName = "The Last Question.pdf",
   source = "/sample/the-last-question.pdf",
   error = null,
+  onFavorite,
 }: PdfStageProps) {
   const defaultZoom = 1.15;
   const minZoom = 0.8;
@@ -354,6 +357,7 @@ export function PdfStage({
 
           {status === "ready" && selection ? (
             <TranslationPopover
+              onFavorite={onFavorite}
               result={selection.result}
               x={selection.x}
               y={selection.y}

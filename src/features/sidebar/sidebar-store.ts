@@ -15,10 +15,14 @@ export type FavoriteItem = SidebarStorageShape["favorites"][number];
 export type RecordingItem = SidebarStorageShape["recordings"][number];
 export type ExpressionItem = SidebarStorageShape["expressions"][number];
 type SidebarTab = "录音" | "收藏" | "表达库";
+type SidebarPersistenceMode = "local" | "memory";
 
 type SidebarState = SidebarStorageShape & {
   activeTab: SidebarTab;
+  persistenceMode: SidebarPersistenceMode;
   setActiveTab: (tab: SidebarTab) => void;
+  setPersistenceMode: (mode: SidebarPersistenceMode) => void;
+  replaceData: (data: SidebarStorageShape) => void;
   addFavorite: (item: FavoriteItem) => void;
   addRecording: (item: RecordingItem) => void;
   addExpression: (item: ExpressionItem) => void;
@@ -72,6 +76,14 @@ const emptyState: SidebarStorageShape = {
   expressions: [],
 };
 
+function cloneSidebarStorageShape(state: SidebarStorageShape): SidebarStorageShape {
+  return {
+    recordings: [...state.recordings],
+    favorites: [...state.favorites],
+    expressions: [...state.expressions],
+  };
+}
+
 function selectPersistedState(state: SidebarState): SidebarStorageShape {
   return {
     favorites: state.favorites,
@@ -93,25 +105,39 @@ export function createSidebarStore(
 
   const store = createStore<SidebarState>()((set) => ({
     activeTab: "录音",
+    persistenceMode: "local",
     ...baseState,
     setActiveTab: (tab) => set({ activeTab: tab }),
+    setPersistenceMode: (mode) => set({ persistenceMode: mode }),
+    replaceData: (data) =>
+      set((state) => {
+        if (state.persistenceMode === "local") {
+          saveSidebarState(data);
+        }
+
+        return data;
+      }),
     addFavorite: (item) => {
       set((state) => {
         const favorites = state.favorites.some((favorite) => favorite.id === item.id)
           ? state.favorites
           : [item, ...state.favorites];
         const nextState = { favorites, activeTab: "收藏" as const };
-        saveSidebarState({ ...selectPersistedState(state), ...nextState });
+        if (state.persistenceMode === "local") {
+          saveSidebarState({ ...selectPersistedState(state), ...nextState });
+        }
         return nextState;
       });
     },
     addRecording: (item) => {
       set((state) => {
         const recordings = [item, ...state.recordings];
-        saveSidebarState({
-          ...selectPersistedState(state),
-          recordings,
-        });
+        if (state.persistenceMode === "local") {
+          saveSidebarState({
+            ...selectPersistedState(state),
+            recordings,
+          });
+        }
         return { recordings, activeTab: "录音" as const };
       });
     },
@@ -122,10 +148,12 @@ export function createSidebarStore(
         )
           ? state.expressions
           : [item, ...state.expressions];
-        saveSidebarState({
-          ...selectPersistedState(state),
-          expressions,
-        });
+        if (state.persistenceMode === "local") {
+          saveSidebarState({
+            ...selectPersistedState(state),
+            expressions,
+          });
+        }
         return { expressions, activeTab: "表达库" as const };
       });
     },
@@ -141,7 +169,32 @@ export function hydrateSidebarStore(store: StoreApi<SidebarState>) {
     return;
   }
 
-  store.setState(persisted);
+  store.setState({
+    ...persisted,
+    persistenceMode: "local",
+  });
+}
+
+export function restoreGuestSidebarStore(store: StoreApi<SidebarState>) {
+  const persisted = loadSidebarState();
+  const nextState = persisted
+    ? cloneSidebarStorageShape(persisted)
+    : cloneSidebarStorageShape(defaultState);
+
+  store.setState({
+    ...nextState,
+    persistenceMode: "local",
+  });
+}
+
+export function replaceSidebarStoreWithCloudData(
+  store: StoreApi<SidebarState>,
+  data: SidebarStorageShape,
+) {
+  store.setState({
+    ...cloneSidebarStorageShape(data),
+    persistenceMode: "memory",
+  });
 }
 
 export const sidebarStore = createSidebarStore(undefined, {
