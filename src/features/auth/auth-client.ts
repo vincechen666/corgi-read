@@ -1,9 +1,22 @@
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
 
+function getEmailRedirectTo() {
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+  if (configuredSiteUrl) {
+    return configuredSiteUrl.replace(/\/+$/, "");
+  }
+
+  if (typeof window !== "undefined") {
+    return window.location.origin;
+  }
+
+  return undefined;
+}
+
 export async function startEmailLogin(email: string) {
   const client = createSupabaseBrowserClient();
-  const redirectTo =
-    typeof window === "undefined" ? undefined : window.location.origin;
+  const redirectTo = getEmailRedirectTo();
 
   const { error } = await client.auth.signInWithOtp({
     email,

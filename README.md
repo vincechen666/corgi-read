@@ -76,11 +76,13 @@ Supabase auth and storage setup:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NEXT_PUBLIC_SITE_URL=https://corgi.study
 ```
 
 Supabase user system rollout assumes:
 
 - Auth provider: email OTP / magic link
+- `NEXT_PUBLIC_SITE_URL` points to your deployed app origin for email verification links
 - Storage bucket: `pdf-documents`
 - Tables: `profiles`, `pdf_documents`, `recordings`, `favorites`, `expression_library`
 - Row Level Security enabled on all user-owned tables and storage paths
