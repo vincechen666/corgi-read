@@ -4,8 +4,11 @@ type TopBarProps = {
   documentLabel?: string;
   isAuthenticated?: boolean;
   menuOpen?: boolean;
+  avatarMenuOpen?: boolean;
+  userEmail?: string;
   onToggleMenu?: () => void;
   onAvatarClick?: () => void;
+  onLogoutClick?: () => void | Promise<void>;
   onOpenLibrary?: () => void;
   onUploadClick?: () => void;
 };
@@ -14,8 +17,11 @@ export function TopBar({
   documentLabel = "文档 The Last Question.pdf",
   isAuthenticated = false,
   menuOpen = false,
+  avatarMenuOpen = false,
+  userEmail,
   onToggleMenu,
   onAvatarClick,
+  onLogoutClick,
   onOpenLibrary,
   onUploadClick,
 }: TopBarProps) {
@@ -42,10 +48,7 @@ export function TopBar({
       </div>
 
       <div className="flex items-center gap-3 text-sm">
-        <div
-          className="relative"
-          data-testid="topbar-file-trigger-wrap"
-        >
+        <div className="relative" data-testid="topbar-file-trigger-wrap">
           <button
             aria-expanded={menuOpen}
             aria-haspopup="menu"
@@ -74,21 +77,43 @@ export function TopBar({
         <div className="flex h-8 items-center border border-[#f1d4c6] bg-[#fff4ec] px-4 text-[13px] text-[#c25b34]">
           沉浸式精读模式
         </div>
-        <button
-          aria-label="Account"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e7ded4] bg-[#f8f4ee] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
-          data-testid="topbar-avatar-button"
-          onClick={onAvatarClick}
-          type="button"
-        >
-          <Image
-            alt="CorgiRead avatar placeholder"
-            className="rounded-full object-cover"
-            height={28}
-            src="/logo.webp"
-            width={28}
-          />
-        </button>
+        <div className="relative">
+          <button
+            aria-expanded={isAuthenticated ? avatarMenuOpen : false}
+            aria-haspopup={isAuthenticated ? "menu" : "dialog"}
+            aria-label="Account"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#e7ded4] bg-[#f8f4ee] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+            data-testid="topbar-avatar-button"
+            onClick={onAvatarClick}
+            type="button"
+          >
+            <Image
+              alt="CorgiRead avatar placeholder"
+              className="rounded-full object-cover"
+              height={28}
+              src="/logo.webp"
+              width={28}
+            />
+          </button>
+          {isAuthenticated && avatarMenuOpen ? (
+            <div
+              className="absolute right-0 top-full z-20 mt-2 w-[220px] border border-[#e7ded4] bg-white p-2 shadow-[0_8px_20px_rgba(0,0,0,0.08)]"
+              role="menu"
+            >
+              <div className="px-3 py-2 text-sm text-[#6a625a]">
+                {userEmail ?? ""}
+              </div>
+              <button
+                className="w-full px-3 py-2 text-left text-sm font-semibold text-[#514942] hover:bg-[#f8f4ee]"
+                onClick={onLogoutClick}
+                role="menuitem"
+                type="button"
+              >
+                退出登录
+              </button>
+            </div>
+          ) : null}
+        </div>
       </div>
     </header>
   );
