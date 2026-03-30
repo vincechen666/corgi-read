@@ -39,4 +39,28 @@ describe("POST /api/auth/email-flow", () => {
 
     expect(response.status).toBe(400);
   });
+
+  test("returns 502 and logs when the upstream auth lookup fails", async () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    getEmailFlowMock.mockRejectedValue(new Error("SUPABASE_SERVICE_ROLE_KEY is required"));
+
+    const response = await POST(
+      new Request("http://localhost/api/auth/email-flow", {
+        method: "POST",
+        body: JSON.stringify({ email: "reader@example.com" }),
+      }),
+    );
+    const json = await response.json();
+
+    expect(response.status).toBe(502);
+    expect(json).toEqual({ error: "Auth email flow lookup failed." });
+    expect(consoleError).toHaveBeenCalledWith(
+      "[auth/email-flow] request failed",
+      expect.objectContaining({
+        message: "SUPABASE_SERVICE_ROLE_KEY is required",
+      }),
+    );
+
+    consoleError.mockRestore();
+  });
 });

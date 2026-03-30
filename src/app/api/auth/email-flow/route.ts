@@ -7,6 +7,27 @@ const authEmailFlowRequestSchema = z.object({
   email: z.email(),
 });
 
+function serializeError(error: unknown) {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      ...(error.cause instanceof Error
+        ? {
+            cause: {
+              name: error.cause.name,
+              message: error.cause.message,
+            },
+          }
+        : {}),
+    };
+  }
+
+  return {
+    message: String(error),
+  };
+}
+
 export async function POST(request: Request) {
   let body: unknown;
 
@@ -22,7 +43,16 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid email payload" }, { status: 400 });
   }
 
-  const flow = await getEmailFlow(parsed.data.email);
+  try {
+    const flow = await getEmailFlow(parsed.data.email);
 
-  return Response.json(authEmailFlowResponseSchema.parse({ flow }));
+    return Response.json(authEmailFlowResponseSchema.parse({ flow }));
+  } catch (error) {
+    console.error("[auth/email-flow] request failed", serializeError(error));
+
+    return Response.json(
+      { error: "Auth email flow lookup failed." },
+      { status: 502 },
+    );
+  }
 }

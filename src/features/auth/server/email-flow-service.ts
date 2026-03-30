@@ -1,69 +1,84 @@
 import { createSupabaseServerAdminClient } from "@/features/auth/supabase-server";
 
-type EmailFlowUserRecord = {
-  email: string | null;
+type EmailFlowProfileRow = {
+  id: string;
+};
+
+type EmailFlowProfileLookupResult = {
+  data: EmailFlowProfileRow | null;
+  error: Error | null;
+};
+
+type EmailFlowAuthUser = {
   email_confirmed_at: string | null;
 };
 
-type EmailFlowAdminClient = {
+type EmailFlowUserLookupResult = {
+  data: {
+    user: EmailFlowAuthUser | null;
+  };
+  error: Error | null;
+};
+
+type EmailFlowClient = {
+  from(table: string): {
+    select(columns: string): {
+      eq(column: string, value: string): {
+        maybeSingle(): Promise<EmailFlowProfileLookupResult>;
+      };
+    };
+  };
   auth: {
     admin: {
-      listUsers: (options: {
-        page: number;
-        perPage: number;
-      }) => Promise<{
-        data: { users: EmailFlowUserRecord[] };
-        error: Error | null;
-      }>;
+      getUserById(uid: string): Promise<EmailFlowUserLookupResult>;
     };
   };
 };
-
-const PAGE_SIZE = 100;
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
 
-async function findUserByEmail(
-  client: EmailFlowAdminClient,
+async function findProfileIdByEmail(
+  client: EmailFlowClient,
   email: string,
-): Promise<EmailFlowUserRecord | null> {
+): Promise<string | null> {
   const normalizedEmail = normalizeEmail(email);
+  const { data, error } = await client
+    .from("profiles")
+    .select("id")
+    .eq("email", normalizedEmail)
+    .maybeSingle();
 
-  for (let page = 1; ; page += 1) {
-    const { data, error } = await client.auth.admin.listUsers({
-      page,
-      perPage: PAGE_SIZE,
-    });
-
-    if (error) {
-      throw error;
-    }
-
-    const user = data.users.find(
-      (record) => normalizeEmail(record.email ?? "") === normalizedEmail,
-    );
-
-    if (user) {
-      return user;
-    }
-
-    if (data.users.length < PAGE_SIZE) {
-      return null;
-    }
+  if (error) {
+    throw error;
   }
+
+  return data?.id ?? null;
+}
+
+async function isVerifiedUser(
+  client: EmailFlowClient,
+  userId: string,
+): Promise<boolean> {
+  const { data, error } = await client.auth.admin.getUserById(userId);
+
+  if (error) {
+    throw error;
+  }
+
+  return Boolean(data.user?.email_confirmed_at);
 }
 
 export async function getEmailFlow(
   email: string,
-  client: EmailFlowAdminClient = createSupabaseServerAdminClient() as unknown as EmailFlowAdminClient,
+  client: EmailFlowClient = createSupabaseServerAdminClient(),
 ): Promise<"signup-link" | "login-code"> {
-  const user = await findUserByEmail(client, email);
+  const profileId = await findProfileIdByEmail(client, email);
 
-  if (!user?.email_confirmed_at) {
+  if (!profileId) {
     return "signup-link";
   }
 
-  return "login-code";
+  return (await isVerifiedUser(client, profileId)) ? "login-code" : "signup-link";
 }
