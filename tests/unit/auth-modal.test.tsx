@@ -33,6 +33,17 @@ function mockEmailFlow(flow: "signup-link" | "login-code") {
   vi.stubGlobal("fetch", fetchMock);
 }
 
+test("renders the email-entry state with email field and primary submit button", () => {
+  render(<AuthModal open onClose={vi.fn()} />);
+
+  expect(
+    screen.getByRole("textbox", { name: /email address/i }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: /continue/i }),
+  ).toBeInTheDocument();
+});
+
 test("submits email and shows inbox instructions for the signup-link flow", async () => {
   mockEmailFlow("signup-link");
   vi.mocked(startEmailSignupLink).mockResolvedValueOnce(undefined);
@@ -90,6 +101,30 @@ test("switches to code entry and verifies the login code", async () => {
     "reader@example.com",
     "123456",
   );
+});
+
+test("shows a verification error when code submission fails", async () => {
+  mockEmailFlow("login-code");
+  vi.mocked(startEmailLoginCode).mockResolvedValueOnce(undefined);
+  vi.mocked(verifyEmailLoginCode).mockRejectedValueOnce(new Error("boom"));
+
+  render(<AuthModal open onClose={vi.fn()} />);
+
+  fireEvent.change(screen.getByRole("textbox", { name: /email address/i }), {
+    target: { value: "reader@example.com" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: /continue/i }));
+
+  expect(
+    await screen.findByRole("textbox", { name: /verification code/i }),
+  ).toBeInTheDocument();
+
+  fireEvent.change(screen.getByRole("textbox", { name: /verification code/i }), {
+    target: { value: "123456" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: /verify code/i }));
+
+  expect(await screen.findByText("boom")).toBeInTheDocument();
 });
 
 test("resends the login code from the code-entry state", async () => {
