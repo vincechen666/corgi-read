@@ -97,7 +97,7 @@ $$;
 drop trigger if exists on_auth_user_created on auth.users;
 
 create trigger on_auth_user_created
-after insert on auth.users
+after insert or update on auth.users
 for each row
 execute function public.handle_new_profile();
 
@@ -167,13 +167,6 @@ to authenticated
 using (id = auth.uid());
 
 drop policy if exists "profiles_update_own" on public.profiles;
-create policy "profiles_update_own"
-on public.profiles
-for update
-to authenticated
-using (id = auth.uid())
-with check (id = auth.uid());
-
 drop policy if exists "pdf_documents_select_own" on public.pdf_documents;
 create policy "pdf_documents_select_own"
 on public.pdf_documents
