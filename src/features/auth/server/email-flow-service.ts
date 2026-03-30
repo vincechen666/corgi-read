@@ -23,7 +23,7 @@ type EmailFlowUserLookupResult = {
 type EmailFlowClient = {
   from(table: string): {
     select(columns: string): {
-      eq(column: string, value: string): {
+      ilike(column: string, value: string): {
         maybeSingle(): Promise<EmailFlowProfileLookupResult>;
       };
     };
@@ -36,7 +36,7 @@ type EmailFlowClient = {
 };
 
 function normalizeEmail(email: string) {
-  return email.trim().toLowerCase();
+  return email.trim();
 }
 
 async function findProfileIdByEmail(
@@ -47,7 +47,7 @@ async function findProfileIdByEmail(
   const { data, error } = await client
     .from("profiles")
     .select("id")
-    .eq("email", normalizedEmail)
+    .ilike("email", normalizedEmail)
     .maybeSingle();
 
   if (error) {
