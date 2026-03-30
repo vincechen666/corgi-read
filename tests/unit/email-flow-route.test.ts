@@ -29,6 +29,22 @@ describe("POST /api/auth/email-flow", () => {
     expect(getEmailFlowMock).toHaveBeenCalledWith("reader@example.com");
   });
 
+  test("trims email before validating and forwarding it to the service", async () => {
+    getEmailFlowMock.mockResolvedValue("login-code");
+
+    const response = await POST(
+      new Request("http://localhost/api/auth/email-flow", {
+        method: "POST",
+        body: JSON.stringify({ email: " reader@example.com " }),
+      }),
+    );
+    const json = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(json).toEqual({ flow: "login-code" });
+    expect(getEmailFlowMock).toHaveBeenCalledWith("reader@example.com");
+  });
+
   test("returns 400 for an invalid payload", async () => {
     const response = await POST(
       new Request("http://localhost/api/auth/email-flow", {

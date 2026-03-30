@@ -86,9 +86,9 @@ set search_path = public
 as $$
 begin
   insert into public.profiles (id, email)
-  values (new.id, coalesce(new.email, ''))
+  values (new.id, lower(coalesce(new.email, '')))
   on conflict (id) do update
-    set email = excluded.email;
+    set email = lower(excluded.email);
 
   return new;
 end;
@@ -102,10 +102,10 @@ for each row
 execute function public.handle_new_profile();
 
 insert into public.profiles (id, email)
-select u.id, coalesce(u.email, '')
+select u.id, lower(coalesce(u.email, ''))
 from auth.users u
 on conflict (id) do update
-set email = excluded.email;
+set email = lower(excluded.email);
 
 create or replace function public.refresh_profile_storage_used_bytes(target_user_id uuid)
 returns void

@@ -4,7 +4,7 @@ import { authEmailFlowResponseSchema } from "@/features/auth/auth-flow-schema";
 import { getEmailFlow } from "@/features/auth/server/email-flow-service";
 
 const authEmailFlowRequestSchema = z.object({
-  email: z.email(),
+  email: z.string().trim().email(),
 });
 
 function serializeError(error: unknown) {
