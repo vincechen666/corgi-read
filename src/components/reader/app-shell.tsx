@@ -93,6 +93,7 @@ export function AppShell() {
     PdfLibraryDocument[]
   >([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [analysisMeta, setAnalysisMeta] = useState<AnalysisRouteResponse["meta"] | null>(
     null,
@@ -432,14 +433,19 @@ export function AppShell() {
   }, [completeAnalysis, lastAudioBlob]);
 
   const handleToggleMenu = useCallback(() => {
+    setAvatarMenuOpen(false);
     setMenuOpen((value) => !value);
   }, []);
 
   const handleAvatarClick = useCallback(() => {
     if (authSession.status === "authenticated") {
+      setMenuOpen(false);
+      setAvatarMenuOpen((value) => !value);
       return;
     }
 
+    setAvatarMenuOpen(false);
+    setMenuOpen(false);
     setAuthModalOpen(true);
   }, [authSession.status]);
 
@@ -455,6 +461,20 @@ export function AppShell() {
 
     setIsPdfLibraryOpen(true);
   }, [authSession.status]);
+
+  const handleLogoutClick = useCallback(async () => {
+    setAvatarMenuOpen(false);
+    setMenuOpen(false);
+
+    try {
+      if (hasSupabaseBrowserConfig) {
+        const client = createSupabaseBrowserClient();
+        await client.auth.signOut();
+      }
+    } finally {
+      authStore.getState().setGuest();
+    }
+  }, [hasSupabaseBrowserConfig]);
 
   const handleCloseLibrary = useCallback(() => {
     setIsPdfLibraryOpen(false);
@@ -591,12 +611,15 @@ export function AppShell() {
       <div className="mx-auto flex h-full max-w-[1500px] flex-col">
         <h1 className="sr-only">English PDF Reader</h1>
         <TopBar
+          avatarMenuOpen={avatarMenuOpen}
           documentLabel={documentName}
           isAuthenticated={authSession.status === "authenticated"}
           menuOpen={menuOpen}
           onAvatarClick={handleAvatarClick}
           onOpenLibrary={handleOpenLibrary}
+          onLogoutClick={handleLogoutClick}
           onToggleMenu={handleToggleMenu}
+          userEmail={authSession.email ?? undefined}
           onUploadClick={handleUploadClick}
         />
         <input
