@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { startEmailLogin } from "@/features/auth/auth-client";
+import { startEmailSignupLink } from "@/features/auth/auth-client";
 
 type AuthModalProps = {
   open: boolean;
@@ -51,7 +51,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
             setError(null);
 
             try {
-              await startEmailLogin(email);
+              await startEmailSignupLink(email);
               setStatus("sent");
             } catch (submissionError) {
               setStatus("idle");

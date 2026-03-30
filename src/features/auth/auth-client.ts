@@ -57,7 +57,3 @@ export async function verifyEmailLoginCode(email: string, token: string) {
     throw error;
   }
 }
-
-export async function startEmailLogin(email: string) {
-  return startEmailSignupLink(email);
-}

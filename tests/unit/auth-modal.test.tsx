@@ -2,19 +2,19 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, test, vi } from "vitest";
 
 import { AuthModal } from "@/components/reader/auth-modal";
-import { startEmailLogin } from "@/features/auth/auth-client";
+import { startEmailSignupLink } from "@/features/auth/auth-client";
 
 vi.mock("@/features/auth/auth-client", () => ({
-  startEmailLogin: vi.fn(),
+  startEmailSignupLink: vi.fn(),
 }));
 
 afterEach(() => {
   cleanup();
-  vi.mocked(startEmailLogin).mockReset();
+  vi.mocked(startEmailSignupLink).mockReset();
 });
 
 test("resets the form after closing and reopening", async () => {
-  vi.mocked(startEmailLogin).mockResolvedValueOnce(undefined);
+  vi.mocked(startEmailSignupLink).mockResolvedValueOnce(undefined);
 
   const { rerender } = render(
     <AuthModal open onClose={vi.fn()} />,
@@ -43,7 +43,7 @@ test("resets the form after closing and reopening", async () => {
 });
 
 test("resets the error after closing and reopening", async () => {
-  vi.mocked(startEmailLogin).mockRejectedValueOnce(new Error("boom"));
+  vi.mocked(startEmailSignupLink).mockRejectedValueOnce(new Error("boom"));
 
   const { rerender } = render(
     <AuthModal open onClose={vi.fn()} />,
