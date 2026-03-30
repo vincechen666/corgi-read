@@ -3,7 +3,7 @@
 import { createStore } from "zustand/vanilla";
 import { useStore } from "zustand";
 
-import type { AuthSession } from "@/features/auth/auth-schema";
+import { guestAuthSession, type AuthSession } from "@/features/auth/auth-schema";
 
 type AuthState = {
   session: AuthSession;
@@ -18,18 +18,10 @@ type AuthState = {
 
 export function createAuthStore(initialSession?: AuthSession) {
   return createStore<AuthState>()((set) => ({
-    session: initialSession ?? {
-      status: "guest",
-      userId: null,
-      email: null,
-    },
+    session: initialSession ?? guestAuthSession,
     setGuest: () =>
       set({
-        session: {
-          status: "guest",
-          userId: null,
-          email: null,
-        },
+        session: guestAuthSession,
       }),
     setAuthenticated: (
       userId,

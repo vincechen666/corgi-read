@@ -22,7 +22,10 @@ import { PdfStage } from "@/components/reader/pdf-stage";
 import { RecordingButton } from "@/components/reader/recording-button";
 import { TopBar } from "@/components/reader/top-bar";
 import { authStore, useAuthStore } from "@/features/auth/auth-store";
-import { authSessionSchema } from "@/features/auth/auth-schema";
+import {
+  authSessionFromSupabaseSession,
+  authSessionSchema,
+} from "@/features/auth/auth-schema";
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
 import { uploadPdfDocumentToCloud } from "@/features/library/library-client";
 import { canUploadFileWithinQuota } from "@/features/library/quota";
@@ -107,6 +110,62 @@ export function AppShell() {
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
+
+  useEffect(() => {
+    if (!hasSupabaseBrowserConfig) {
+      return;
+    }
+
+    const client = createSupabaseBrowserClient();
+    if (!client.auth?.getSession || !client.auth?.onAuthStateChange) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const applySupabaseSession = (
+      session: Awaited<ReturnType<typeof client.auth.getSession>>["data"]["session"],
+    ) => {
+      const nextSession = authSessionFromSupabaseSession(session);
+
+      if (nextSession.status === "authenticated") {
+        authStore.getState().setAuthenticated(
+          nextSession.userId,
+          nextSession.email,
+          nextSession.storageQuotaBytes,
+          nextSession.storageUsedBytes,
+        );
+        return;
+      }
+
+      authStore.getState().setGuest();
+    };
+
+    void client.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        if (!cancelled) {
+          applySupabaseSession(session);
+        }
+      })
+      .catch((error) => {
+        console.error("[auth] failed to load Supabase session", error);
+        if (!cancelled) {
+          authStore.getState().setGuest();
+        }
+      });
+
+    const {
+      data: { subscription },
+    } = client.auth.onAuthStateChange((_event, session) => {
+      applySupabaseSession(session);
+    });
+
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
+  }, [hasSupabaseBrowserConfig]);
 
   useEffect(() => {
     return () => {

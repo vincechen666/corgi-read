@@ -1,4 +1,11 @@
 import { z } from "zod";
+import type { Session } from "@supabase/supabase-js";
+
+export const guestAuthSession = {
+  status: "guest",
+  userId: null,
+  email: null,
+} as const;
 
 export const authSessionSchema = z.discriminatedUnion("status", [
   z.object({
@@ -16,3 +23,17 @@ export const authSessionSchema = z.discriminatedUnion("status", [
 ]);
 
 export type AuthSession = z.infer<typeof authSessionSchema>;
+
+export function authSessionFromSupabaseSession(
+  session: Session | null,
+): AuthSession {
+  if (!session?.user?.id || !session.user.email) {
+    return guestAuthSession;
+  }
+
+  return authSessionSchema.parse({
+    status: "authenticated",
+    userId: session.user.id,
+    email: session.user.email,
+  });
+}
