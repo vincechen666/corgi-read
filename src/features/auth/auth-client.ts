@@ -1,6 +1,6 @@
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
 
-function getEmailRedirectTo() {
+export function getEmailRedirectTo() {
   const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 
   if (configuredSiteUrl) {
@@ -14,7 +14,7 @@ function getEmailRedirectTo() {
   return undefined;
 }
 
-export async function startEmailLogin(email: string) {
+export async function startEmailSignupLink(email: string) {
   const client = createSupabaseBrowserClient();
   const redirectTo = getEmailRedirectTo();
 
@@ -25,6 +25,32 @@ export async function startEmailLogin(email: string) {
           emailRedirectTo: redirectTo,
         }
       : undefined,
+  });
+
+  if (error) {
+    throw error;
+  }
+}
+
+export async function startEmailLoginCode(email: string) {
+  const client = createSupabaseBrowserClient();
+
+  const { error } = await client.auth.signInWithOtp({
+    email,
+  });
+
+  if (error) {
+    throw error;
+  }
+}
+
+export async function verifyEmailLoginCode(email: string, token: string) {
+  const client = createSupabaseBrowserClient();
+
+  const { error } = await client.auth.verifyOtp({
+    email,
+    token,
+    type: "email",
   });
 
   if (error) {

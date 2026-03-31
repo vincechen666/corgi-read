@@ -60,6 +60,17 @@ where schemaname = 'public'
   )
 order by tablename, policyname;
 
+-- 3a. Confirm the profiles table only exposes the read policy.
+select
+  schemaname,
+  tablename,
+  policyname,
+  cmd
+from pg_policies
+where schemaname = 'public'
+  and tablename = 'profiles'
+order by policyname;
+
 -- 4. Confirm the storage bucket exists and is private.
 select
   id,
@@ -108,6 +119,15 @@ from information_schema.triggers
 where (event_object_schema = 'auth' and event_object_table = 'users')
    or (event_object_schema = 'public' and event_object_table = 'pdf_documents')
 order by event_object_schema, event_object_table, trigger_name;
+
+-- 6a. Confirm the auth.users trigger responds to both inserts and updates.
+select
+  trigger_name,
+  event_manipulation
+from information_schema.triggers
+where event_object_schema = 'auth'
+  and event_object_table = 'users'
+order by trigger_name, event_manipulation;
 
 -- 7. Quick profile defaults check.
 select

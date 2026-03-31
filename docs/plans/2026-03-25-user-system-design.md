@@ -198,7 +198,7 @@ Stores reusable expression entries.
 
 The recommended architecture is Supabase-first:
 
-- Supabase Auth for email verification login
+- Supabase Auth for mixed email login
 - Supabase Storage for PDFs
 - Supabase Postgres for user metadata and learning data
 - RLS and storage policies for user isolation

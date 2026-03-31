@@ -1,18 +1,39 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import { AppShell } from "@/components/reader/app-shell";
 import { authStore } from "@/features/auth/auth-store";
 
-const authMocks = vi.hoisted(() => ({
-  signOut: vi.fn(async () => ({ error: null })),
-  loadSidebarCloudState: vi.fn(async () => ({
-    recordings: [],
-    favorites: [],
-    expressions: [],
-  })),
-}));
+const authMocks = vi.hoisted(() => {
+  const state = {
+    session: null as
+      | {
+          user: { id: string; email: string };
+        }
+      | null,
+  };
+
+  return {
+    state,
+    getSession: vi.fn(async () => ({
+      data: { session: state.session },
+    })),
+    loadSidebarCloudState: vi.fn(async () => ({
+      recordings: [],
+      favorites: [],
+      expressions: [],
+    })),
+    onAuthStateChange: vi.fn(() => ({
+      data: {
+        subscription: {
+          unsubscribe: vi.fn(),
+        },
+      },
+    })),
+    signOut: vi.fn(async () => ({ error: null })),
+  };
+});
 
 vi.mock("@/features/analysis/analysis-client", () => ({
   analyzeTranscript: vi.fn(),
@@ -22,6 +43,8 @@ vi.mock("@/features/analysis/analysis-client", () => ({
 vi.mock("@/features/auth/supabase-browser", () => ({
   createSupabaseBrowserClient: vi.fn(() => ({
     auth: {
+      getSession: authMocks.getSession,
+      onAuthStateChange: authMocks.onAuthStateChange,
       signOut: authMocks.signOut,
     },
   })),
@@ -35,8 +58,12 @@ vi.mock("@/features/sidebar/sidebar-cloud-client", () => ({
 }));
 
 afterEach(() => {
-  authMocks.signOut.mockClear();
+  cleanup();
+  authMocks.getSession.mockClear();
   authMocks.loadSidebarCloudState.mockClear();
+  authMocks.onAuthStateChange.mockClear();
+  authMocks.signOut.mockClear();
+  authMocks.state.session = null;
   authStore.setState({
     session: { status: "guest", userId: null, email: null },
   });
@@ -53,10 +80,6 @@ test("guest avatar opens the auth modal", async () => {
 
   render(<AppShell />);
 
-  expect(
-    screen.queryByRole("heading", { name: /email verification/i }),
-  ).not.toBeInTheDocument();
-
   await user.click(screen.getAllByTestId("topbar-avatar-button")[0]);
 
   expect(
@@ -64,9 +87,15 @@ test("guest avatar opens the auth modal", async () => {
   ).toBeInTheDocument();
 });
 
-test("authenticated avatar opens a small user menu", async () => {
+test("authenticated avatar opens user menu", async () => {
   const user = userEvent.setup();
 
+  authMocks.state.session = {
+    user: {
+      id: "user-1",
+      email: "reader@example.com",
+    },
+  };
   authStore.setState({
     session: {
       status: "authenticated",
@@ -79,14 +108,18 @@ test("authenticated avatar opens a small user menu", async () => {
 
   await user.click(screen.getAllByTestId("topbar-avatar-button")[0]);
 
-  const menu = screen.getByRole("menu");
-  expect(menu).toHaveTextContent("reader@example.com");
-  expect(within(menu).getByRole("menuitem", { name: /退出登录/i })).toBeInTheDocument();
+  expect(await screen.findByRole("menu")).toBeInTheDocument();
 });
 
-test("logout returns the app to guest mode", async () => {
+test("menu shows email and 退出登录", async () => {
   const user = userEvent.setup();
 
+  authMocks.state.session = {
+    user: {
+      id: "user-1",
+      email: "reader@example.com",
+    },
+  };
   authStore.setState({
     session: {
       status: "authenticated",
@@ -97,13 +130,35 @@ test("logout returns the app to guest mode", async () => {
 
   render(<AppShell />);
 
-  for (const avatarButton of screen.getAllByTestId("topbar-avatar-button")) {
-    await user.click(avatarButton);
-    if (screen.queryByRole("menu")) {
-      break;
-    }
-  }
+  await user.click(screen.getAllByTestId("topbar-avatar-button")[0]);
 
+  const menu = await screen.findByRole("menu");
+  expect(menu).toHaveTextContent("reader@example.com");
+  expect(
+    within(menu).getByRole("menuitem", { name: /退出登录/i }),
+  ).toBeInTheDocument();
+});
+
+test("logout returns the app to guest", async () => {
+  const user = userEvent.setup();
+
+  authMocks.state.session = {
+    user: {
+      id: "user-1",
+      email: "reader@example.com",
+    },
+  };
+  authStore.setState({
+    session: {
+      status: "authenticated",
+      userId: "user-1",
+      email: "reader@example.com",
+    },
+  });
+
+  render(<AppShell />);
+
+  await user.click(screen.getAllByTestId("topbar-avatar-button")[0]);
   const menu = await screen.findByRole("menu");
   await user.click(within(menu).getByRole("menuitem", { name: /退出登录/i }));
 

@@ -86,9 +86,9 @@ set search_path = public
 as $$
 begin
   insert into public.profiles (id, email)
-  values (new.id, coalesce(new.email, ''))
+  values (new.id, lower(coalesce(new.email, '')))
   on conflict (id) do update
-    set email = excluded.email;
+    set email = lower(excluded.email);
 
   return new;
 end;
@@ -97,15 +97,15 @@ $$;
 drop trigger if exists on_auth_user_created on auth.users;
 
 create trigger on_auth_user_created
-after insert on auth.users
+after insert or update on auth.users
 for each row
 execute function public.handle_new_profile();
 
 insert into public.profiles (id, email)
-select u.id, coalesce(u.email, '')
+select u.id, lower(coalesce(u.email, ''))
 from auth.users u
 on conflict (id) do update
-set email = excluded.email;
+set email = lower(excluded.email);
 
 create or replace function public.refresh_profile_storage_used_bytes(target_user_id uuid)
 returns void
@@ -167,13 +167,6 @@ to authenticated
 using (id = auth.uid());
 
 drop policy if exists "profiles_update_own" on public.profiles;
-create policy "profiles_update_own"
-on public.profiles
-for update
-to authenticated
-using (id = auth.uid())
-with check (id = auth.uid());
-
 drop policy if exists "pdf_documents_select_own" on public.pdf_documents;
 create policy "pdf_documents_select_own"
 on public.pdf_documents
