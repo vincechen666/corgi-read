@@ -104,10 +104,10 @@
             },
             {
               "type": "frame",
-              "id": "mivm2",
-              "name": "userAvatar",
+              "id": "eDf2z",
               "x": 1416,
               "y": 10,
+              "name": "userAvatar",
               "width": 40,
               "height": 40,
               "fill": "#F8F4EE",
@@ -120,18 +120,18 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "M0kX0",
+                  "id": "P2B8I",
                   "x": 6,
                   "y": 6,
                   "width": 28,
                   "height": 28,
-                  "cornerRadius": 14,
                   "fill": {
                     "type": "image",
                     "enabled": true,
                     "url": "../public/logo.webp",
                     "mode": "fill"
-                  }
+                  },
+                  "cornerRadius": 14
                 }
               ]
             }
@@ -920,10 +920,10 @@
             },
             {
               "type": "frame",
-              "id": "8pSgk",
-              "name": "userAvatar",
+              "id": "TBzyB",
               "x": 1416,
               "y": 10,
+              "name": "userAvatar",
               "width": 40,
               "height": 40,
               "fill": "#F8F4EE",
@@ -936,18 +936,18 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "HjFTW",
+                  "id": "R10Yx",
                   "x": 6,
                   "y": 6,
                   "width": 28,
                   "height": 28,
-                  "cornerRadius": 14,
                   "fill": {
                     "type": "image",
                     "enabled": true,
                     "url": "../public/logo.webp",
                     "mode": "fill"
-                  }
+                  },
+                  "cornerRadius": 14
                 }
               ]
             }
@@ -1939,7 +1939,7 @@
     },
     {
       "type": "frame",
-      "id": "uA",
+      "id": "wzBLm",
       "x": 3216,
       "y": 0,
       "name": "Login Overlay View",
@@ -1951,7 +1951,7 @@
       "children": [
         {
           "type": "frame",
-          "id": "uB",
+          "id": "jlzuM",
           "x": 12,
           "y": 12,
           "width": 1476,
@@ -1966,7 +1966,7 @@
           "children": [
             {
               "type": "text",
-              "id": "uC",
+              "id": "1463z",
               "x": 20,
               "y": 15,
               "fill": "#1A1A1A",
@@ -1977,7 +1977,7 @@
             },
             {
               "type": "text",
-              "id": "uD",
+              "id": "pd7E2",
               "x": 176,
               "y": 22,
               "fill": "#8A8178",
@@ -1989,10 +1989,10 @@
             },
             {
               "type": "frame",
-              "id": "uE",
-              "x": 822,
+              "id": "eOGC2",
+              "x": 1020,
               "y": 14,
-              "width": 244,
+              "width": 240,
               "height": 32,
               "fill": "#F8F4EE",
               "stroke": {
@@ -2004,7 +2004,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uF",
+                  "id": "wKvlc",
                   "x": 16,
                   "y": 10,
                   "fill": "#514942",
@@ -2017,17 +2017,17 @@
             },
             {
               "type": "frame",
-              "id": "uG",
-              "x": 1080,
+              "id": "4HQED",
+              "x": 1272,
               "y": 14,
-              "width": 136,
+              "width": 132,
               "height": 32,
               "fill": "#FFF4EC",
               "layout": "none",
               "children": [
                 {
                   "type": "text",
-                  "id": "uH",
+                  "id": "iNzdh",
                   "x": 16,
                   "y": 10,
                   "fill": "#C25B34",
@@ -2040,13 +2040,13 @@
             },
             {
               "type": "frame",
-              "id": "uBA",
-              "x": 1238,
+              "id": "ZVZSB",
+              "x": 1416,
               "y": 10,
-              "width": 90,
+              "name": "userAvatar",
+              "width": 40,
               "height": 40,
-              "fill": "#FFF7F0",
-              "name": "loginEntry",
+              "fill": "#F8F4EE",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -2055,15 +2055,19 @@
               "layout": "none",
               "children": [
                 {
-                  "type": "text",
-                  "id": "uBB",
-                  "x": 31,
-                  "y": 12,
-                  "content": "登录",
-                  "fill": "#C25B34",
-                  "fontFamily": "Inter",
-                  "fontSize": 13,
-                  "fontWeight": "600"
+                  "type": "frame",
+                  "id": "oORPQ",
+                  "x": 6,
+                  "y": 6,
+                  "width": 28,
+                  "height": 28,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "../public/logo.webp",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
                 }
               ]
             }
@@ -2071,7 +2075,7 @@
         },
         {
           "type": "frame",
-          "id": "uK",
+          "id": "8tim4",
           "x": 12,
           "y": 84,
           "width": 1108,
@@ -2086,7 +2090,7 @@
           "children": [
             {
               "type": "frame",
-              "id": "uL",
+              "id": "uThyV",
               "x": 12,
               "y": 12,
               "clip": true,
@@ -2112,7 +2116,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uM",
+                  "id": "6T9l7",
                   "x": 72,
                   "y": 64,
                   "fill": "#1A1A1A",
@@ -2123,7 +2127,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uN",
+                  "id": "QWTgR",
                   "x": 72,
                   "y": 110,
                   "fill": "#8A8178",
@@ -2134,7 +2138,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uO",
+                  "id": "3JmDF",
                   "x": 72,
                   "y": 182,
                   "fill": "#2D2621",
@@ -2148,7 +2152,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uP",
+                  "id": "gRXqd",
                   "x": 72,
                   "y": 278,
                   "fill": "#2D2621",
@@ -2162,7 +2166,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uQ",
+                  "id": "g5lPw",
                   "x": 72,
                   "y": 374,
                   "fill": "#2D2621",
@@ -2176,7 +2180,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uR",
+                  "id": "ABTA3",
                   "x": 72,
                   "y": 470,
                   "fill": "#2D2621",
@@ -2190,7 +2194,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uS",
+                  "id": "wuXC2",
                   "x": 72,
                   "y": 502,
                   "opacity": 0.5899999999999996,
@@ -2200,7 +2204,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uT",
+                  "id": "pdPdy",
                   "x": 72,
                   "y": 566,
                   "fill": "#2D2621",
@@ -2214,7 +2218,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uU",
+                  "id": "13TlW",
                   "x": 982,
                   "y": 28,
                   "name": "readerRail",
@@ -2224,7 +2228,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uV",
+                  "id": "Dr1q1",
                   "x": 981,
                   "y": 236,
                   "name": "readerThumb",
@@ -2236,7 +2240,7 @@
             },
             {
               "type": "frame",
-              "id": "uW",
+              "id": "9aZ2a",
               "x": 636,
               "y": 332,
               "width": 244,
@@ -2263,7 +2267,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uX",
+                  "id": "VJQrX",
                   "fill": "#8A8178",
                   "content": "划词翻译",
                   "fontFamily": "JetBrains Mono",
@@ -2273,7 +2277,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uY",
+                  "id": "aE3qL",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -2285,7 +2289,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uZ",
+                  "id": "mT5NR",
                   "fill": "#0D6E6E",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -2297,7 +2301,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "ua",
+                  "id": "MStk4",
                   "fill": "#6A625A",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -2309,7 +2313,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "ub",
+                  "id": "KmYzq",
                   "width": 92,
                   "height": 34,
                   "fill": "#FFF4EC",
@@ -2317,7 +2321,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uc",
+                      "id": "5GYJa",
                       "x": 18,
                       "y": 9,
                       "fill": "#C25B34",
@@ -2334,7 +2338,7 @@
         },
         {
           "type": "frame",
-          "id": "ud",
+          "id": "zmf8a",
           "x": 1132,
           "y": 84,
           "clip": true,
@@ -2350,7 +2354,7 @@
           "children": [
             {
               "type": "text",
-              "id": "ue",
+              "id": "ZQusd",
               "x": 20,
               "y": 20,
               "fill": "#8A8178",
@@ -2362,7 +2366,7 @@
             },
             {
               "type": "text",
-              "id": "uf",
+              "id": "HaTcs",
               "x": 20,
               "y": 42,
               "fill": "#1A1A1A",
@@ -2373,7 +2377,7 @@
             },
             {
               "type": "text",
-              "id": "ug",
+              "id": "gLvyl",
               "x": 20,
               "y": 82,
               "fill": "#6A625A",
@@ -2387,7 +2391,7 @@
             },
             {
               "type": "frame",
-              "id": "uh",
+              "id": "qEgzH",
               "x": 20,
               "y": 124,
               "width": 300,
@@ -2397,7 +2401,7 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "ui",
+                  "id": "HfFkW",
                   "x": 4,
                   "y": 4,
                   "width": 96,
@@ -2417,7 +2421,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uj",
+                      "id": "44rAG",
                       "x": 30,
                       "y": 10,
                       "fill": "#1A1A1A",
@@ -2430,7 +2434,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uk",
+                  "id": "BZnZh",
                   "x": 130,
                   "y": 14,
                   "fill": "#8A8178",
@@ -2441,7 +2445,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "ul",
+                  "id": "oC56y",
                   "x": 228,
                   "y": 14,
                   "fill": "#8A8178",
@@ -2454,7 +2458,7 @@
             },
             {
               "type": "text",
-              "id": "um",
+              "id": "XBX2X",
               "x": 20,
               "y": 182,
               "fill": "#8A8178",
@@ -2466,7 +2470,7 @@
             },
             {
               "type": "frame",
-              "id": "un",
+              "id": "maopK",
               "x": 20,
               "y": 204,
               "width": 300,
@@ -2483,7 +2487,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uo",
+                  "id": "yO3q0",
                   "fill": "#8A8178",
                   "content": "08:42 PM  •  Page 12",
                   "fontFamily": "JetBrains Mono",
@@ -2492,7 +2496,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "up",
+                  "id": "5BYle",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 280,
@@ -2504,7 +2508,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uq",
+                  "id": "oANb9",
                   "fill": "#6A625A",
                   "textGrowth": "fixed-width",
                   "width": 280,
@@ -2516,7 +2520,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "ur",
+                  "id": "RIzJq",
                   "width": 118,
                   "height": 34,
                   "fill": "#EAF4F1",
@@ -2524,7 +2528,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "us",
+                      "id": "nYDII",
                       "x": 18,
                       "y": 9,
                       "fill": "#0D6E6E",
@@ -2539,7 +2543,7 @@
             },
             {
               "type": "text",
-              "id": "ut",
+              "id": "h10yH",
               "x": 20,
               "y": 430,
               "fill": "#8A8178",
@@ -2551,7 +2555,7 @@
             },
             {
               "type": "frame",
-              "id": "uu",
+              "id": "bUIMN",
               "x": 20,
               "y": 450,
               "width": 300,
@@ -2563,7 +2567,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uv",
+                  "id": "Tmmuq",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -2575,7 +2579,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uw",
+                  "id": "YJ9MI",
                   "fill": "#C25B34",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -2586,7 +2590,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "ux",
+                  "id": "xhiqr",
                   "fill": "#8A8178",
                   "content": "来自 Page 12  •  句子收藏",
                   "fontFamily": "JetBrains Mono",
@@ -2597,7 +2601,7 @@
             },
             {
               "type": "text",
-              "id": "uy",
+              "id": "EBIDh",
               "x": 20,
               "y": 570,
               "fill": "#8A8178",
@@ -2609,7 +2613,7 @@
             },
             {
               "type": "frame",
-              "id": "uz",
+              "id": "m7hyb",
               "x": 20,
               "y": 590,
               "width": 300,
@@ -2621,7 +2625,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "u0",
+                  "id": "CSYgT",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -2633,7 +2637,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "u1",
+                  "id": "XddLm",
                   "fill": "#4B5B5B",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -2645,7 +2649,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "u2",
+                  "id": "umnk2",
                   "fill": "#8A8178",
                   "content": "来源：08:42 PM 录音",
                   "fontFamily": "JetBrains Mono",
@@ -2656,7 +2660,7 @@
             },
             {
               "type": "rectangle",
-              "id": "u3",
+              "id": "jG0hZ",
               "x": 344,
               "y": 20,
               "name": "sidebarRail",
@@ -2666,7 +2670,7 @@
             },
             {
               "type": "rectangle",
-              "id": "u4",
+              "id": "JZpdZ",
               "x": 343,
               "y": 280,
               "name": "sidebarThumb",
@@ -2678,7 +2682,7 @@
         },
         {
           "type": "frame",
-          "id": "u5",
+          "id": "M0GIn",
           "x": 708,
           "y": 876,
           "name": "Siri Mic Button",
@@ -2693,7 +2697,7 @@
           "children": [
             {
               "type": "ellipse",
-              "id": "u6",
+              "id": "92eQ0",
               "x": 0,
               "y": 0,
               "fill": "#E07B5422",
@@ -2702,7 +2706,7 @@
             },
             {
               "type": "ellipse",
-              "id": "u7",
+              "id": "iy7HV",
               "x": 10,
               "y": 10,
               "fill": "#FFF4EC",
@@ -2726,7 +2730,7 @@
             },
             {
               "type": "ellipse",
-              "id": "u8",
+              "id": "oIw50",
               "x": 22,
               "y": 22,
               "fill": "#E07B54",
@@ -2735,7 +2739,7 @@
             },
             {
               "type": "icon_font",
-              "id": "u9",
+              "id": "i5z4w",
               "x": 36,
               "y": 36,
               "width": 24,
@@ -2749,39 +2753,38 @@
         },
         {
           "type": "frame",
-          "id": "uBC",
+          "id": "dQ92H",
           "x": 0,
           "y": 0,
+          "name": "loginScrim",
           "width": 1500,
           "height": 980,
-          "fill": "#2B2320B8",
-          "name": "loginScrim",
-          "layout": "none",
-          "children": []
+          "fill": "#2B2320B8"
         },
         {
           "type": "frame",
-          "id": "uBD",
+          "id": "B5PYW",
           "x": 510,
           "y": 210,
+          "name": "loginModal",
           "width": 480,
           "height": 420,
           "fill": "#FFFDF9",
-          "name": "loginModal",
           "stroke": {
             "align": "inside",
             "thickness": 1,
             "fill": "#E7DED4"
           },
-          "layout": "none",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": 28,
           "children": [
             {
               "type": "text",
-              "id": "uBE",
-              "x": 28,
-              "y": 28,
-              "content": "EMAIL LOGIN",
+              "id": "MWAgi",
+              "name": "loginEyebrow",
               "fill": "#8A8178",
+              "content": "EMAIL LOGIN",
               "fontFamily": "JetBrains Mono",
               "fontSize": 11,
               "fontWeight": "600",
@@ -2789,54 +2792,47 @@
             },
             {
               "type": "text",
-              "id": "uBF",
-              "x": 28,
-              "y": 60,
-              "content": "登录后保存你的 PDF 与学习记录",
+              "id": "pdnTO",
+              "name": "loginTitle",
               "fill": "#1A1A1A",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "登录后保存你的 PDF 与学习记录",
               "fontFamily": "Newsreader",
               "fontSize": 32,
-              "fontWeight": "500",
-              "textGrowth": "fixed-width",
-              "width": 424
+              "fontWeight": "500"
             },
             {
               "type": "text",
-              "id": "uBG",
-              "x": 28,
-              "y": 134,
-              "content": "使用邮箱验证码登录。登录后，上传的 PDF 将进入你的 1GB 云端空间，右侧录音、收藏和表达库也会读取你的专属数据。",
+              "id": "eVOIU",
+              "name": "loginDesc",
               "fill": "#6A625A",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "使用邮箱验证码登录。登录后，上传的 PDF 将进入你的 1GB 云端空间，右侧录音、收藏和表达库也会读取你的专属数据。",
+              "lineHeight": 1.5,
               "fontFamily": "Inter",
               "fontSize": 14,
-              "fontWeight": "normal",
-              "textGrowth": "fixed-width",
-              "width": 424,
-              "lineHeight": 1.5
+              "fontWeight": "normal"
             },
             {
               "type": "frame",
-              "id": "uBH",
-              "x": 28,
-              "y": 218,
-              "width": 424,
+              "id": "1JtMX",
+              "name": "emailField",
+              "width": "fill_container",
               "height": 54,
               "fill": "#FFFFFF",
-              "name": "emailField",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
-              "layout": "none",
               "children": [
                 {
                   "type": "text",
-                  "id": "uBI",
-                  "x": 18,
-                  "y": 18,
+                  "id": "dWbKZ",
+                  "fill": "#8A8178",
                   "content": "your@email.com",
-                  "fill": "#8A8178",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "500"
@@ -2845,59 +2841,58 @@
             },
             {
               "type": "frame",
-              "id": "uBJ",
-              "x": 28,
-              "y": 288,
-              "width": 268,
-              "height": 48,
-              "fill": "#FFFFFF",
-              "name": "codeField",
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#E7DED4"
-              },
-              "layout": "none",
+              "id": "uN87x",
+              "name": "actionRow",
+              "width": "fill_container",
+              "gap": 12,
               "children": [
                 {
-                  "type": "text",
-                  "id": "uBK",
-                  "x": 18,
-                  "y": 15,
-                  "content": "输入验证码",
-                  "fill": "#8A8178",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "500"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "uBL",
-              "x": 308,
-              "y": 288,
-              "width": 144,
-              "height": 48,
-              "fill": "#FFF4EC",
-              "name": "sendButton",
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#F1D4C6"
-              },
-              "layout": "none",
-              "children": [
+                  "type": "frame",
+                  "id": "ILxrw",
+                  "name": "codeField",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E7DED4"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "KQ6lV",
+                      "fill": "#8A8178",
+                      "content": "输入验证码",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
                 {
-                  "type": "text",
-                  "id": "uBM",
-                  "x": 28,
-                  "y": 15,
-                  "content": "发送验证码",
-                  "fill": "#C25B34",
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "600"
+                  "type": "frame",
+                  "id": "EMZaZ",
+                  "name": "sendButton",
+                  "width": 144,
+                  "height": 48,
+                  "fill": "#FFF4EC",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#F1D4C6"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ODALt",
+                      "fill": "#C25B34",
+                      "content": "发送验证码",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
                 }
               ]
             }
@@ -2907,7 +2902,7 @@
     },
     {
       "type": "frame",
-      "id": "uBN",
+      "id": "H5Gdt",
       "x": 4836,
       "y": 0,
       "name": "Cloud Reader View",
@@ -2919,7 +2914,7 @@
       "children": [
         {
           "type": "frame",
-          "id": "uBO",
+          "id": "Rk2tm",
           "x": 12,
           "y": 12,
           "width": 1476,
@@ -2934,7 +2929,7 @@
           "children": [
             {
               "type": "text",
-              "id": "uBP",
+              "id": "9eqm3",
               "x": 20,
               "y": 15,
               "fill": "#1A1A1A",
@@ -2945,7 +2940,7 @@
             },
             {
               "type": "text",
-              "id": "uBQ",
+              "id": "7bi6X",
               "x": 176,
               "y": 22,
               "fill": "#8A8178",
@@ -2957,10 +2952,10 @@
             },
             {
               "type": "frame",
-              "id": "uBR",
-              "x": 822,
+              "id": "6xwsQ",
+              "x": 1020,
               "y": 14,
-              "width": 244,
+              "width": 240,
               "height": 32,
               "fill": "#F8F4EE",
               "stroke": {
@@ -2972,7 +2967,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uBS",
+                  "id": "mplJ8",
                   "x": 16,
                   "y": 10,
                   "fill": "#514942",
@@ -2985,27 +2980,24 @@
             },
             {
               "type": "frame",
-              "id": "uCN",
-              "x": 1080,
+              "id": "OBNvd",
+              "x": 1272,
               "y": 14,
+              "name": "pdfLibraryTrigger",
               "width": 120,
               "height": 32,
               "fill": "#F2F5F1",
-              "name": "pdfLibraryTrigger",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#D8E1D6"
               },
-              "layout": "none",
               "children": [
                 {
                   "type": "text",
-                  "id": "uCO",
-                  "x": 36,
-                  "y": 9,
-                  "content": "PDF 库",
+                  "id": "G02OX",
                   "fill": "#44615A",
+                  "content": "PDF 库",
                   "fontFamily": "Inter",
                   "fontSize": 13,
                   "fontWeight": "600"
@@ -3014,33 +3006,34 @@
             },
             {
               "type": "frame",
-              "id": "uCP",
-              "x": 1410,
+              "id": "E5uCG",
+              "x": 1416,
               "y": 10,
+              "name": "userAvatar",
               "width": 40,
               "height": 40,
               "fill": "#F8F4EE",
-              "name": "userAvatar",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
+              "layout": "none",
               "children": [
                 {
                   "type": "frame",
-                  "id": "uCQ",
+                  "id": "JEcix",
                   "x": 6,
                   "y": 6,
                   "width": 28,
                   "height": 28,
-                  "cornerRadius": 14,
                   "fill": {
                     "type": "image",
                     "enabled": true,
                     "url": "../public/logo.webp",
                     "mode": "fill"
-                  }
+                  },
+                  "cornerRadius": 14
                 }
               ]
             }
@@ -3048,7 +3041,7 @@
         },
         {
           "type": "frame",
-          "id": "uBX",
+          "id": "S0XK3",
           "x": 12,
           "y": 84,
           "width": 1108,
@@ -3063,7 +3056,7 @@
           "children": [
             {
               "type": "frame",
-              "id": "uBY",
+              "id": "uDoct",
               "x": 12,
               "y": 12,
               "clip": true,
@@ -3089,7 +3082,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uBZ",
+                  "id": "tEqMF",
                   "x": 72,
                   "y": 64,
                   "fill": "#1A1A1A",
@@ -3100,7 +3093,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBa",
+                  "id": "QX3Mi",
                   "x": 72,
                   "y": 110,
                   "fill": "#8A8178",
@@ -3111,7 +3104,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBb",
+                  "id": "ZZq4P",
                   "x": 72,
                   "y": 182,
                   "fill": "#2D2621",
@@ -3125,7 +3118,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBc",
+                  "id": "4rzgK",
                   "x": 72,
                   "y": 278,
                   "fill": "#2D2621",
@@ -3139,7 +3132,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBd",
+                  "id": "xI4Og",
                   "x": 72,
                   "y": 374,
                   "fill": "#2D2621",
@@ -3153,7 +3146,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBe",
+                  "id": "Dfq0O",
                   "x": 72,
                   "y": 470,
                   "fill": "#2D2621",
@@ -3167,7 +3160,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uBf",
+                  "id": "VuIzl",
                   "x": 72,
                   "y": 502,
                   "opacity": 0.5899999999999996,
@@ -3177,7 +3170,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBg",
+                  "id": "zBY3K",
                   "x": 72,
                   "y": 566,
                   "fill": "#2D2621",
@@ -3191,7 +3184,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uBh",
+                  "id": "Q4AEg",
                   "x": 982,
                   "y": 28,
                   "name": "readerRail",
@@ -3201,7 +3194,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uBi",
+                  "id": "de2wE",
                   "x": 981,
                   "y": 236,
                   "name": "readerThumb",
@@ -3213,7 +3206,7 @@
             },
             {
               "type": "frame",
-              "id": "uBj",
+              "id": "AvB91",
               "x": 636,
               "y": 332,
               "width": 244,
@@ -3240,7 +3233,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uBk",
+                  "id": "z85zE",
                   "fill": "#8A8178",
                   "content": "划词翻译",
                   "fontFamily": "JetBrains Mono",
@@ -3250,7 +3243,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBl",
+                  "id": "bJjsr",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -3262,7 +3255,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBm",
+                  "id": "WW79W",
                   "fill": "#0D6E6E",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -3274,7 +3267,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBn",
+                  "id": "Jboi8",
                   "fill": "#6A625A",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -3286,7 +3279,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "uBo",
+                  "id": "310DX",
                   "width": 92,
                   "height": 34,
                   "fill": "#FFF4EC",
@@ -3294,7 +3287,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uBp",
+                      "id": "DTOJY",
                       "x": 18,
                       "y": 9,
                       "fill": "#C25B34",
@@ -3311,7 +3304,7 @@
         },
         {
           "type": "frame",
-          "id": "uBq",
+          "id": "Z9lcU",
           "x": 1132,
           "y": 84,
           "clip": true,
@@ -3327,7 +3320,7 @@
           "children": [
             {
               "type": "text",
-              "id": "uBr",
+              "id": "gEyEw",
               "x": 20,
               "y": 20,
               "fill": "#8A8178",
@@ -3339,7 +3332,7 @@
             },
             {
               "type": "text",
-              "id": "uBs",
+              "id": "r41hF",
               "x": 20,
               "y": 42,
               "fill": "#1A1A1A",
@@ -3350,7 +3343,7 @@
             },
             {
               "type": "text",
-              "id": "uBt",
+              "id": "49zSR",
               "x": 20,
               "y": 82,
               "fill": "#6A625A",
@@ -3364,7 +3357,7 @@
             },
             {
               "type": "frame",
-              "id": "uBu",
+              "id": "P1StO",
               "x": 20,
               "y": 124,
               "width": 300,
@@ -3374,7 +3367,7 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "uBv",
+                  "id": "N9l5p",
                   "x": 4,
                   "y": 4,
                   "width": 96,
@@ -3394,7 +3387,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uBw",
+                      "id": "karlT",
                       "x": 30,
                       "y": 10,
                       "fill": "#1A1A1A",
@@ -3407,7 +3400,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBx",
+                  "id": "qnSF1",
                   "x": 130,
                   "y": 14,
                   "fill": "#8A8178",
@@ -3418,7 +3411,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uBy",
+                  "id": "85q8z",
                   "x": 228,
                   "y": 14,
                   "fill": "#8A8178",
@@ -3431,7 +3424,7 @@
             },
             {
               "type": "text",
-              "id": "uBz",
+              "id": "Eb7lQ",
               "x": 20,
               "y": 182,
               "fill": "#8A8178",
@@ -3443,7 +3436,7 @@
             },
             {
               "type": "frame",
-              "id": "uB0",
+              "id": "FkTWf",
               "x": 20,
               "y": 204,
               "width": 300,
@@ -3460,7 +3453,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uB1",
+                  "id": "N3uZr",
                   "fill": "#8A8178",
                   "content": "08:42 PM  •  Page 12",
                   "fontFamily": "JetBrains Mono",
@@ -3469,7 +3462,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uB2",
+                  "id": "iHse6",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 280,
@@ -3481,7 +3474,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uB3",
+                  "id": "EdwOB",
                   "fill": "#6A625A",
                   "textGrowth": "fixed-width",
                   "width": 280,
@@ -3493,7 +3486,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "uB4",
+                  "id": "2VjQV",
                   "width": 118,
                   "height": 34,
                   "fill": "#EAF4F1",
@@ -3501,7 +3494,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uB5",
+                      "id": "wkQn4",
                       "x": 18,
                       "y": 9,
                       "fill": "#0D6E6E",
@@ -3516,7 +3509,7 @@
             },
             {
               "type": "text",
-              "id": "uB6",
+              "id": "VTUpU",
               "x": 20,
               "y": 430,
               "fill": "#8A8178",
@@ -3528,7 +3521,7 @@
             },
             {
               "type": "frame",
-              "id": "uB7",
+              "id": "yQWK5",
               "x": 20,
               "y": 450,
               "width": 300,
@@ -3540,7 +3533,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uB8",
+                  "id": "tY7PT",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -3552,7 +3545,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uB9",
+                  "id": "QSEe7",
                   "fill": "#C25B34",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -3563,7 +3556,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCA",
+                  "id": "86xyw",
                   "fill": "#8A8178",
                   "content": "来自 Page 12  •  句子收藏",
                   "fontFamily": "JetBrains Mono",
@@ -3574,7 +3567,7 @@
             },
             {
               "type": "text",
-              "id": "uCB",
+              "id": "kF3Et",
               "x": 20,
               "y": 570,
               "fill": "#8A8178",
@@ -3586,7 +3579,7 @@
             },
             {
               "type": "frame",
-              "id": "uCC",
+              "id": "Apc4B",
               "x": 20,
               "y": 590,
               "width": 300,
@@ -3598,7 +3591,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uCD",
+                  "id": "nQ59m",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -3610,7 +3603,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCE",
+                  "id": "F6X40",
                   "fill": "#4B5B5B",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -3622,7 +3615,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCF",
+                  "id": "L25hh",
                   "fill": "#8A8178",
                   "content": "来源：08:42 PM 录音",
                   "fontFamily": "JetBrains Mono",
@@ -3633,7 +3626,7 @@
             },
             {
               "type": "rectangle",
-              "id": "uCG",
+              "id": "3zVmj",
               "x": 344,
               "y": 20,
               "name": "sidebarRail",
@@ -3643,7 +3636,7 @@
             },
             {
               "type": "rectangle",
-              "id": "uCH",
+              "id": "gwB9H",
               "x": 343,
               "y": 280,
               "name": "sidebarThumb",
@@ -3655,7 +3648,7 @@
         },
         {
           "type": "frame",
-          "id": "uCI",
+          "id": "zYo0V",
           "x": 708,
           "y": 876,
           "name": "Siri Mic Button",
@@ -3670,7 +3663,7 @@
           "children": [
             {
               "type": "ellipse",
-              "id": "uCJ",
+              "id": "jDklj",
               "x": 0,
               "y": 0,
               "fill": "#E07B5422",
@@ -3679,7 +3672,7 @@
             },
             {
               "type": "ellipse",
-              "id": "uCK",
+              "id": "6ccmk",
               "x": 10,
               "y": 10,
               "fill": "#FFF4EC",
@@ -3703,7 +3696,7 @@
             },
             {
               "type": "ellipse",
-              "id": "uCL",
+              "id": "2RSCc",
               "x": 22,
               "y": 22,
               "fill": "#E07B54",
@@ -3712,7 +3705,7 @@
             },
             {
               "type": "icon_font",
-              "id": "uCM",
+              "id": "wZ8Vi",
               "x": 36,
               "y": 36,
               "width": 24,
@@ -3728,7 +3721,7 @@
     },
     {
       "type": "frame",
-      "id": "uCR",
+      "id": "PzH6B",
       "x": 6456,
       "y": 0,
       "name": "PDF Library Open View",
@@ -3740,7 +3733,7 @@
       "children": [
         {
           "type": "frame",
-          "id": "uCS",
+          "id": "SqNhm",
           "x": 12,
           "y": 12,
           "width": 1476,
@@ -3755,7 +3748,7 @@
           "children": [
             {
               "type": "text",
-              "id": "uCT",
+              "id": "4BZ4N",
               "x": 20,
               "y": 15,
               "fill": "#1A1A1A",
@@ -3766,7 +3759,7 @@
             },
             {
               "type": "text",
-              "id": "uCU",
+              "id": "etNhL",
               "x": 176,
               "y": 22,
               "fill": "#8A8178",
@@ -3778,10 +3771,10 @@
             },
             {
               "type": "frame",
-              "id": "uCV",
-              "x": 822,
+              "id": "WHSFv",
+              "x": 1020,
               "y": 14,
-              "width": 244,
+              "width": 240,
               "height": 32,
               "fill": "#F8F4EE",
               "stroke": {
@@ -3793,7 +3786,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uCW",
+                  "id": "F1mCl",
                   "x": 16,
                   "y": 10,
                   "fill": "#514942",
@@ -3806,27 +3799,24 @@
             },
             {
               "type": "frame",
-              "id": "uDR",
-              "x": 1080,
+              "id": "OwHKo",
+              "x": 1272,
               "y": 14,
+              "name": "activeLibraryTrigger",
               "width": 120,
               "height": 32,
               "fill": "#EAF4F1",
-              "name": "activeLibraryTrigger",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#D4E4DE"
               },
-              "layout": "none",
               "children": [
                 {
                   "type": "text",
-                  "id": "uDS",
-                  "x": 36,
-                  "y": 9,
-                  "content": "PDF 库",
+                  "id": "OuoXr",
                   "fill": "#0D6E6E",
+                  "content": "PDF 库",
                   "fontFamily": "Inter",
                   "fontSize": 13,
                   "fontWeight": "600"
@@ -3835,33 +3825,34 @@
             },
             {
               "type": "frame",
-              "id": "uDT",
-              "x": 1410,
+              "id": "I0yhM",
+              "x": 1416,
               "y": 10,
+              "name": "userAvatar",
               "width": 40,
               "height": 40,
               "fill": "#F8F4EE",
-              "name": "userAvatar",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
                 "fill": "#E7DED4"
               },
+              "layout": "none",
               "children": [
                 {
                   "type": "frame",
-                  "id": "uDU",
+                  "id": "lXNCq",
                   "x": 6,
                   "y": 6,
                   "width": 28,
                   "height": 28,
-                  "cornerRadius": 14,
                   "fill": {
                     "type": "image",
                     "enabled": true,
                     "url": "../public/logo.webp",
                     "mode": "fill"
-                  }
+                  },
+                  "cornerRadius": 14
                 }
               ]
             }
@@ -3869,7 +3860,7 @@
         },
         {
           "type": "frame",
-          "id": "uCb",
+          "id": "cAyZ4",
           "x": 12,
           "y": 84,
           "width": 1108,
@@ -3884,7 +3875,7 @@
           "children": [
             {
               "type": "frame",
-              "id": "uCc",
+              "id": "Nvz9X",
               "x": 12,
               "y": 12,
               "clip": true,
@@ -3910,7 +3901,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uCd",
+                  "id": "Qky3K",
                   "x": 72,
                   "y": 64,
                   "fill": "#1A1A1A",
@@ -3921,7 +3912,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCe",
+                  "id": "rCRXb",
                   "x": 72,
                   "y": 110,
                   "fill": "#8A8178",
@@ -3932,7 +3923,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCf",
+                  "id": "rvO4O",
                   "x": 72,
                   "y": 182,
                   "fill": "#2D2621",
@@ -3946,7 +3937,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCg",
+                  "id": "3xmgn",
                   "x": 72,
                   "y": 278,
                   "fill": "#2D2621",
@@ -3960,7 +3951,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCh",
+                  "id": "tg1ea",
                   "x": 72,
                   "y": 374,
                   "fill": "#2D2621",
@@ -3974,7 +3965,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCi",
+                  "id": "oOMk7",
                   "x": 72,
                   "y": 470,
                   "fill": "#2D2621",
@@ -3988,7 +3979,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uCj",
+                  "id": "VdbsF",
                   "x": 72,
                   "y": 502,
                   "opacity": 0.5899999999999996,
@@ -3998,7 +3989,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCk",
+                  "id": "4Qstd",
                   "x": 72,
                   "y": 566,
                   "fill": "#2D2621",
@@ -4012,7 +4003,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uCl",
+                  "id": "PpkKN",
                   "x": 982,
                   "y": 28,
                   "name": "readerRail",
@@ -4022,7 +4013,7 @@
                 },
                 {
                   "type": "rectangle",
-                  "id": "uCm",
+                  "id": "meAcp",
                   "x": 981,
                   "y": 236,
                   "name": "readerThumb",
@@ -4034,7 +4025,7 @@
             },
             {
               "type": "frame",
-              "id": "uCn",
+              "id": "ye98Q",
               "x": 636,
               "y": 332,
               "width": 244,
@@ -4061,7 +4052,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uCo",
+                  "id": "TVqiL",
                   "fill": "#8A8178",
                   "content": "划词翻译",
                   "fontFamily": "JetBrains Mono",
@@ -4071,7 +4062,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCp",
+                  "id": "GAMRP",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -4083,7 +4074,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCq",
+                  "id": "Crv3p",
                   "fill": "#0D6E6E",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -4095,7 +4086,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uCr",
+                  "id": "NkkdQ",
                   "fill": "#6A625A",
                   "textGrowth": "fixed-width",
                   "width": 228,
@@ -4107,7 +4098,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "uCs",
+                  "id": "HHqBZ",
                   "width": 92,
                   "height": 34,
                   "fill": "#FFF4EC",
@@ -4115,7 +4106,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uCt",
+                      "id": "47cGW",
                       "x": 18,
                       "y": 9,
                       "fill": "#C25B34",
@@ -4132,7 +4123,7 @@
         },
         {
           "type": "frame",
-          "id": "uCu",
+          "id": "k9Bi8",
           "x": 1132,
           "y": 84,
           "clip": true,
@@ -4148,7 +4139,7 @@
           "children": [
             {
               "type": "text",
-              "id": "uCv",
+              "id": "4xTSN",
               "x": 20,
               "y": 20,
               "fill": "#8A8178",
@@ -4160,7 +4151,7 @@
             },
             {
               "type": "text",
-              "id": "uCw",
+              "id": "7nFla",
               "x": 20,
               "y": 42,
               "fill": "#1A1A1A",
@@ -4171,7 +4162,7 @@
             },
             {
               "type": "text",
-              "id": "uCx",
+              "id": "yVZIK",
               "x": 20,
               "y": 82,
               "fill": "#6A625A",
@@ -4185,7 +4176,7 @@
             },
             {
               "type": "frame",
-              "id": "uCy",
+              "id": "jhyBy",
               "x": 20,
               "y": 124,
               "width": 300,
@@ -4195,7 +4186,7 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "uCz",
+                  "id": "Z8Q3R",
                   "x": 4,
                   "y": 4,
                   "width": 96,
@@ -4215,7 +4206,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uC0",
+                      "id": "E1ry1",
                       "x": 30,
                       "y": 10,
                       "fill": "#1A1A1A",
@@ -4228,7 +4219,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uC1",
+                  "id": "Tw44L",
                   "x": 130,
                   "y": 14,
                   "fill": "#8A8178",
@@ -4239,7 +4230,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uC2",
+                  "id": "98y03",
                   "x": 228,
                   "y": 14,
                   "fill": "#8A8178",
@@ -4252,7 +4243,7 @@
             },
             {
               "type": "text",
-              "id": "uC3",
+              "id": "hnpRl",
               "x": 20,
               "y": 182,
               "fill": "#8A8178",
@@ -4264,7 +4255,7 @@
             },
             {
               "type": "frame",
-              "id": "uC4",
+              "id": "cGdnz",
               "x": 20,
               "y": 204,
               "width": 300,
@@ -4281,7 +4272,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uC5",
+                  "id": "YmAdk",
                   "fill": "#8A8178",
                   "content": "08:42 PM  •  Page 12",
                   "fontFamily": "JetBrains Mono",
@@ -4290,7 +4281,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uC6",
+                  "id": "DbWFP",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 280,
@@ -4302,7 +4293,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uC7",
+                  "id": "1GOKW",
                   "fill": "#6A625A",
                   "textGrowth": "fixed-width",
                   "width": 280,
@@ -4314,7 +4305,7 @@
                 },
                 {
                   "type": "frame",
-                  "id": "uC8",
+                  "id": "xM5vf",
                   "width": 118,
                   "height": 34,
                   "fill": "#EAF4F1",
@@ -4322,7 +4313,7 @@
                   "children": [
                     {
                       "type": "text",
-                      "id": "uC9",
+                      "id": "ZxpX6",
                       "x": 18,
                       "y": 9,
                       "fill": "#0D6E6E",
@@ -4337,7 +4328,7 @@
             },
             {
               "type": "text",
-              "id": "uDA",
+              "id": "9Cm5D",
               "x": 20,
               "y": 430,
               "fill": "#8A8178",
@@ -4349,7 +4340,7 @@
             },
             {
               "type": "frame",
-              "id": "uDB",
+              "id": "iupOa",
               "x": 20,
               "y": 450,
               "width": 300,
@@ -4361,7 +4352,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uDC",
+                  "id": "gTqUW",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -4373,7 +4364,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uDD",
+                  "id": "Ddw6o",
                   "fill": "#C25B34",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -4384,7 +4375,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uDE",
+                  "id": "OkKf0",
                   "fill": "#8A8178",
                   "content": "来自 Page 12  •  句子收藏",
                   "fontFamily": "JetBrains Mono",
@@ -4395,7 +4386,7 @@
             },
             {
               "type": "text",
-              "id": "uDF",
+              "id": "VfNgc",
               "x": 20,
               "y": 570,
               "fill": "#8A8178",
@@ -4407,7 +4398,7 @@
             },
             {
               "type": "frame",
-              "id": "uDG",
+              "id": "ISX9z",
               "x": 20,
               "y": 590,
               "width": 300,
@@ -4419,7 +4410,7 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uDH",
+                  "id": "HVTZv",
                   "fill": "#1A1A1A",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -4431,7 +4422,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uDI",
+                  "id": "lrC22",
                   "fill": "#4B5B5B",
                   "textGrowth": "fixed-width",
                   "width": 284,
@@ -4443,7 +4434,7 @@
                 },
                 {
                   "type": "text",
-                  "id": "uDJ",
+                  "id": "8sgHf",
                   "fill": "#8A8178",
                   "content": "来源：08:42 PM 录音",
                   "fontFamily": "JetBrains Mono",
@@ -4454,7 +4445,7 @@
             },
             {
               "type": "rectangle",
-              "id": "uDK",
+              "id": "u3dBI",
               "x": 344,
               "y": 20,
               "name": "sidebarRail",
@@ -4464,7 +4455,7 @@
             },
             {
               "type": "rectangle",
-              "id": "uDL",
+              "id": "0VZEy",
               "x": 343,
               "y": 280,
               "name": "sidebarThumb",
@@ -4476,7 +4467,7 @@
         },
         {
           "type": "frame",
-          "id": "uDM",
+          "id": "3aFfA",
           "x": 708,
           "y": 876,
           "name": "Siri Mic Button",
@@ -4491,7 +4482,7 @@
           "children": [
             {
               "type": "ellipse",
-              "id": "uDN",
+              "id": "7OXLJ",
               "x": 0,
               "y": 0,
               "fill": "#E07B5422",
@@ -4500,7 +4491,7 @@
             },
             {
               "type": "ellipse",
-              "id": "uDO",
+              "id": "9oasG",
               "x": 10,
               "y": 10,
               "fill": "#FFF4EC",
@@ -4524,7 +4515,7 @@
             },
             {
               "type": "ellipse",
-              "id": "uDP",
+              "id": "dH2IB",
               "x": 22,
               "y": 22,
               "fill": "#E07B54",
@@ -4533,7 +4524,7 @@
             },
             {
               "type": "icon_font",
-              "id": "uDQ",
+              "id": "SttFw",
               "x": 36,
               "y": 36,
               "width": 24,
@@ -4547,25 +4538,23 @@
         },
         {
           "type": "frame",
-          "id": "uDV",
+          "id": "Tl7Ar",
           "x": 12,
           "y": 84,
+          "name": "libraryMask",
           "width": 1108,
           "height": 884,
-          "fill": "#2B232066",
-          "name": "libraryMask",
-          "layout": "none",
-          "children": []
+          "fill": "#2B232066"
         },
         {
           "type": "frame",
-          "id": "uDW",
+          "id": "tjirY",
           "x": 12,
           "y": 84,
+          "name": "libraryPanel",
           "width": 344,
           "height": 884,
           "fill": "#FFFDF9",
-          "name": "libraryPanel",
           "stroke": {
             "align": "inside",
             "thickness": 1,
@@ -4577,53 +4566,45 @@
           "children": [
             {
               "type": "text",
-              "id": "uDX",
-              "x": 0,
-              "y": 0,
-              "content": "PDF LIBRARY",
+              "id": "Y85Fs",
+              "name": "libraryEyebrow",
               "fill": "#8A8178",
+              "content": "PDF LIBRARY",
               "fontFamily": "JetBrains Mono",
               "fontSize": 11,
               "fontWeight": "600",
-              "letterSpacing": 2,
-              "name": "libraryEyebrow"
+              "letterSpacing": 2
             },
             {
               "type": "text",
-              "id": "uDY",
-              "x": 0,
-              "y": 0,
-              "content": "你的 PDF 库",
+              "id": "75F9Q",
+              "name": "libraryTitle",
               "fill": "#1A1A1A",
+              "content": "你的 PDF 库",
               "fontFamily": "Newsreader",
               "fontSize": 28,
-              "fontWeight": "500",
-              "name": "libraryTitle"
+              "fontWeight": "500"
             },
             {
               "type": "text",
-              "id": "uDZ",
-              "x": 0,
-              "y": 0,
-              "content": "点击任意文件即可在主阅读区打开；点击面板外区域则关闭文件库。",
+              "id": "AlpaT",
+              "name": "libraryDesc",
               "fill": "#6A625A",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontWeight": "normal",
               "textGrowth": "fixed-width",
               "width": "fill_container",
+              "content": "点击任意文件即可在主阅读区打开；点击面板外区域则关闭文件库。",
               "lineHeight": 1.5,
-              "name": "libraryDesc"
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
             },
             {
               "type": "frame",
-              "id": "uDa",
-              "x": 0,
-              "y": 0,
+              "id": "U3H49",
+              "name": "fileItem1",
               "width": "fill_container",
               "height": 110,
               "fill": "#FCFBF8",
-              "name": "fileItem1",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -4635,53 +4616,45 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uDb",
-                  "x": 0,
-                  "y": 0,
-                  "content": "lesson-3-energy-reading.pdf",
+                  "id": "54dA1",
+                  "name": "file1Name",
                   "fill": "#1A1A1A",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "lesson-3-energy-reading.pdf",
                   "fontFamily": "Newsreader",
                   "fontSize": 21,
-                  "fontWeight": "500",
-                  "textGrowth": "fixed-width",
-                  "width": "fill_container",
-                  "name": "file1Name"
+                  "fontWeight": "500"
                 },
                 {
                   "type": "text",
-                  "id": "uDc",
-                  "x": 0,
-                  "y": 0,
-                  "content": "Uploaded 2026-03-25  •  4.8 MB",
+                  "id": "QUnCA",
+                  "name": "file1Meta",
                   "fill": "#8A8178",
+                  "content": "Uploaded 2026-03-25  •  4.8 MB",
                   "fontFamily": "JetBrains Mono",
                   "fontSize": 11,
-                  "fontWeight": "500",
-                  "name": "file1Meta"
+                  "fontWeight": "500"
                 },
                 {
                   "type": "text",
-                  "id": "uDd",
-                  "x": 0,
-                  "y": 0,
-                  "content": "最近打开 · 精读中",
+                  "id": "otC6U",
+                  "name": "file1Hint",
                   "fill": "#0D6E6E",
+                  "content": "最近打开 · 精读中",
                   "fontFamily": "Inter",
                   "fontSize": 13,
-                  "fontWeight": "600",
-                  "name": "file1Hint"
+                  "fontWeight": "600"
                 }
               ]
             },
             {
               "type": "frame",
-              "id": "uDe",
-              "x": 0,
-              "y": 0,
-              "width": "fill_container",
-              "height": 96,
-              "fill": "#FFFFFF",
+              "id": "HEr2T",
               "name": "fileItem2",
+              "width": "fill_container",
+              "height": 96,
+              "fill": "#FFFFFF",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -4693,41 +4666,35 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uDf",
-                  "x": 0,
-                  "y": 0,
-                  "content": "the-last-question.pdf",
+                  "id": "4yMWs",
+                  "name": "file2Name",
                   "fill": "#1A1A1A",
-                  "fontFamily": "Newsreader",
-                  "fontSize": 20,
-                  "fontWeight": "500",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "name": "file2Name"
+                  "content": "the-last-question.pdf",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
                 },
                 {
                   "type": "text",
-                  "id": "uDg",
-                  "x": 0,
-                  "y": 0,
-                  "content": "Uploaded 2026-03-22  •  1.2 MB",
+                  "id": "llHuV",
+                  "name": "file2Meta",
                   "fill": "#8A8178",
+                  "content": "Uploaded 2026-03-22  •  1.2 MB",
                   "fontFamily": "JetBrains Mono",
                   "fontSize": 11,
-                  "fontWeight": "500",
-                  "name": "file2Meta"
+                  "fontWeight": "500"
                 }
               ]
             },
             {
               "type": "frame",
-              "id": "uDh",
-              "x": 0,
-              "y": 0,
+              "id": "TRedE",
+              "name": "fileItem3",
               "width": "fill_container",
               "height": 96,
               "fill": "#FFFFFF",
-              "name": "fileItem3",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -4739,29 +4706,25 @@
               "children": [
                 {
                   "type": "text",
-                  "id": "uDi",
-                  "x": 0,
-                  "y": 0,
-                  "content": "ielts-longform-practice.pdf",
+                  "id": "LzQMl",
+                  "name": "file3Name",
                   "fill": "#1A1A1A",
-                  "fontFamily": "Newsreader",
-                  "fontSize": 20,
-                  "fontWeight": "500",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "name": "file3Name"
+                  "content": "ielts-longform-practice.pdf",
+                  "fontFamily": "Newsreader",
+                  "fontSize": 20,
+                  "fontWeight": "500"
                 },
                 {
                   "type": "text",
-                  "id": "uDj",
-                  "x": 0,
-                  "y": 0,
-                  "content": "Uploaded 2026-03-18  •  6.1 MB",
+                  "id": "A43Cg",
+                  "name": "file3Meta",
                   "fill": "#8A8178",
+                  "content": "Uploaded 2026-03-18  •  6.1 MB",
                   "fontFamily": "JetBrains Mono",
                   "fontSize": 11,
-                  "fontWeight": "500",
-                  "name": "file3Meta"
+                  "fontWeight": "500"
                 }
               ]
             }

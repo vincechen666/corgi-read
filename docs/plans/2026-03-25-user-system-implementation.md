@@ -138,7 +138,7 @@ Expected: FAIL because login overlay does not exist.
 **Step 3: Write minimal implementation**
 
 - Add lightweight auth modal
-- Collect email and start Supabase magic-link / OTP flow
+- Collect email and start the mixed Supabase email flow: verification link for first registration, in-app email code for returning login
 - Open the modal from the guest avatar entry rather than a text login chip
 - Keep failure state inline and non-blocking
 - Closing the modal must return users to the current reader state
