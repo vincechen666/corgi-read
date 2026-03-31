@@ -72,13 +72,18 @@ async function isVerifiedUser(
 
 export async function getEmailFlow(
   email: string,
-  client: EmailFlowClient = createSupabaseServerAdminClient(),
+  client?: EmailFlowClient,
 ): Promise<"signup-link" | "login-code"> {
-  const profileId = await findProfileIdByEmail(client, email);
+  const emailFlowClient =
+    client ?? (createSupabaseServerAdminClient() as unknown as EmailFlowClient);
+
+  const profileId = await findProfileIdByEmail(emailFlowClient, email);
 
   if (!profileId) {
     return "signup-link";
   }
 
-  return (await isVerifiedUser(client, profileId)) ? "login-code" : "signup-link";
+  return (await isVerifiedUser(emailFlowClient, profileId))
+    ? "login-code"
+    : "signup-link";
 }
