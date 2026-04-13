@@ -14,7 +14,7 @@ The goal is to keep the experience simple: login upgrades the existing reader in
 ## Product Principles
 
 - Keep guest mode intact. The app must remain usable without login.
-- Keep login lightweight. First registration uses an email verification link, and returning users sign in with an in-app email code.
+- Keep login lightweight. Users sign in with an email verification code directly inside the app.
 - Keep the main reader flow unchanged. Upload, read, translate, and retell should feel familiar.
 - Keep cloud data personal. Every PDF and every note belongs to one user.
 - Keep UI additions minimal. Reuse existing top bar, reader workspace, and right sidebar.
@@ -44,11 +44,10 @@ Login is progressive enhancement, not a hard gate.
 
 ## Authentication
 
-The first release uses Supabase Auth with a mixed email flow.
+The first release uses Supabase Auth with a unified email OTP flow.
 
-- First registration uses an email verification link
-- Returning login uses an in-app email code
-- `NEXT_PUBLIC_SITE_URL` remains required for the first-time verification link
+- New and returning users both receive an email verification code
+- Verification happens inside the auth modal
 - No social login in the first version
 - No password-heavy account management in the first version
 - The top-right round avatar area becomes the login / user entry point
@@ -211,8 +210,8 @@ This keeps the system lightweight while maintaining a clean security boundary.
 ### Login
 
 1. User clicks the round avatar entry in the top-right corner
-2. First-time users complete the verification link flow
-3. Returning users enter the in-app email code
+2. Users receive an email verification code
+3. Users enter the code inside the modal
 4. UI switches to authenticated mode
 5. PDF library becomes available
 6. Right sidebar reads cloud-backed user data

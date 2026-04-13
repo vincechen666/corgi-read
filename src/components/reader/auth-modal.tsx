@@ -4,7 +4,6 @@ import { useState, type FormEvent } from "react";
 
 import {
   startEmailLoginCode,
-  startEmailSignupLink,
   verifyEmailLoginCode,
 } from "@/features/auth/auth-client";
 
@@ -13,7 +12,7 @@ type AuthModalProps = {
   onClose: () => void;
 };
 
-type AuthStep = "email-entry" | "signup-link-sent" | "code-entry";
+type AuthStep = "email-entry" | "code-entry";
 
 export function AuthModal({ open, onClose }: AuthModalProps) {
   const [email, setEmail] = useState("");
@@ -41,35 +40,14 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
     setError(null);
 
     try {
-      const response = await fetch("/api/auth/email-flow", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to start login");
-      }
-
-      const { flow } = (await response.json()) as {
-        flow: "signup-link" | "login-code";
-      };
-
-      if (flow === "signup-link") {
-        await startEmailSignupLink(email);
-        setStep("signup-link-sent");
-      } else {
-        await startEmailLoginCode(email);
-        setToken("");
-        setStep("code-entry");
-      }
+      await startEmailLoginCode(email);
+      setToken("");
+      setStep("code-entry");
     } catch (submissionError) {
       setError(
         submissionError instanceof Error
           ? submissionError.message
-          : "Failed to start login",
+          : "Failed to send code",
       );
     } finally {
       setIsSubmitting(false);
@@ -122,105 +100,88 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
           EMAIL LOGIN
         </p>
         <h2 className="mt-2 font-serif text-[30px] font-medium text-[#1a1a1a]">
-          Email Verification
+          Email Login
         </h2>
         <p className="mt-3 text-sm leading-6 text-[#6a625a]">
-          Continue with your email address. We will either send a verification
-          link or a login code.
+          Continue with your email address. We will send a one-time verification
+          code that you can enter here to sign in or create your account.
         </p>
 
-        {step === "signup-link-sent" ? (
-          <div className="mt-6 space-y-4">
-            <div className="rounded-[18px] border border-[#d8e3dc] bg-[#f6fbf8] p-4">
-              <p className="text-sm font-medium text-[#44615a]">
-                Check your inbox to continue.
-              </p>
-              <p className="mt-1 text-sm leading-6 text-[#5c6f67]">
-                We sent a verification link to {email}.
-              </p>
-            </div>
+        <form
+          className="mt-6 space-y-4"
+          onSubmit={step === "code-entry" ? submitCode : submitEmail}
+        >
+          <label className="block">
+            <span className="sr-only">
+              {step === "code-entry" ? "Verification code" : "Email address"}
+            </span>
+            {step === "code-entry" ? (
+              <input
+                autoComplete="one-time-code"
+                className="h-[54px] w-full border border-[#e7ded4] bg-white px-4 text-sm outline-none placeholder:text-[#9a9188]"
+                inputMode="numeric"
+                onChange={(event) => setToken(event.target.value)}
+                placeholder="123456"
+                type="text"
+                value={token}
+              />
+            ) : (
+              <input
+                autoComplete="email"
+                className="h-[54px] w-full border border-[#e7ded4] bg-white px-4 text-sm outline-none placeholder:text-[#9a9188]"
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@corgiread.app"
+                type="email"
+                value={email}
+              />
+            )}
+          </label>
 
-            <div className="flex gap-3">
-              <button
-                className="h-11 flex-1 border border-[#e7ded4] bg-white text-sm font-medium text-[#514942]"
-                onClick={handleClose}
-                type="button"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        ) : (
-          <form
-            className="mt-6 space-y-4"
-            onSubmit={step === "code-entry" ? submitCode : submitEmail}
-          >
-            <label className="block">
-              <span className="sr-only">
-                {step === "code-entry" ? "Verification code" : "Email address"}
-              </span>
-              {step === "code-entry" ? (
-                <input
-                  autoComplete="one-time-code"
-                  className="h-[54px] w-full border border-[#e7ded4] bg-white px-4 text-sm outline-none placeholder:text-[#9a9188]"
-                  inputMode="numeric"
-                  onChange={(event) => setToken(event.target.value)}
-                  placeholder="123456"
-                  type="text"
-                  value={token}
-                />
-              ) : (
-                <input
-                  autoComplete="email"
-                  className="h-[54px] w-full border border-[#e7ded4] bg-white px-4 text-sm outline-none placeholder:text-[#9a9188]"
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@corgiread.app"
-                  type="email"
-                  value={email}
-                />
-              )}
-            </label>
+          {step === "code-entry" ? (
+            <p className="text-sm leading-6 text-[#6a625a]">
+              Enter the 6-digit code we sent to {email}.
+            </p>
+          ) : null}
 
-            {error ? <p className="text-sm text-[#b44d28]">{error}</p> : null}
+          {error ? <p className="text-sm text-[#b44d28]">{error}</p> : null}
 
-            <div className="flex gap-3">
-              <button
-                className="h-11 flex-1 border border-[#e7ded4] bg-white text-sm font-medium text-[#514942]"
-                onClick={handleClose}
-                type="button"
-              >
-                Close
-              </button>
-              {step === "code-entry" ? (
-                <>
-                  <button
-                    className="h-11 flex-1 border border-[#e7ded4] bg-white text-sm font-medium text-[#514942] disabled:opacity-50"
-                    disabled={isSubmitting}
-                    onClick={resendCode}
-                    type="button"
-                  >
-                    Resend code
-                  </button>
-                  <button
-                    className="h-11 flex-1 bg-[#e07b54] text-sm font-semibold text-white disabled:opacity-50"
-                    disabled={!token || isSubmitting}
-                    type="submit"
-                  >
-                    {isSubmitting ? "Verifying…" : "Verify code"}
-                  </button>
-                </>
-              ) : (
+          <div className="flex gap-3">
+            <button
+              className="h-11 flex-1 border border-[#e7ded4] bg-white text-sm font-medium text-[#514942]"
+              onClick={handleClose}
+              type="button"
+            >
+              Close
+            </button>
+            {step === "code-entry" ? (
+              <>
+                <button
+                  className="h-11 flex-1 border border-[#e7ded4] bg-white text-sm font-medium text-[#514942] disabled:opacity-50"
+                  disabled={isSubmitting}
+                  onClick={resendCode}
+                  type="button"
+                >
+                  Resend code
+                </button>
                 <button
                   className="h-11 flex-1 bg-[#e07b54] text-sm font-semibold text-white disabled:opacity-50"
-                  disabled={!email || isSubmitting}
+                  disabled={!token || isSubmitting}
                   type="submit"
                 >
-                  {isSubmitting ? "Sending…" : "Continue"}
+                  {isSubmitting ? "Verifying…" : "Verify code"}
                 </button>
-              )}
-            </div>
-          </form>
-        )}
+              </>
+            ) : (
+              <button
+                className="h-11 flex-1 bg-[#e07b54] text-sm font-semibold text-white disabled:opacity-50"
+                disabled={!email || isSubmitting}
+                type="submit"
+              >
+                {isSubmitting ? "Sending…" : "Send code"}
+              </button>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   );

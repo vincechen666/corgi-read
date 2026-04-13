@@ -1,4 +1,11 @@
-import { cleanup, render, screen, waitFor, within } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
@@ -83,8 +90,29 @@ test("guest avatar opens the auth modal", async () => {
   await user.click(screen.getAllByTestId("topbar-avatar-button")[0]);
 
   expect(
-    screen.getByRole("heading", { name: /email verification/i }),
+    screen.getByRole("heading", { name: /email login/i }),
   ).toBeInTheDocument();
+});
+
+test("auth modal closes after the session becomes authenticated", async () => {
+  const user = userEvent.setup();
+
+  render(<AppShell />);
+
+  await user.click(screen.getAllByTestId("topbar-avatar-button")[0]);
+  expect(
+    screen.getByRole("heading", { name: /email login/i }),
+  ).toBeInTheDocument();
+
+  act(() => {
+    authStore.getState().setAuthenticated("user-1", "reader@example.com");
+  });
+
+  await waitFor(() => {
+    expect(
+      screen.queryByRole("heading", { name: /email login/i }),
+    ).not.toBeInTheDocument();
+  });
 });
 
 test("authenticated avatar opens user menu", async () => {

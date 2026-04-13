@@ -18,42 +18,22 @@ describe("auth-client", () => {
     signInWithOtpMock.mockClear();
     verifyOtpMock.mockClear();
     createSupabaseBrowserClientMock.mockClear();
-    vi.resetModules();
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://corgi.study/");
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  test("getEmailRedirectTo falls back to window.location.origin", async () => {
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "");
-
-    const { getEmailRedirectTo } = await import("@/features/auth/auth-client");
-
-    expect(getEmailRedirectTo()).toBe(window.location.origin);
-  });
-
-  test("startEmailSignupLink prefers NEXT_PUBLIC_SITE_URL for email redirects", async () => {
-    const { startEmailSignupLink } = await import("@/features/auth/auth-client");
-
-    await startEmailSignupLink("reader@example.com");
-
-    expect(signInWithOtpMock).toHaveBeenCalledWith({
-      email: "reader@example.com",
-      options: {
-        emailRedirectTo: "https://corgi.study",
-      },
-    });
-  });
-
-  test("startEmailLoginCode requests a code without a redirect URL", async () => {
+  test("startEmailLoginCode requests a one-time code and allows new users to be created", async () => {
     const { startEmailLoginCode } = await import("@/features/auth/auth-client");
 
     await startEmailLoginCode("reader@example.com");
 
     expect(signInWithOtpMock).toHaveBeenCalledWith({
       email: "reader@example.com",
+      options: {
+        shouldCreateUser: true,
+      },
     });
   });
 

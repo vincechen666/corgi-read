@@ -202,6 +202,13 @@ export function AppShell() {
   }, []);
 
   useEffect(() => {
+    if (authSession.status === "authenticated") {
+      setAuthModalOpen(false);
+      setAvatarMenuOpen(false);
+    }
+  }, [authSession.status]);
+
+  useEffect(() => {
     if (authSession.status !== "authenticated") {
       restoreGuestSidebarStore(sidebarStore);
       return;

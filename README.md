@@ -5,7 +5,7 @@ Corgi Read is a desktop-first English PDF reader for reading practice and spoken
 ## Features
 
 - Local upload for a single PDF file in the current browser session
-- Optional mixed email auth backed by Supabase Auth: first registration uses an email verification link, returning users sign in with an in-app email code
+- Optional email-code auth backed by Supabase Auth: users receive a one-time code in email and finish sign-in inside the current page
 - Per-user cloud PDF library with a 1 GB starting quota
 - Cloud-backed recordings, saved translations, and expression snippets for signed-in users
 - Continuous PDF reading with an internally scrollable reader pane
@@ -79,12 +79,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 NEXT_PUBLIC_SITE_URL=https://corgi.study
 ```
 
-`NEXT_PUBLIC_SITE_URL` is required for the first-time verification link sent during registration.
-
 Supabase user system rollout assumes:
 
-- Auth provider: mixed email flow with first registration via verification link and returning login via in-app email code
-- `NEXT_PUBLIC_SITE_URL` points to your deployed app origin for first-time verification links
+- Auth provider: unified email OTP flow with in-app code entry for both new and returning users
 - Storage bucket: `pdf-documents`
 - Tables: `profiles`, `pdf_documents`, `recordings`, `favorites`, `expression_library`
 - Row Level Security enabled on all user-owned tables and storage paths
