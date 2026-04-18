@@ -89,6 +89,8 @@ export function AppShell() {
   const [documentName, setDocumentName] = useState("未打开文档");
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [isPdfLibraryOpen, setIsPdfLibraryOpen] = useState(false);
+  const [isCloudUploadActive, setIsCloudUploadActive] = useState(false);
+  const [cloudUploadProgressPercent, setCloudUploadProgressPercent] = useState(0);
   const [uploadedLibraryDocuments, setUploadedLibraryDocuments] = useState<
     PdfLibraryDocument[]
   >([]);
@@ -551,10 +553,15 @@ export function AppShell() {
         }
 
         const initiatingUserId = authSession.userId;
+        setIsCloudUploadActive(true);
+        setCloudUploadProgressPercent(0);
         void uploadPdfDocumentToCloud({
           client: createSupabaseBrowserClient(),
           userId: initiatingUserId,
           file,
+          onProgress: (percent) => {
+            setCloudUploadProgressPercent(percent);
+          },
           storageQuotaBytes,
           storageUsedBytes,
         })
@@ -598,6 +605,10 @@ export function AppShell() {
                 ? "已达到 1 GB 空间上限"
                 : "云端保存失败",
             );
+          })
+          .finally(() => {
+            setIsCloudUploadActive(false);
+            setCloudUploadProgressPercent(0);
           });
       }
     },
@@ -643,8 +654,10 @@ export function AppShell() {
           data-testid="workspace-shell"
         >
           <PdfStage
+            cloudUploadProgressPercent={cloudUploadProgressPercent}
             documentName={documentName}
             error={pdfStageState.error}
+            isCloudUploadActive={isCloudUploadActive}
             onFavorite={handleFavorite}
             source={pdfStageState.source}
             status={pdfStageState.status}

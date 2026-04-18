@@ -63,10 +63,11 @@ test("authenticated uploads call the cloud upload service with the canonical use
 
   expect(libraryClientMocks.uploadPdfDocumentToCloud).toHaveBeenCalledWith({
     client: { client: "supabase-browser" },
-    userId: "user-123",
     file: expect.any(File),
+    onProgress: expect.any(Function),
     storageQuotaBytes: 4096,
     storageUsedBytes: 1024,
+    userId: "user-123",
   });
   expect(await screen.findByText(/lesson-3\.pdf/i)).toBeInTheDocument();
 });
@@ -98,6 +99,108 @@ test("authenticated uploads surface quota exceeded from the cloud upload service
       storageUsedBytes: 1024,
     }),
   );
+});
+
+test("authenticated uploads display cloud upload progress", async () => {
+  const user = userEvent.setup();
+  let resolveUpload: (() => void) | null = null;
+  libraryClientMocks.uploadPdfDocumentToCloud.mockImplementationOnce(
+    ({ onProgress }: { onProgress?: (percent: number) => void }) =>
+      new Promise((resolve) => {
+        onProgress?.(45);
+        resolveUpload = () => resolve({
+          documentId: "doc-1",
+          storagePath: "users/user-123/pdf/doc-1.pdf",
+          pdfDocument: {
+            id: "doc-1",
+            userId: "user-123",
+            fileName: "lesson-3.pdf",
+            fileSizeBytes: 3,
+            storagePath: "users/user-123/pdf/doc-1.pdf",
+            createdAt: "2026-03-25T10:00:00.000Z",
+          },
+          withinQuota: true,
+        });
+      }),
+  );
+  vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:lesson-3");
+
+  render(<AppShell />);
+
+  await user.click(screen.getAllByRole("button", { name: /未打开文档/i })[0]);
+  const uploadInput = screen.getAllByLabelText(/upload pdf input/i)[0];
+  await user.upload(
+    uploadInput,
+    new File(["pdf"], "lesson-3.pdf", { type: "application/pdf" }),
+  );
+
+  expect(await screen.findByText(/45%/i)).toBeInTheDocument();
+  resolveUpload?.();
+});
+
+test("authenticated upload progress reaches completion and then hides", async () => {
+  const user = userEvent.setup();
+  let resolveUpload: (() => void) | null = null;
+  libraryClientMocks.uploadPdfDocumentToCloud.mockImplementationOnce(
+    ({ onProgress }: { onProgress?: (percent: number) => void }) =>
+      new Promise((resolve) => {
+        onProgress?.(100);
+        resolveUpload = () => resolve({
+          documentId: "doc-1",
+          storagePath: "users/user-123/pdf/doc-1.pdf",
+          pdfDocument: {
+            id: "doc-1",
+            userId: "user-123",
+            fileName: "lesson-3.pdf",
+            fileSizeBytes: 3,
+            storagePath: "users/user-123/pdf/doc-1.pdf",
+            createdAt: "2026-03-25T10:00:00.000Z",
+          },
+          withinQuota: true,
+        });
+      }),
+  );
+  vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:lesson-3");
+
+  render(<AppShell />);
+
+  await user.click(screen.getAllByRole("button", { name: /未打开文档/i })[0]);
+  const uploadInput = screen.getAllByLabelText(/upload pdf input/i)[0];
+  await user.upload(
+    uploadInput,
+    new File(["pdf"], "lesson-3.pdf", { type: "application/pdf" }),
+  );
+
+  expect(await screen.findByText(/100%/i)).toBeInTheDocument();
+
+  resolveUpload?.();
+
+  await waitFor(() => {
+    expect(screen.queryByTestId("pdf-upload-progress")).not.toBeInTheDocument();
+  });
+});
+
+test("guest uploads never show cloud upload progress", async () => {
+  const user = userEvent.setup();
+  authStore.setState({
+    session: {
+      status: "guest",
+    },
+  });
+  vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:lesson-3");
+
+  render(<AppShell />);
+
+  await user.click(screen.getAllByRole("button", { name: /未打开文档/i })[0]);
+  const uploadInput = screen.getAllByLabelText(/upload pdf input/i)[0];
+  await user.upload(
+    uploadInput,
+    new File(["pdf"], "lesson-3.pdf", { type: "application/pdf" }),
+  );
+
+  expect(await screen.findByText(/PDF page 1/i)).toBeInTheDocument();
+  expect(screen.queryByTestId("pdf-upload-progress")).not.toBeInTheDocument();
+  expect(libraryClientMocks.uploadPdfDocumentToCloud).not.toHaveBeenCalled();
 });
 
 test("authenticated repeated uploads use the updated in-session storage usage", async () => {
