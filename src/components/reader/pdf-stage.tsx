@@ -71,6 +71,8 @@ const failedTranslationResult = (sourceText: string): TranslationResult => ({
 });
 
 type PdfStageProps = {
+  isCloudUploadActive?: boolean;
+  cloudUploadProgressPercent?: number;
   status?: "empty" | "loading" | "ready" | "error";
   documentName?: string;
   source?: string | null;
@@ -79,6 +81,8 @@ type PdfStageProps = {
 };
 
 export function PdfStage({
+  isCloudUploadActive = false,
+  cloudUploadProgressPercent = 0,
   status = "ready",
   documentName = "The Last Question.pdf",
   source = "/sample/the-last-question.pdf",
@@ -297,6 +301,29 @@ export function PdfStage({
       <Card
         className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#fffdf9] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
       >
+        {isCloudUploadActive ? (
+          <div
+            className="border-b border-[#e7ded4] bg-[rgba(255,248,240,0.92)] px-3 py-2"
+            data-testid="pdf-upload-progress"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <p className="font-mono text-[11px] font-semibold tracking-[0.18em] text-[#9a6a4f]">
+                CLOUD UPLOAD
+              </p>
+              <p className="font-mono text-[11px] text-[#9a6a4f]">
+                {cloudUploadProgressPercent}%
+              </p>
+            </div>
+            <div className="mt-2 h-1 overflow-hidden bg-[#f3e3d7]">
+              <div
+                className="h-full bg-[#d97745] transition-[width] duration-150 ease-out"
+                data-testid="pdf-upload-progress-fill"
+                style={{ width: `${cloudUploadProgressPercent}%` }}
+              />
+            </div>
+          </div>
+        ) : null}
+
         <div
           className="relative min-h-0 flex-1 overflow-auto px-3 py-3"
           data-testid="pdf-stage-viewer"

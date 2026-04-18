@@ -52,12 +52,16 @@ test("rejects cloud uploads when quota is exceeded", () => {
 });
 
 test("uploads cloud pdf metadata to storage and database", async () => {
-  const upload = vi.fn().mockResolvedValue({ error: null });
+  const onProgress = vi.fn();
+  const uploadFile = vi.fn(async ({ onProgress: reportProgress }) => {
+    reportProgress?.(50, 100);
+    reportProgress?.(100, 100);
+  });
   const insert = vi.fn().mockResolvedValue({ error: null });
   const client = {
     storage: {
       from: vi.fn(() => ({
-        upload,
+        remove: vi.fn(),
       })),
     },
     from: vi.fn(() => ({
@@ -73,31 +77,33 @@ test("uploads cloud pdf metadata to storage and database", async () => {
     createdAt: "2026-03-25T10:00:00.000Z",
     storageQuotaBytes: 4096,
     storageUsedBytes: 1024,
+    onProgress,
+    uploadFile,
   });
 
   expect(plan.storagePath).toBe("users/user-1/pdf/doc-1.pdf");
-  expect(upload).toHaveBeenCalledWith(
-    "users/user-1/pdf/doc-1.pdf",
-    expect.any(File),
-    {
-      contentType: "application/pdf",
-      upsert: false,
-    },
-  );
+  expect(uploadFile).toHaveBeenCalledWith({
+    client: client,
+    file: expect.any(File),
+    path: "users/user-1/pdf/doc-1.pdf",
+    onProgress: expect.any(Function),
+  });
+  expect(onProgress).toHaveBeenNthCalledWith(1, 50);
+  expect(onProgress).toHaveBeenNthCalledWith(2, 100);
   expect(insert).toHaveBeenCalledWith([
     {
       id: "doc-1",
-      userId: "user-1",
-      fileName: "lesson-1.pdf",
-      fileSizeBytes: 3,
-      storagePath: "users/user-1/pdf/doc-1.pdf",
-      createdAt: "2026-03-25T10:00:00.000Z",
+      user_id: "user-1",
+      file_name: "lesson-1.pdf",
+      file_size_bytes: 3,
+      storage_path: "users/user-1/pdf/doc-1.pdf",
+      created_at: "2026-03-25T10:00:00.000Z",
     },
   ]);
 });
 
 test("removes uploaded pdf from storage when metadata insert fails", async () => {
-  const upload = vi.fn().mockResolvedValue({ error: null });
+  const uploadFile = vi.fn().mockResolvedValue(undefined);
   const remove = vi.fn().mockResolvedValue({ error: null });
   const insert = vi.fn().mockResolvedValue({
     error: { message: "metadata failed" },
@@ -105,7 +111,6 @@ test("removes uploaded pdf from storage when metadata insert fails", async () =>
   const client = {
     storage: {
       from: vi.fn(() => ({
-        upload,
         remove,
       })),
     },
@@ -121,6 +126,7 @@ test("removes uploaded pdf from storage when metadata insert fails", async () =>
       userId: "user-1",
       documentId: "doc-1",
       createdAt: "2026-03-25T10:00:00.000Z",
+      uploadFile,
     }),
   ).rejects.toThrow("Supabase metadata insert failed: metadata failed");
 
