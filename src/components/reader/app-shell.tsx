@@ -52,6 +52,7 @@ import {
   saveFavoriteToCloud,
   saveRecordingToCloud,
 } from "@/features/sidebar/sidebar-cloud-client";
+import { createSidebarItemId } from "@/features/sidebar/sidebar-id";
 
 const E2E_AUTH_SESSION_STORAGE_KEY = "corgi-read-e2e-auth-session";
 
@@ -305,7 +306,7 @@ export function AppShell() {
   const completeAnalysis = useCallback(
     async (transcript: string) => {
       const response = await analyzeTranscript(transcript);
-      const recordingId = `recording-${Date.now()}`;
+      const recordingId = createSidebarItemId();
 
       const recordingItem: RecordingItem = {
         id: recordingId,
@@ -397,7 +398,7 @@ export function AppShell() {
     }
 
     const expressionItem: ExpressionItem = {
-      id: `expression-${activeAnalysis.recordingId}`,
+      id: createSidebarItemId(),
       phrase: activeAnalysis.result.nativeExpression,
       note: `${activeAnalysis.result.grammar} ${activeAnalysis.result.coachFeedback}`,
       sourceRecordingId: activeAnalysis.recordingId,

@@ -92,6 +92,23 @@ function selectPersistedState(state: SidebarState): SidebarStorageShape {
   };
 }
 
+function isSameFavorite(left: FavoriteItem, right: FavoriteItem) {
+  return (
+    left.sourceText === right.sourceText &&
+    left.translatedText === right.translatedText &&
+    left.type === right.type &&
+    left.page === right.page
+  );
+}
+
+function isSameExpression(left: ExpressionItem, right: ExpressionItem) {
+  return (
+    left.phrase === right.phrase &&
+    left.note === right.note &&
+    left.sourceRecordingId === right.sourceRecordingId
+  );
+}
+
 export function createSidebarStore(
   initialState?: Partial<SidebarStorageShape>,
   options?: { seedDefaults?: boolean },
@@ -119,7 +136,9 @@ export function createSidebarStore(
       }),
     addFavorite: (item) => {
       set((state) => {
-        const favorites = state.favorites.some((favorite) => favorite.id === item.id)
+        const favorites = state.favorites.some((favorite) =>
+          isSameFavorite(favorite, item),
+        )
           ? state.favorites
           : [item, ...state.favorites];
         const nextState = { favorites, activeTab: "收藏" as const };
@@ -144,7 +163,7 @@ export function createSidebarStore(
     addExpression: (item) => {
       set((state) => {
         const expressions = state.expressions.some(
-          (expression) => expression.id === item.id,
+          (expression) => isSameExpression(expression, item),
         )
           ? state.expressions
           : [item, ...state.expressions];

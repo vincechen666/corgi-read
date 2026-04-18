@@ -1,6 +1,7 @@
 "use client";
 
 import type { TranslationResult } from "@/features/translation/translation-schema";
+import { createSidebarItemId } from "@/features/sidebar/sidebar-id";
 import {
   useSidebarStore,
   type FavoriteItem,
@@ -46,7 +47,7 @@ export function TranslationPopover({
         className="mt-3 border border-[#f1d4c6] bg-[#fff4ec] px-4 py-2 text-sm font-semibold text-[#c25b34]"
         onClick={() => {
           const nextFavorite = {
-            id: `${sourcePage}-${result.sourceText}`,
+            id: createSidebarItemId(),
             sourceText: result.sourceText,
             translatedText: result.translatedText,
             type: "sentence" as const,
