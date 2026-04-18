@@ -47,6 +47,7 @@ vi.mock("@/features/sidebar/sidebar-cloud-client", () => ({
 }));
 
 vi.mock("@/features/library/library-client", () => ({
+  loadPdfLibraryDocuments: vi.fn(async () => []),
   uploadPdfDocumentToCloud: vi.fn(),
 }));
 

@@ -3,15 +3,21 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, expect, test, vi } from "vitest";
 
 const libraryClientMocks = vi.hoisted(() => ({
+  loadPdfLibraryDocuments: vi.fn(async () => []),
   uploadPdfDocumentToCloud: vi.fn(),
 }));
 
 vi.mock("@/features/library/library-client", () => ({
+  loadPdfLibraryDocuments: libraryClientMocks.loadPdfLibraryDocuments,
   uploadPdfDocumentToCloud: libraryClientMocks.uploadPdfDocumentToCloud,
 }));
 
 vi.mock("@/features/auth/supabase-browser", () => ({
-  createSupabaseBrowserClient: vi.fn(() => ({ client: "supabase-browser" })),
+  createSupabaseBrowserClient: vi.fn(() => ({
+    client: "supabase-browser",
+    from: vi.fn(),
+    storage: { from: vi.fn() },
+  })),
 }));
 
 vi.mock("@/features/analysis/analysis-client", () => ({
@@ -31,6 +37,7 @@ afterEach(() => {
   });
   vi.restoreAllMocks();
   libraryClientMocks.uploadPdfDocumentToCloud.mockClear();
+  libraryClientMocks.loadPdfLibraryDocuments.mockClear();
 });
 
 test("updates the reader when a local pdf is selected", async () => {

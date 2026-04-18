@@ -27,7 +27,10 @@ import {
   authSessionSchema,
 } from "@/features/auth/auth-schema";
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
-import { uploadPdfDocumentToCloud } from "@/features/library/library-client";
+import {
+  loadPdfLibraryDocuments,
+  uploadPdfDocumentToCloud,
+} from "@/features/library/library-client";
 import { canUploadFileWithinQuota } from "@/features/library/quota";
 import {
   createPdfStageState,
@@ -50,22 +53,6 @@ import {
   saveRecordingToCloud,
 } from "@/features/sidebar/sidebar-cloud-client";
 
-const AUTH_LIBRARY_SEED_DOCUMENTS: PdfLibraryDocument[] = [
-  {
-    createdAt: "2026-03-25T10:00:00.000Z",
-    fileName: "lesson-1.pdf",
-    fileSizeBytes: 2048,
-    id: "library-seed-lesson-1",
-    previewSource: "/sample/the-last-question.pdf",
-  },
-  {
-    createdAt: "2026-03-25T10:30:00.000Z",
-    fileName: "reading-notes.pdf",
-    fileSizeBytes: 4096,
-    id: "library-seed-reading-notes",
-    previewSource: "/sample/the-last-question.pdf",
-  },
-];
 const E2E_AUTH_SESSION_STORAGE_KEY = "corgi-read-e2e-auth-session";
 
 export function AppShell() {
@@ -92,6 +79,9 @@ export function AppShell() {
   const [isCloudUploadActive, setIsCloudUploadActive] = useState(false);
   const [cloudUploadProgressPercent, setCloudUploadProgressPercent] = useState(0);
   const [uploadedLibraryDocuments, setUploadedLibraryDocuments] = useState<
+    PdfLibraryDocument[]
+  >([]);
+  const [cloudLibraryDocuments, setCloudLibraryDocuments] = useState<
     PdfLibraryDocument[]
   >([]);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -212,6 +202,45 @@ export function AppShell() {
 
   useEffect(() => {
     if (authSession.status !== "authenticated") {
+      setCloudLibraryDocuments([]);
+      return;
+    }
+
+    if (!hasSupabaseBrowserConfig) {
+      return;
+    }
+
+    const client = createSupabaseBrowserClient();
+
+    if (!("from" in client) || !("storage" in client)) {
+      return;
+    }
+
+    let cancelled = false;
+
+    void loadPdfLibraryDocuments({
+      client,
+      userId: authSession.userId,
+    })
+      .then((documents) => {
+        if (!cancelled) {
+          setCloudLibraryDocuments(documents);
+        }
+      })
+      .catch((error) => {
+        console.error("[pdf-library] failed to load library documents", error);
+        if (!cancelled) {
+          setCloudError("云端数据加载失败");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authSession.status, authSession.userId, hasSupabaseBrowserConfig]);
+
+  useEffect(() => {
+    if (authSession.status !== "authenticated") {
       restoreGuestSidebarStore(sidebarStore);
       return;
     }
@@ -258,8 +287,20 @@ export function AppShell() {
       return [];
     }
 
-    return [...uploadedLibraryDocuments, ...AUTH_LIBRARY_SEED_DOCUMENTS];
-  }, [authSession.status, uploadedLibraryDocuments]);
+    const documentsById = new Map<string, PdfLibraryDocument>();
+
+    for (const document of cloudLibraryDocuments) {
+      documentsById.set(document.id, document);
+    }
+
+    for (const document of uploadedLibraryDocuments) {
+      documentsById.set(document.id, document);
+    }
+
+    return Array.from(documentsById.values()).sort((left, right) =>
+      right.createdAt.localeCompare(left.createdAt),
+    );
+  }, [authSession.status, cloudLibraryDocuments, uploadedLibraryDocuments]);
 
   const completeAnalysis = useCallback(
     async (transcript: string) => {

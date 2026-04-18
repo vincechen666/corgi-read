@@ -2,6 +2,7 @@ import { expect, test, vi } from "vitest";
 
 import {
   buildPdfUploadPlan,
+  loadPdfLibraryDocuments,
   uploadPdfDocumentToCloud,
 } from "@/features/library/library-client";
 import { buildPdfStoragePath } from "@/features/library/storage-path";
@@ -131,4 +132,57 @@ test("removes uploaded pdf from storage when metadata insert fails", async () =>
   ).rejects.toThrow("Supabase metadata insert failed: metadata failed");
 
   expect(remove).toHaveBeenCalledWith(["users/user-1/pdf/doc-1.pdf"]);
+});
+
+test("loads cloud pdf metadata and maps it into library documents", async () => {
+  const createSignedUrl = vi.fn().mockResolvedValue({
+    data: { signedUrl: "https://cdn.example.com/doc-1.pdf" },
+    error: null,
+  });
+  const order = vi.fn().mockResolvedValue({
+    data: [
+      {
+        id: "doc-1",
+        user_id: "user-1",
+        file_name: "lesson-1.pdf",
+        file_size_bytes: 2048,
+        storage_path: "users/user-1/pdf/doc-1.pdf",
+        created_at: "2026-03-25T10:00:00.000Z",
+      },
+    ],
+    error: null,
+  });
+  const eq = vi.fn(() => ({ order }));
+  const select = vi.fn(() => ({ eq }));
+  const from = vi.fn(() => ({ select }));
+  const client = {
+    from,
+    storage: {
+      from: vi.fn(() => ({
+        createSignedUrl,
+      })),
+    },
+  };
+
+  const documents = await loadPdfLibraryDocuments({
+    client: client as never,
+    userId: "user-1",
+  });
+
+  expect(from).toHaveBeenCalledWith("pdf_documents");
+  expect(createSignedUrl).toHaveBeenCalledWith(
+    "users/user-1/pdf/doc-1.pdf",
+    3600,
+  );
+  expect(documents).toEqual([
+    {
+      id: "doc-1",
+      userId: "user-1",
+      fileName: "lesson-1.pdf",
+      fileSizeBytes: 2048,
+      storagePath: "users/user-1/pdf/doc-1.pdf",
+      createdAt: "2026-03-25T10:00:00.000Z",
+      previewSource: "https://cdn.example.com/doc-1.pdf",
+    },
+  ]);
 });

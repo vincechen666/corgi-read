@@ -5,6 +5,7 @@ import {
   pdfDocumentSchema,
   type PdfDocument,
 } from "@/features/library/library-schema";
+import type { PdfLibraryDocument } from "@/components/reader/pdf-library-panel";
 import { buildPdfStoragePath } from "@/features/library/storage-path";
 import { toUploadProgressPercent } from "@/features/library/upload-progress";
 
@@ -34,6 +35,75 @@ type CloudPdfDocumentRow = {
   storage_path: string;
   user_id: string;
 };
+
+function mapCloudPdfRowToPdfDocument(row: CloudPdfDocumentRow): PdfDocument {
+  return pdfDocumentSchema.parse({
+    id: row.id,
+    userId: row.user_id,
+    fileName: row.file_name,
+    fileSizeBytes: row.file_size_bytes,
+    storagePath: row.storage_path,
+    createdAt: row.created_at,
+  });
+}
+
+async function createPdfPreviewSource(
+  client: SupabaseClient,
+  storagePath: string,
+) {
+  const signedUrlResult = await client.storage
+    .from(PDF_STORAGE_BUCKET)
+    .createSignedUrl(storagePath, 60 * 60);
+
+  if (signedUrlResult.error) {
+    console.warn(
+      `Supabase signed url creation failed for ${storagePath}: ${signedUrlResult.error.message}`,
+    );
+    return undefined;
+  }
+
+  return signedUrlResult.data.signedUrl;
+}
+
+export async function loadPdfLibraryDocuments({
+  client,
+  userId,
+}: {
+  client: SupabaseClient;
+  userId: string;
+}): Promise<PdfLibraryDocument[]> {
+  const pdfDocumentsResult = await client
+    .from("pdf_documents")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (pdfDocumentsResult.error) {
+    throw new Error(
+      `Supabase pdf library fetch failed: ${pdfDocumentsResult.error.message}`,
+    );
+  }
+
+  return Promise.all(
+    (pdfDocumentsResult.data as CloudPdfDocumentRow[]).map(async (row) => {
+      const pdfDocument = mapCloudPdfRowToPdfDocument(row);
+      const previewSource = await createPdfPreviewSource(
+        client,
+        pdfDocument.storagePath,
+      );
+
+      return {
+        id: pdfDocument.id,
+        userId: pdfDocument.userId,
+        fileName: pdfDocument.fileName,
+        fileSizeBytes: pdfDocument.fileSizeBytes,
+        createdAt: pdfDocument.createdAt,
+        storagePath: pdfDocument.storagePath,
+        previewSource,
+      } satisfies PdfLibraryDocument;
+    }),
+  );
+}
 
 function createDocumentId() {
   return crypto.randomUUID();

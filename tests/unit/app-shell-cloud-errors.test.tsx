@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 const libraryClientMocks = vi.hoisted(() => ({
+  loadPdfLibraryDocuments: vi.fn(async () => []),
   uploadPdfDocumentToCloud: vi.fn(),
 }));
 
@@ -18,6 +19,7 @@ const sidebarCloudMocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@/features/library/library-client", () => ({
+  loadPdfLibraryDocuments: libraryClientMocks.loadPdfLibraryDocuments,
   uploadPdfDocumentToCloud: libraryClientMocks.uploadPdfDocumentToCloud,
 }));
 
@@ -29,7 +31,11 @@ vi.mock("@/features/sidebar/sidebar-cloud-client", () => ({
 }));
 
 vi.mock("@/features/auth/supabase-browser", () => ({
-  createSupabaseBrowserClient: vi.fn(() => ({ client: "supabase-browser" })),
+  createSupabaseBrowserClient: vi.fn(() => ({
+    client: "supabase-browser",
+    from: vi.fn(),
+    storage: { from: vi.fn() },
+  })),
 }));
 
 vi.mock("@/features/analysis/analysis-client", () => ({
@@ -46,6 +52,8 @@ beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon-key");
   vi.spyOn(console, "error").mockImplementation(() => {});
   libraryClientMocks.uploadPdfDocumentToCloud.mockReset();
+  libraryClientMocks.loadPdfLibraryDocuments.mockReset();
+  libraryClientMocks.loadPdfLibraryDocuments.mockResolvedValue([]);
   sidebarCloudMocks.loadSidebarCloudState.mockReset();
   sidebarCloudMocks.loadSidebarCloudState.mockResolvedValue({
     recordings: [],

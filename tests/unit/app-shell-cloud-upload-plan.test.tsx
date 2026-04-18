@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, test, vi } from "vitest";
 
 const libraryClientMocks = vi.hoisted(() => ({
+  loadPdfLibraryDocuments: vi.fn(async () => []),
   uploadPdfDocumentToCloud: vi.fn(async () => ({
     documentId: "doc-1",
     storagePath: "users/user-123/pdf/doc-1.pdf",
@@ -19,11 +20,16 @@ const libraryClientMocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@/features/library/library-client", () => ({
+  loadPdfLibraryDocuments: libraryClientMocks.loadPdfLibraryDocuments,
   uploadPdfDocumentToCloud: libraryClientMocks.uploadPdfDocumentToCloud,
 }));
 
 vi.mock("@/features/auth/supabase-browser", () => ({
-  createSupabaseBrowserClient: vi.fn(() => ({ client: "supabase-browser" })),
+  createSupabaseBrowserClient: vi.fn(() => ({
+    client: "supabase-browser",
+    from: vi.fn(),
+    storage: { from: vi.fn() },
+  })),
 }));
 
 vi.mock("@/features/analysis/analysis-client", () => ({
@@ -37,6 +43,7 @@ import { authStore } from "@/features/auth/auth-store";
 beforeEach(() => {
   window.localStorage.clear();
   libraryClientMocks.uploadPdfDocumentToCloud.mockClear();
+  libraryClientMocks.loadPdfLibraryDocuments.mockClear();
   authStore.setState({
     session: {
       status: "authenticated",
@@ -61,14 +68,18 @@ test("authenticated uploads call the cloud upload service with the canonical use
     new File(["pdf"], "lesson-3.pdf", { type: "application/pdf" }),
   );
 
-  expect(libraryClientMocks.uploadPdfDocumentToCloud).toHaveBeenCalledWith({
-    client: { client: "supabase-browser" },
-    file: expect.any(File),
-    onProgress: expect.any(Function),
-    storageQuotaBytes: 4096,
-    storageUsedBytes: 1024,
-    userId: "user-123",
-  });
+  expect(libraryClientMocks.uploadPdfDocumentToCloud).toHaveBeenCalledWith(
+    expect.objectContaining({
+      client: expect.objectContaining({
+        client: "supabase-browser",
+      }),
+      file: expect.any(File),
+      onProgress: expect.any(Function),
+      storageQuotaBytes: 4096,
+      storageUsedBytes: 1024,
+      userId: "user-123",
+    }),
+  );
   expect(await screen.findByText(/lesson-3\.pdf/i)).toBeInTheDocument();
 });
 
