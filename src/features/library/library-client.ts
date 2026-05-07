@@ -8,6 +8,11 @@ import {
 import type { PdfLibraryDocument } from "@/components/reader/pdf-library-panel";
 import { buildPdfStoragePath } from "@/features/library/storage-path";
 import { toUploadProgressPercent } from "@/features/library/upload-progress";
+import {
+  getDocumentKindFromFile,
+  getDocumentKindFromName,
+  type DocumentKind,
+} from "@/features/document/document-types";
 
 export const PDF_STORAGE_BUCKET = "pdf-documents";
 
@@ -21,6 +26,7 @@ export type PdfUploadPlanInput = {
 };
 
 export type PdfUploadPlan = {
+  documentKind: DocumentKind;
   documentId: string;
   storagePath: string;
   pdfDocument: PdfDocument;
@@ -95,6 +101,7 @@ export async function loadPdfLibraryDocuments({
       return {
         id: pdfDocument.id,
         userId: pdfDocument.userId,
+        documentKind: getDocumentKindFromName(pdfDocument.fileName),
         fileName: pdfDocument.fileName,
         fileSizeBytes: pdfDocument.fileSizeBytes,
         createdAt: pdfDocument.createdAt,
@@ -122,6 +129,16 @@ function mapPdfDocumentToCloudRow(
   };
 }
 
+function getUploadContentType(file: File) {
+  if (file.type) {
+    return file.type;
+  }
+
+  return getDocumentKindFromFile(file) === "epub"
+    ? "application/epub+zip"
+    : "application/pdf";
+}
+
 export function buildPdfUploadPlan({
   userId,
   file,
@@ -130,7 +147,8 @@ export function buildPdfUploadPlan({
   documentId = createDocumentId(),
   createdAt = new Date().toISOString(),
 }: PdfUploadPlanInput): PdfUploadPlan {
-  const storagePath = buildPdfStoragePath(userId, documentId);
+  const documentKind = getDocumentKindFromFile(file) ?? "pdf";
+  const storagePath = buildPdfStoragePath(userId, documentId, documentKind);
   const pdfDocument = pdfDocumentSchema.parse({
     id: documentId,
     userId,
@@ -145,6 +163,7 @@ export function buildPdfUploadPlan({
       : storageUsedBytes + file.size <= storageQuotaBytes;
 
   return {
+    documentKind,
     documentId,
     storagePath,
     pdfDocument,
@@ -225,7 +244,7 @@ export async function uploadPdfToStorageResumable({
       metadata: {
         bucketName: PDF_STORAGE_BUCKET,
         objectName: path,
-        contentType: file.type || "application/pdf",
+        contentType: getUploadContentType(file),
         cacheControl: "3600",
       },
       chunkSize: 6 * 1024 * 1024,

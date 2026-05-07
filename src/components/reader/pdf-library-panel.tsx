@@ -1,5 +1,8 @@
+import type { DocumentKind } from "@/features/document/document-types";
+
 export type PdfLibraryDocument = {
   createdAt: string;
+  documentKind?: DocumentKind;
   fileName: string;
   fileSizeBytes: number;
   id: string;
@@ -81,10 +84,10 @@ export function PdfLibraryPanel({
       <aside className="absolute left-3 top-3 z-10 flex h-[calc(100vh-1.5rem)] w-[360px] flex-col border border-[#e7ded4] bg-[#f8f4ee] shadow-[0_10px_24px_rgba(0,0,0,0.08)]">
         <div className="border-b border-[#e7ded4] px-4 py-4">
           <p className="text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
-            PDF 库
+            文档库
           </p>
           <p className="mt-2 text-[14px] text-[#514942]">
-            已上传的 PDF 将显示在这里
+            已上传的 PDF / EPUB 将显示在这里
           </p>
           <p className="mt-2 text-[12px] text-[#8a8178]">
             {formatQuotaSummary(storageUsedBytes, storageQuotaBytes)}
@@ -127,7 +130,7 @@ export function PdfLibraryPanel({
             <div className="flex min-h-[240px] items-center justify-center px-6 py-10 text-center">
               <div>
                 <p className="text-[15px] font-medium text-[#1a1a1a]">
-                  暂无 PDF
+                  暂无文档
                 </p>
                 <p className="mt-2 text-[13px] leading-6 text-[#8a8178]">
                   上传文件后，它们会出现在这个列表里。

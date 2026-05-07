@@ -7,6 +7,7 @@ import { TranslationPopover } from "@/components/reader/translation-popover";
 import { Card } from "@/components/ui/card";
 import { normalizeSelectionText } from "@/features/pdf/pdf-selection";
 import type { PdfTextSelection } from "@/features/pdf/pdf-types";
+import type { DocumentKind } from "@/features/document/document-types";
 import type { FavoriteItem } from "@/features/sidebar/sidebar-store";
 import {
   type TranslationResult,
@@ -21,6 +22,17 @@ const PdfViewer = dynamic(
     loading: () => (
       <p className="text-sm text-[#8a8178]">Loading sample PDF…</p>
     ),
+  },
+);
+
+const EpubViewer = dynamic(
+  () =>
+    import("@/components/reader/epub-viewer").then(
+      (module) => module.EpubViewer,
+    ),
+  {
+    ssr: false,
+    loading: () => <p className="text-sm text-[#8a8178]">Loading EPUB…</p>,
   },
 );
 
@@ -73,6 +85,8 @@ const failedTranslationResult = (sourceText: string): TranslationResult => ({
 type PdfStageProps = {
   isCloudUploadActive?: boolean;
   cloudUploadProgressPercent?: number;
+  isAudioProcessingActive?: boolean;
+  documentKind?: DocumentKind;
   status?: "empty" | "loading" | "ready" | "error";
   documentName?: string;
   source?: string | null;
@@ -80,9 +94,55 @@ type PdfStageProps = {
   onFavorite?: (item: FavoriteItem) => void;
 };
 
+function StageProgressStrip({
+  fillTestId,
+  indeterminate = false,
+  percent,
+  testId,
+  title,
+  valueText,
+}: {
+  fillTestId: string;
+  indeterminate?: boolean;
+  percent?: number;
+  testId: string;
+  title: string;
+  valueText: string;
+}) {
+  return (
+    <div
+      className="border-b border-[#e7ded4] bg-[rgba(255,248,240,0.92)] px-3 py-2"
+      data-testid={testId}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <p className="font-mono text-[11px] font-semibold tracking-[0.18em] text-[#9a6a4f]">
+          {title}
+        </p>
+        <p className="font-mono text-[11px] text-[#9a6a4f]">{valueText}</p>
+      </div>
+      <div className="mt-2 h-1 overflow-hidden bg-[#f3e3d7]">
+        <div
+          className={[
+            "h-full bg-[#d97745] transition-[width,transform] duration-150 ease-out",
+            indeterminate ? "w-[38%] animate-pulse" : "",
+          ].join(" ")}
+          data-testid={fillTestId}
+          style={
+            indeterminate
+              ? { transform: "translateX(80%)" }
+              : { width: `${percent ?? 0}%` }
+          }
+        />
+      </div>
+    </div>
+  );
+}
+
 export function PdfStage({
   isCloudUploadActive = false,
   cloudUploadProgressPercent = 0,
+  isAudioProcessingActive = false,
+  documentKind = "pdf",
   status = "ready",
   documentName = "The Last Question.pdf",
   source = "/sample/the-last-question.pdf",
@@ -164,7 +224,9 @@ export function PdfStage({
 
       const rootRect = root.getBoundingClientRect();
       const pageNodes = Array.from(
-        root.querySelectorAll<HTMLElement>("[data-pdf-page-number]"),
+        root.querySelectorAll<HTMLElement>(
+          "[data-pdf-page-number], [data-epub-page-number]",
+        ),
       );
 
       if (!pageNodes.length) {
@@ -176,7 +238,9 @@ export function PdfStage({
       let bestDistance = Number.POSITIVE_INFINITY;
 
       for (const node of pageNodes) {
-        const page = Number(node.dataset.pdfPageNumber);
+        const page = Number(
+          node.dataset.pdfPageNumber ?? node.dataset.epubPageNumber,
+        );
         const rect = node.getBoundingClientRect();
         const visibleHeight = Math.max(
           0,
@@ -218,7 +282,7 @@ export function PdfStage({
         window.cancelAnimationFrame(frameId);
       }
     };
-  }, [status, totalPages, source]);
+  }, [status, totalPages, source, documentKind]);
 
   async function handleMouseUp() {
     const root = selectionRootRef.current;
@@ -302,26 +366,23 @@ export function PdfStage({
         className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#fffdf9] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
       >
         {isCloudUploadActive ? (
-          <div
-            className="border-b border-[#e7ded4] bg-[rgba(255,248,240,0.92)] px-3 py-2"
-            data-testid="pdf-upload-progress"
-          >
-            <div className="flex items-center justify-between gap-3">
-              <p className="font-mono text-[11px] font-semibold tracking-[0.18em] text-[#9a6a4f]">
-                CLOUD UPLOAD
-              </p>
-              <p className="font-mono text-[11px] text-[#9a6a4f]">
-                {cloudUploadProgressPercent}%
-              </p>
-            </div>
-            <div className="mt-2 h-1 overflow-hidden bg-[#f3e3d7]">
-              <div
-                className="h-full bg-[#d97745] transition-[width] duration-150 ease-out"
-                data-testid="pdf-upload-progress-fill"
-                style={{ width: `${cloudUploadProgressPercent}%` }}
-              />
-            </div>
-          </div>
+          <StageProgressStrip
+            fillTestId="pdf-upload-progress-fill"
+            percent={cloudUploadProgressPercent}
+            testId="pdf-upload-progress"
+            title="CLOUD UPLOAD"
+            valueText={`${cloudUploadProgressPercent}%`}
+          />
+        ) : null}
+
+        {isAudioProcessingActive ? (
+          <StageProgressStrip
+            fillTestId="audio-processing-progress-fill"
+            indeterminate
+            testId="audio-processing-progress"
+            title="AUDIO PROCESSING"
+            valueText="处理中"
+          />
         ) : null}
 
         <div
@@ -342,28 +403,28 @@ export function PdfStage({
                 EMPTY READER VIEW
               </p>
               <h3 className="mt-4 font-serif text-[34px] font-medium text-[#1a1a1a]">
-                Upload a PDF to start reading
+                Upload a PDF or EPUB to start reading
               </h3>
               <p className="mt-3 max-w-[520px] text-sm leading-7 text-[#6a625a]">
-                点击右上角文档位，打开菜单后上传单个 PDF，在当前阅读页直接开始精读。
+                点击右上角文档位，打开菜单后上传单个 PDF 或 EPUB，在当前阅读页直接开始精读。
               </p>
             </div>
           ) : status === "loading" ? (
             <div className="flex min-h-full flex-col items-center justify-center border border-[#e7ded4] bg-white px-8 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
               <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
-                LOADING PDF
+                LOADING DOCUMENT
               </p>
               <h3 className="mt-4 font-serif text-[28px] font-medium text-[#1a1a1a]">
                 {documentName}
               </h3>
               <p className="mt-3 text-sm leading-7 text-[#6a625a]">
-                Loading PDF…
+                Loading document…
               </p>
             </div>
           ) : status === "error" ? (
             <div className="flex min-h-full flex-col items-center justify-center border border-[#f0d4c7] bg-[#fff8f4] px-8 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
               <p className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#b26b4f]">
-                PDF ERROR
+                DOCUMENT ERROR
               </p>
               <h3 className="mt-4 font-serif text-[28px] font-medium text-[#1a1a1a]">
                 {documentName}
@@ -374,11 +435,20 @@ export function PdfStage({
             </div>
           ) : (
             <div className="min-h-full border border-[#e7ded4] bg-white px-3 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-              <ResolvedPdfViewer
-                file={source ?? ""}
-                onLoadSuccess={handleDocumentLoadSuccess}
-                scale={zoom}
-              />
+              {documentKind === "epub" ? (
+                <EpubViewer
+                  documentName={documentName}
+                  file={source ?? ""}
+                  onLoadSuccess={handleDocumentLoadSuccess}
+                  scale={zoom}
+                />
+              ) : (
+                <ResolvedPdfViewer
+                  file={source ?? ""}
+                  onLoadSuccess={handleDocumentLoadSuccess}
+                  scale={zoom}
+                />
+              )}
             </div>
           )}
 

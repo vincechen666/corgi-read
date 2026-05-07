@@ -1,9 +1,9 @@
 export type PdfStageStatus = "empty" | "loading" | "ready" | "error";
 
-export function normalizePdfDocumentLabel(fileName: string) {
-  const trimmed = fileName.trim();
+import { normalizeDocumentLabel } from "@/features/document/document-types";
 
-  return trimmed || "未命名 PDF";
+export function normalizePdfDocumentLabel(fileName: string) {
+  return normalizeDocumentLabel(fileName);
 }
 
 export function createPdfStageState(

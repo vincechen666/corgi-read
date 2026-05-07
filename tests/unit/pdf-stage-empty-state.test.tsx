@@ -14,7 +14,7 @@ test("shows empty state when no pdf source is available", () => {
   );
 
   expect(
-    screen.getByText(/upload a pdf to start reading/i),
+    screen.getByText(/upload a pdf or epub to start reading/i),
   ).toBeInTheDocument();
 });
 
@@ -28,5 +28,5 @@ test("shows loading state while a selected pdf is being prepared", () => {
     />,
   );
 
-  expect(screen.getByText("Loading PDF…")).toBeInTheDocument();
+  expect(screen.getByText("Loading document…")).toBeInTheDocument();
 });

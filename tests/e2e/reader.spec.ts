@@ -51,7 +51,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function uploadPdf(page: Page) {
-  await expect(page.getByText(/upload a pdf to start reading/i)).toBeVisible();
+  await expect(page.getByText(/upload a pdf or epub to start reading/i)).toBeVisible();
   await page.getByRole("button", { name: /未打开文档/i }).click();
 
   const chooser = page.waitForEvent("filechooser");
@@ -81,7 +81,7 @@ async function enableAuthenticatedSession(page: Page) {
 test("reader core loop works with mock services", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByText(/upload a pdf to start reading/i)).toBeVisible();
+  await expect(page.getByText(/upload a pdf or epub to start reading/i)).toBeVisible();
   await expect(page.getByText(/你的学习沉淀/i)).toBeVisible();
   await uploadPdf(page);
 
@@ -148,7 +148,7 @@ test("opens a local pdf from the top-right document menu", async ({ page }) => {
   await page.goto("/");
 
   await uploadPdf(page);
-  await expect(page.getByText(/upload a pdf to start reading/i)).not.toBeVisible();
+  await expect(page.getByText(/upload a pdf or epub to start reading/i)).not.toBeVisible();
   await expect(
     page.getByText(/local pdf loaded for automated browser verification/i),
   ).toBeVisible();

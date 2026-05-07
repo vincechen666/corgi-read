@@ -55,7 +55,7 @@ test("opens the document menu and shows upload action", async () => {
 
   expect(onToggleMenu).toHaveBeenCalled();
   expect(
-    screen.getByRole("menuitem", { name: /上传 pdf/i }),
+    screen.getByRole("menuitem", { name: /上传 pdf \/ epub/i }),
   ).toBeInTheDocument();
 });
 

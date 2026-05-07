@@ -30,20 +30,20 @@ export function TopBar({
       <div className="flex items-center gap-3">
         {isAuthenticated ? (
           <button
-            aria-label="PDF library"
+            aria-label="PDF library document library"
             className="h-8 border border-[#d8e1d6] bg-[#f2f5f1] px-4 text-[13px] font-medium text-[#44615a]"
             data-testid="pdf-library-trigger"
             onClick={onOpenLibrary}
             type="button"
           >
-            PDF 库
+            文档库
           </button>
         ) : null}
         <span className="font-serif text-[26px] font-medium text-[#1a1a1a]">
           CorgiRead
         </span>
         <span className="font-mono text-[11px] font-semibold tracking-[0.24em] text-[#8a8178]">
-          ENGLISH PDF READER
+          ENGLISH DOCUMENT READER
         </span>
       </div>
 
@@ -69,7 +69,7 @@ export function TopBar({
                 role="menuitem"
                 type="button"
               >
-                上传 PDF
+                上传 PDF / EPUB
               </button>
             </div>
           ) : null}

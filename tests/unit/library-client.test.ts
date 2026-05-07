@@ -13,6 +13,12 @@ test("builds user-scoped pdf storage paths", () => {
   );
 });
 
+test("builds user-scoped epub storage paths", () => {
+  expect(buildPdfStoragePath("user-1", "doc-1", "epub")).toBe(
+    "users/user-1/epub/doc-1.epub",
+  );
+});
+
 test("builds a cloud upload plan with metadata", () => {
   const plan = buildPdfUploadPlan({
     userId: "user-1",
@@ -35,6 +41,20 @@ test("builds a cloud upload plan with metadata", () => {
     createdAt: "2026-03-25T10:00:00.000Z",
   });
   expect(plan.withinQuota).toBe(true);
+});
+
+test("builds an epub cloud upload plan with an epub storage path", () => {
+  const plan = buildPdfUploadPlan({
+    userId: "user-1",
+    file: new File([new Uint8Array(2048)], "book.epub", {
+      type: "application/epub+zip",
+    }),
+    documentId: "doc-1",
+    createdAt: "2026-03-25T10:00:00.000Z",
+  });
+
+  expect(plan.storagePath).toBe("users/user-1/epub/doc-1.epub");
+  expect(plan.pdfDocument.storagePath).toBe("users/user-1/epub/doc-1.epub");
 });
 
 test("rejects cloud uploads when quota is exceeded", () => {
@@ -101,6 +121,38 @@ test("uploads cloud pdf metadata to storage and database", async () => {
       created_at: "2026-03-25T10:00:00.000Z",
     },
   ]);
+});
+
+test("uploads epub files with the epub storage path", async () => {
+  const uploadFile = vi.fn().mockResolvedValue(undefined);
+  const insert = vi.fn().mockResolvedValue({ error: null });
+  const client = {
+    storage: {
+      from: vi.fn(() => ({
+        remove: vi.fn(),
+      })),
+    },
+    from: vi.fn(() => ({
+      insert,
+    })),
+  };
+
+  const plan = await uploadPdfDocumentToCloud({
+    client: client as never,
+    file: new File(["epub"], "book.epub", { type: "application/epub+zip" }),
+    userId: "user-1",
+    documentId: "doc-1",
+    createdAt: "2026-03-25T10:00:00.000Z",
+    uploadFile,
+  });
+
+  expect(plan.storagePath).toBe("users/user-1/epub/doc-1.epub");
+  expect(uploadFile).toHaveBeenCalledWith({
+    client: client,
+    file: expect.any(File),
+    path: "users/user-1/epub/doc-1.epub",
+    onProgress: expect.any(Function),
+  });
 });
 
 test("removes uploaded pdf from storage when metadata insert fails", async () => {
@@ -178,6 +230,7 @@ test("loads cloud pdf metadata and maps it into library documents", async () => 
     {
       id: "doc-1",
       userId: "user-1",
+      documentKind: "pdf",
       fileName: "lesson-1.pdf",
       fileSizeBytes: 2048,
       storagePath: "users/user-1/pdf/doc-1.pdf",

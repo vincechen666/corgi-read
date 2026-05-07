@@ -15,14 +15,14 @@ test("returns empty state when no file is selected", () => {
 });
 
 test("keeps the current document visible when a replacement upload fails", () => {
-  expect(createPdfStageState("blob:lesson-3", false, "Please choose a PDF file.")).toEqual({
+  expect(createPdfStageState("blob:lesson-3", false, "Please choose a PDF or EPUB file.")).toEqual({
     status: "ready",
     documentName: "已选中文档",
     source: "blob:lesson-3",
-    error: "Please choose a PDF file.",
+    error: "Please choose a PDF or EPUB file.",
   });
 });
 
-test("normalizes uploaded pdf labels before display", () => {
-  expect(normalizePdfDocumentLabel(" lesson-3.pdf ")).toBe("lesson-3.pdf");
+test("normalizes uploaded document labels before display", () => {
+  expect(normalizePdfDocumentLabel(" lesson-3.epub ")).toBe("lesson-3.epub");
 });

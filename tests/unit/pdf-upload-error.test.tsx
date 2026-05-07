@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 
 import { AppShell } from "@/components/reader/app-shell";
 
-test("shows inline error when a non-pdf file is selected", async () => {
+test("shows inline error when an unsupported document file is selected", async () => {
   const user = userEvent.setup({ applyAccept: false });
 
   render(<AppShell />);
@@ -15,5 +15,5 @@ test("shows inline error when a non-pdf file is selected", async () => {
     new File(["bad"], "notes.txt", { type: "text/plain" }),
   );
 
-  expect(await screen.findByText(/please choose a pdf/i)).toBeInTheDocument();
+  expect(await screen.findByText(/please choose a pdf or epub/i)).toBeInTheDocument();
 });

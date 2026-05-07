@@ -28,14 +28,17 @@ import {
 } from "@/features/auth/auth-schema";
 import { createSupabaseBrowserClient } from "@/features/auth/supabase-browser";
 import {
+  getDocumentKindFromFile,
+  getDocumentKindFromName,
+  normalizeDocumentLabel,
+  type DocumentKind,
+} from "@/features/document/document-types";
+import {
   loadPdfLibraryDocuments,
   uploadPdfDocumentToCloud,
 } from "@/features/library/library-client";
 import { canUploadFileWithinQuota } from "@/features/library/quota";
-import {
-  createPdfStageState,
-  normalizePdfDocumentLabel,
-} from "@/features/pdf/pdf-file-state";
+import { createPdfStageState } from "@/features/pdf/pdf-file-state";
 import {
   hydrateSidebarStore,
   replaceSidebarStoreWithCloudData,
@@ -73,7 +76,9 @@ export function AppShell() {
   const [readerError, setReaderError] = useState<string | null>(null);
   const [lastAudioBlob, setLastAudioBlob] = useState<Blob | null>(null);
   const [lastTranscript, setLastTranscript] = useState<string | null>(null);
+  const [isAudioProcessingActive, setIsAudioProcessingActive] = useState(false);
   const [pdfSource, setPdfSource] = useState<string | null>(null);
+  const [documentKind, setDocumentKind] = useState<DocumentKind>("pdf");
   const [documentName, setDocumentName] = useState("未打开文档");
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [isPdfLibraryOpen, setIsPdfLibraryOpen] = useState(false);
@@ -347,32 +352,37 @@ export function AppShell() {
       setLastAudioBlob(audioBlob);
       setTranscriptionError(null);
       setAnalysisError(null);
+      setIsAudioProcessingActive(true);
 
       let transcript: string;
 
       try {
-        const transcription = await transcribeAudio(audioBlob);
-        transcript = transcription.result.transcript;
-      } catch (error) {
-        setAnalysisMeta(null);
-        setActiveAnalysis(null);
-        const detail =
-          error instanceof Error && error.message
-            ? `转写失败：${error.message}`
-            : "转写失败，可重试";
-        setTranscriptionError(detail);
-        throw new Error("transcription failed");
-      }
+        try {
+          const transcription = await transcribeAudio(audioBlob);
+          transcript = transcription.result.transcript;
+        } catch (error) {
+          setAnalysisMeta(null);
+          setActiveAnalysis(null);
+          const detail =
+            error instanceof Error && error.message
+              ? `转写失败：${error.message}`
+              : "转写失败，可重试";
+          setTranscriptionError(detail);
+          throw new Error("transcription failed");
+        }
 
-      setLastTranscript(transcript);
+        setLastTranscript(transcript);
 
-      try {
-        await completeAnalysis(transcript);
-      } catch {
-        setAnalysisMeta(null);
-        setActiveAnalysis(null);
-        setAnalysisError("分析失败，可重试");
-        throw new Error("analysis failed");
+        try {
+          await completeAnalysis(transcript);
+        } catch {
+          setAnalysisMeta(null);
+          setActiveAnalysis(null);
+          setAnalysisError("分析失败，可重试");
+          throw new Error("analysis failed");
+        }
+      } finally {
+        setIsAudioProcessingActive(false);
       }
     },
     [completeAnalysis],
@@ -541,7 +551,10 @@ export function AppShell() {
         }
 
         setPdfSource(nextSource);
-        setDocumentName(normalizePdfDocumentLabel(document.fileName));
+        setDocumentKind(
+          document.documentKind ?? getDocumentKindFromName(document.fileName),
+        );
+        setDocumentName(normalizeDocumentLabel(document.fileName));
       }
 
       setIsPdfLibraryOpen(false);
@@ -558,11 +571,10 @@ export function AppShell() {
         return;
       }
 
-      if (
-        file.type !== "application/pdf" &&
-        !file.name.toLowerCase().endsWith(".pdf")
-      ) {
-        setReaderError("Please choose a PDF file.");
+      const nextDocumentKind = getDocumentKindFromFile(file);
+
+      if (!nextDocumentKind) {
+        setReaderError("Please choose a PDF or EPUB file.");
         return;
       }
 
@@ -570,7 +582,8 @@ export function AppShell() {
       setCloudError(null);
       setIsPdfLoading(true);
 
-      setDocumentName(normalizePdfDocumentLabel(file.name));
+      setDocumentKind(nextDocumentKind);
+      setDocumentName(normalizeDocumentLabel(file.name));
 
       if (pdfSource?.startsWith("blob:")) {
         URL.revokeObjectURL(pdfSource);
@@ -628,6 +641,7 @@ export function AppShell() {
             setUploadedLibraryDocuments((currentDocuments) => [
               {
                 createdAt: new Date().toISOString(),
+                documentKind: nextDocumentKind,
                 fileName: file.name,
                 fileSizeBytes: file.size,
                 id: `library-${Date.now()}`,
@@ -669,7 +683,7 @@ export function AppShell() {
       data-testid="app-shell"
     >
       <div className="mx-auto flex h-full max-w-[1500px] flex-col">
-        <h1 className="sr-only">English PDF Reader</h1>
+        <h1 className="sr-only">English Document Reader</h1>
         <TopBar
           avatarMenuOpen={avatarMenuOpen}
           documentLabel={documentName}
@@ -684,8 +698,8 @@ export function AppShell() {
         />
         <input
           ref={fileInputRef}
-          accept="application/pdf,.pdf"
-          aria-label="Upload PDF input"
+          accept="application/pdf,application/epub+zip,.pdf,.epub"
+          aria-label="Upload PDF input for PDF or EPUB"
           className="sr-only"
           onChange={handleFileChange}
           type="file"
@@ -696,7 +710,9 @@ export function AppShell() {
           data-testid="workspace-shell"
         >
           <PdfStage
+            isAudioProcessingActive={isAudioProcessingActive}
             cloudUploadProgressPercent={cloudUploadProgressPercent}
+            documentKind={documentKind}
             documentName={documentName}
             error={pdfStageState.error}
             isCloudUploadActive={isCloudUploadActive}

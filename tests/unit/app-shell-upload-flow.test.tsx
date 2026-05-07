@@ -58,6 +58,27 @@ test("updates the reader when a local pdf is selected", async () => {
   expect(libraryClientMocks.uploadPdfDocumentToCloud).not.toHaveBeenCalled();
 });
 
+test("updates the reader when a local epub is selected", async () => {
+  const user = userEvent.setup();
+  vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:book");
+
+  render(<AppShell />);
+
+  await user.click(screen.getByRole("button", { name: /未打开文档/i }));
+  const upload = screen.getAllByLabelText(/upload pdf input/i)[0];
+
+  await user.upload(
+    upload,
+    new File(["epub"], "book.epub", { type: "application/epub+zip" }),
+  );
+
+  expect(
+    await screen.findByRole("button", { name: /book\.epub/i }),
+  ).toBeInTheDocument();
+  expect(await screen.findByTestId("mock-epub-viewer")).toBeInTheDocument();
+  expect(libraryClientMocks.uploadPdfDocumentToCloud).not.toHaveBeenCalled();
+});
+
 test("keeps local reading available after an authenticated cloud upload failure", async () => {
   const user = userEvent.setup();
   let rejectUpload: ((reason?: unknown) => void) | null = null;

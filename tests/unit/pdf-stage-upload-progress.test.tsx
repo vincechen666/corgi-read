@@ -55,3 +55,21 @@ test("shows the expected upload percentage and width state", async () => {
     width: "42%",
   });
 });
+
+test("renders the audio processing bar without blocking the reader", async () => {
+  render(
+    <PdfStage
+      documentName="lesson-3.pdf"
+      error={null}
+      isAudioProcessingActive
+      source="blob:lesson-3"
+      status="ready"
+    />,
+  );
+
+  const progress = await screen.findByTestId("audio-processing-progress");
+
+  expect(progress).toHaveTextContent("AUDIO PROCESSING");
+  expect(progress).toHaveTextContent("处理中");
+  expect(screen.getByTestId("audio-processing-progress-fill")).toBeInTheDocument();
+});
